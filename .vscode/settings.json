@@ -1,0 +1,71 @@
+{
+    "markdown-preview-enhanced.breakOnSingleNewLine": false,
+    "markdown-preview-enhanced.usePandocParser": true,
+    "markdown-preview-enhanced.imageFolderPath": "/.assets-mpe",
+
+    "markdownlint.config": {
+        "default": true,
+        "MD003": false/*{
+            "style": "setext_with_atx"
+        }*/,
+        "MD006": false,
+        // "MD007": { "indent": 1 },
+        "MD007": false,
+        // We do want spaces in code blocks.
+        "MD038": false,
+        // It disallow header with same names under different section which we
+        // want to allow.
+        "MD024": false,
+        // We want to be able to start lists at a specific number which is fine
+        // and supported by pandoc (however not be bitbucket md).
+        "MD029": false,
+        "MD030": {
+            "ul_single": 2,
+            "ol_single": 1,
+            "ul_multi": 2,
+            "ol_multi": 1
+        },
+        "MD012": {"maximum": 2 }
+    },
+    "plantuml.exportOutDir": ".assets-puml",
+    // WARNING: This setting can be applied only in User Settings
+    // "plantuml.urlFormat": "svg",
+    "plantuml.jar": "${env:PANDOC_MD_WIKI_PLANTUML_JAR}",
+
+    "[markdown]":  {
+        "editor.tabSize": 4,
+        "files.trimTrailingWhitespace": false,
+        "editor.wordWrap": "on",
+        "editor.wordWrapColumn": 80,
+        "editor.wrappingIndent": "same",
+        "editor.trimAutoWhitespace": true,
+    },
+    "[nix]":  {
+        "editor.tabSize": 2
+    },
+    // This is for plantuml diagrams.
+    "[diagram]": {
+        "editor.tabSize": 2
+    },
+    "[lua]": {
+        "editor.tabSize": 2
+    },
+    "spellright.language": [
+        "English (Canadian)"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+    ],
+    "spellright.ignoreRegExpsByClass": {
+        "markdown": [
+            // Special preview enhanced import directive. (e.g.:
+            // `@import "./my/local/page.ext"`).
+            "/@import\\s+\\\".+\\\"/g",
+            // Header attributes.
+            "/\\{\\s*\\#[^\\}]+\\}/g",
+            // Pandoc's separate url link syntax (e.g.:
+            // `[My link txt]: ./my/link.ext`).
+            "/\\[[^\\]]+\\]\\:\\s+\\.?\\.\\/.+/g",
+        ],
+    },
+}
