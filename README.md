@@ -32,6 +32,8 @@ make [nix] the only requirement to run this tool.
 You might also want to install [direnv] tool which streamline / automate the
 loading of the nix environment as you enter the repository.
 
+So, here's what you should install:
+
  -  [nix-install-instructions]
  -  [direnv-install-instructions]
 
@@ -59,6 +61,19 @@ Bootstrapping your own pandoc markdown wiki
 TODO: Document this.
 
 
+Limitations
+-----------
+
+ -  As we're using gnumake to build the wiki and that this tool notoriously does not support
+    spaces in file correctly, **do not use spaces in you filenames**.
+
+    If your really do want to support this, you might instead use a more
+    advanced build system such as [shake] or [scons].
+
+    You might even go the full fledged static site generator way with the such
+    as [hakyll], [jekyll] or [hugo].
+
+
 [pandoc]: https://pandoc.org/
 [pandoc-filters]: https://pandoc.org/filters.html
 [pandoc-lua-filters]: https://pandoc.org/lua-filters.html
@@ -70,3 +85,8 @@ TODO: Document this.
 [nix-install-instructions]: https://nixos.org/nix/download.html
 [direnv-install-instructions]: https://direnv.net/docs/installation.html
 
+[shake]: http://hackage.haskell.org/package/shake
+[scons]: https://www.scons.org/
+[hakyll]: https://jaspervdj.be/hakyll/
+[jekyll]: https://jekyllrb.com/
+[hugo]: https://gohugo.io/

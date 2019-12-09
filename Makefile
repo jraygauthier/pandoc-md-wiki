@@ -39,6 +39,7 @@ OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG
 
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
 
+SRC_MD_PANDOC_OPTS := --from markdown
 HTML_PANDOC_OPTS := --to html5 --standalone --lua-filter="$(PANDOC_FILTER_DIR)/links-to-html.lua" --lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua"
 
 .PHONY: \
@@ -73,6 +74,8 @@ debug-vars:
 	@echo "OUTPUT_HTML_REL_DIR='$(OUTPUT_HTML_REL_DIR)'"
 	@echo "SRC_MD='$(SRC_MD)'"
 	@echo "OUT_HTML_FROM_MD='$(OUT_HTML_FROM_MD)'"
+	@echo "SRC_PUML='$(SRC_PUML)'"
+	@echo "OUT_HTML_SVG_FROM_PUML='$(OUT_HTML_SVG_FROM_PUML)'"
 
 
 clean-html:
@@ -109,7 +112,7 @@ $(OUTPUT_HTML_REL_DIR)%/.:
 .SECONDEXPANSION:
 
 $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
-	pandoc -o "$@" $(HTML_PANDOC_OPTS) --resource-path "$(@D)" --metadata pagetitle="$<" "$<"
+	pandoc $(SRC_MD_PANDOC_OPTS) -o "$@" $(HTML_PANDOC_OPTS) --resource-path "$(@D)" --metadata pagetitle="$<" "$<"
 
 $(OUTPUT_HTML_REL_DIR)/%.svg : %.puml | $$(@D)/.
 	plantuml -tsvg -o "$(MKF_CWD)/$(@D)/" "$<"
