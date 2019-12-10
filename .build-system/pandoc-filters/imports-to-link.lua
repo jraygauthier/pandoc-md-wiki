@@ -1,6 +1,10 @@
 --[[
 A pandoc filter to transform `@import "./path/to/my.puml"`
-into images pointing to a rendered svg.
+expressions into images pointing to a rendered svg.
+
+Note that the svg is assumed to have already been produced
+from the source puml file (most likely by the build system /
+makefile).
 
 Basically, a `@import "./path/to/my.puml"` expression
 will be transformed into the following markdown link:
@@ -15,6 +19,20 @@ output:
 ```html
 <img src="./path/to/my.svg" alt="./path/to/my.puml" />
 ```
+
+Note that attributes are supported as well:
+
+```md
+@import "./path/to/my.puml" {#my-id .my-class width="50%" title="My title" alt="My caption"}
+```
+
+should produce an equivalent to the following pandoc markdown
+(see `link_attributes` extension):
+
+```md
+![My caption](./path/to/my.svg "My title") {#my-id .my-class width="50%"}
+```
+
 ]]--
 
 local function contains_import_directive(el)
@@ -22,7 +40,7 @@ local function contains_import_directive(el)
     for k, v in ipairs(el.content) do
       -- Look for import directive only when the paragraph begins with
       -- a cite element.
-      if "Cite" == v.t and 1 == k then
+      if "Cite" == v.t then
         return contains_import_directive(v)
       else
         return false
@@ -42,6 +60,19 @@ local function contains_import_directive(el)
   return false
 end
 
+
+function count_import_directives(el)
+  assert( "Para" == el.t, "Unsupported element type!" )
+  local count = 0
+  for k, v in ipairs(el.content) do
+    if "Cite" == v.t and contains_import_directive(v) then
+      count = count + 1
+    end
+  end
+  return count
+end
+
+
 local function get_quoted_str(el)
   assert( el.t == "Quoted" )
   local quoted_strs = {}
@@ -57,6 +88,104 @@ local function get_quoted_str(el)
   out = table.concat(quoted_strs, " ")
   return out
 end
+
+
+local function parse_import_directive(el)
+  assert( "Para" == el.t, "Unexpected type!")
+
+  return coroutine.wrap(function ()
+    local PARSING_DONE = ipairs(el.content), a, #el.content
+    local PARSING_INCOMPLETE = ipairs(el.content), {}, 0
+
+    local function uri_parser(it, a, i)
+      local src_uri = nil
+      for k, el in it, a, i do
+        if "Space" == el.t then
+          -- Space between import and quoted uri.
+        elseif "Quoted" == el.t then
+          src_uri = get_quoted_str(el)
+          return src_uri, it, a, k
+        else
+          assert( false, "Unexpected type!" )
+        end
+      end
+
+      assert( false, "Parsing incomplete!")
+      return src_uri, PARSING_INCOMPLETE
+    end
+
+    local function attr_parser(it, a, i)
+      local attr_str = nil
+
+      for k, el in it, a, i do
+        if "Str" == el.t then
+          local str = el.text
+
+          if string.match(str, "{") then
+            attr_str = ""
+          end
+
+          attr_str = attr_str .. str
+
+          if string.match(str, "}") then
+            return attr_str, it, a, k
+          end
+        elseif attr_str and "Space" == el.t then
+          attr_str = attr_str .. " "
+        elseif attr_str and "Quoted" == el.t then
+          local quoted_str = string.format("%q", get_quoted_str(el))
+          attr_str = attr_str .. quoted_str
+        end
+      end
+
+      if not attr_str then
+        return "", PARSING_DONE
+      end
+
+      assert( false, "Parsing incomplete!")
+      return nil, PARSING_INCOMPLETE
+    end
+
+    local function import_parser(it, a, i)
+      for k, el in it, a, i do
+        if "Cite" == el.t then
+          assert( contains_import_directive(el) )
+          -- assert( 1 == k )
+          return true, it, a, k
+        elseif "Space" == el.t then
+          -- Ok, space before the cite inline.
+        elseif "SoftBreak" == el.t then
+          -- Ok, line break between 2 import directives.
+        else
+          -- print(string.format("Elmt: %s", pandoc.utils.stringify(el)))
+          assert( false, string.format("Unexpected element type: '%s'!", el.t) )
+        end
+      end
+
+      assert( false, "Parsing incomplete!")
+      return nil, PARSING_INCOMPLETE
+    end
+
+    local import_count = count_import_directives(el)
+
+    local it, a, i = ipairs(el.content)
+    for import_idx=1, import_count do
+      _, it, a, i = import_parser(it, a, i)
+      local src_uri
+      src_uri, it, a, i = uri_parser(it, a, i)
+      assert( src_uri )
+      local attrs_str
+      attrs_str, it, a, i = attr_parser(it, a, i)
+      assert( attrs_str )
+
+      coroutine.yield({
+        src_uri = src_uri,
+        attrs_str = attrs_str
+      })
+    end
+  end)
+end
+
 
 local function parse_import_attrs_raw_str(str)
 
@@ -82,13 +211,14 @@ local function parse_import_attrs_raw_str(str)
     end)
   end
 
-  id = nil
-  classes = {}
-  attrs = {}
+  local id = nil
+  local classes = {}
+  local attrs = {}
 
   for k, v in matches(str) do
     if "id" == k then
-      assert( not id, "Attr id already specified and was %s!", id)
+      assert( not id, "Attr id already specified and was %s!", v)
+      id = v
     elseif "class" == k then
       table.insert(classes, v)
     else
@@ -96,14 +226,13 @@ local function parse_import_attrs_raw_str(str)
       attrs[k] = v
     end
 
-    -- print(string.format("import_attrs: k: %s, v: %s", k, v))
+    --print(string.format("import_attrs: k: %s, v: %s", k, v))
   end
 
-  -- if not id then
-  --   id = ""
-  -- end
+  --print(string.format("id: %s", id))
   return pandoc.Attr(id, classes, attrs)
 end
+
 
 local function mk_image(src_uri, import_attrs)
   local path_to_svg = string.gsub(src_uri, "%.puml", ".svg")
@@ -141,70 +270,18 @@ function Para(el)
     return nil
   end
 
-  local src_uri = nil
-  local attrs_import_str = ""
+  elmts_out = {}
+  for import in parse_import_directive(el) do
+    -- print(string.format("import.src_uri: %s", import.src_uri))
+    -- print(string.format("import.attrs_str: %s", import.attrs_str))
 
-  local S_PARSING_IMPORT = 1
-  local S_PARSING_URI = 2
-  local S_PARSING_ATTRS = 3
-  local state = S_PARSING_IMPORT
+    import_attrs = parse_import_attrs_raw_str(import.attrs_str)
 
-  local function uri_parser(idx, el)
-    if "Space" == el.t then
-      -- Space between import and quoted uri.
-    elseif "Quoted" == el.t then
-      src_uri = get_quoted_str(el)
-    else
-      assert( false, "Unexpected type!" )
-    end
+    local el_img = mk_image(import.src_uri, import_attrs)
+    table.insert(elmts_out, pandoc.Para( el_img ))
   end
 
-  local function attr_parser(idx, el)
-    if "Str" == el.t then
-      local str = el.text
-      attrs_import_str = attrs_import_str .. str
-    elseif "Space" == el.t then
-      attrs_import_str = attrs_import_str .. " "
-    elseif "Quoted" == el.t then
-      local quoted_str = string.format("%q", get_quoted_str(el))
-      attrs_import_str = attrs_import_str .. quoted_str
-    end
-  end
+  assert( 1 <= #elmts_out )
 
-  local function import_parser(el)
-    if "Para" == el.t then
-      for k, v in ipairs(el.content) do
-        --print(string.format("Para: k: %s, type(v): %s, v.t: %s", k, type(v), v.t))
-        --print(string.format("Stringified: ''\n%s\n''", pandoc.utils.stringify(v)))
-        if "Cite" == v.t then
-          assert( contains_import_directive(v) )
-          assert( S_PARSING_IMPORT == state )
-          assert( 1 == k )
-          state = S_PARSING_URI
-        else
-          if S_PARSING_URI == state then
-            uri_parser(k, v)
-            if src_uri then
-              state = S_PARSING_ATTRS
-            end
-          elseif S_PARSING_ATTRS == state then
-            attr_parser(k, v)
-          end
-        end
-      end
-    else
-      assert( false, "Unexpected type!")
-    end
-  end
-
-  import_parser(el)
-
-  -- print(string.format("src_uri: %s", src_uri))
-  -- print(string.format("whole_import_str: %s", attrs_import_str))
-
-  import_attrs = parse_import_attrs_raw_str(attrs_import_str)
-
-  local el_img = mk_image(src_uri, import_attrs)
-  local el_out = pandoc.Para( el_img )
-  return el_out
+  return elmts_out
 end
