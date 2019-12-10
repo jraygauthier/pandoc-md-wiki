@@ -1,7 +1,7 @@
 Readme
 ======
 
-A simple markdown wiki build tool based on [pandoc] tailored to needs of
+A simple markdown wiki build tool based on [pandoc] tailored to the needs of
 development teams.
 
 This tool is very simple and includes a pretty generic *makefile* which is meant
@@ -24,6 +24,11 @@ This tool includes the following [pandoc-filters]:
     in [markdown-preview-enhanced].
 
     Support it currently limited. See [TODO.md] for more details.
+
+ -  `./.build-system/pandoc-filters/puml-cb-to-img.lua`
+
+    Allow this tool to convert code blocks marked as `puml` to be replaced by
+    the image resulting from running this code through [plantuml].
 
  -  More to come. See [TODO.md] for some ideas.
 
@@ -71,7 +76,7 @@ Bootstrapping your own pandoc markdown wiki
 -------------------------------------------
 
 Here's the simplest setup you need. At the root of your wiki repository (e.g.:
-/path/to/my-wiki) you should add the following files:
+`/path/to/my-wiki`) you should add the following files:
 
 `shell.nix`:
 
@@ -187,6 +192,8 @@ Limitations
     You might even go the full fledged static site generator way with the such
     as [hakyll], [jekyll] or [hugo].
 
+    See [TODO.md] for potential improvements aimed at fixing this.
+
 
 License
 -------
@@ -225,6 +232,8 @@ too specific to a particular use case won't be accepted).
 [direnv]: https://direnv.net/
 [nix-install-instructions]: https://nixos.org/nix/download.html
 [direnv-install-instructions]: https://direnv.net/docs/installation.html
+
+[plantuml]: https://plantuml.com/
 
 [shake]: http://hackage.haskell.org/package/shake
 [scons]: https://www.scons.org/

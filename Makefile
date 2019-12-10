@@ -20,6 +20,7 @@ ifndef PANDOC_MD_WIKI_OUT_HTML_DIR
 endif
 
 # A directory alongside this one with the "-html suffix ".
+SRC_ROOT_DIR := $(PANDOC_MD_WIKI_ROOT_DIR)
 OUT_HTML_DIR := $(PANDOC_MD_WIKI_OUT_HTML_DIR)
 OUTPUT_HTML_REL_DIR := $(shell realpath --relative-to "$(MKF_CWD)" "$(OUT_HTML_DIR)")
 
@@ -40,7 +41,7 @@ OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
 
 SRC_MD_PANDOC_OPTS := --from markdown
-HTML_PANDOC_OPTS := --to html5 --standalone --lua-filter="$(PANDOC_FILTER_DIR)/links-to-html.lua" --lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua"
+HTML_PANDOC_OPTS := --to html5 --standalone --lua-filter="$(PANDOC_FILTER_DIR)/links-to-html.lua" --lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua" --lua-filter="$(PANDOC_FILTER_DIR)/puml-cb-to-img.lua"
 
 .PHONY: \
 	all \
@@ -123,6 +124,7 @@ debug-vars:
 	@echo "PANDOC_MD_WIKI_OUT_HTML_DIR='$(PANDOC_MD_WIKI_OUT_HTML_DIR)'"
 	@echo "MAKEFILE_LIST='$(MAKEFILE_LIST)'"
 	@echo "PMW_MKF_DIR='$(PMW_MKF_DIR)'"
+	@echo "SRC_ROOT_DIR='$(SRC_ROOT_DIR)'"
 	@echo "OUT_HTML_DIR='$(OUT_HTML_DIR)'"
 	@echo "OUTPUT_HTML_REL_DIR='$(OUTPUT_HTML_REL_DIR)'"
 	@echo "SRC_MD='$(SRC_MD)'"
@@ -140,7 +142,7 @@ $(OUTPUT_HTML_REL_DIR)%/.:
 .SECONDEXPANSION:
 
 $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
-	pandoc $(SRC_MD_PANDOC_OPTS) -o "$@" $(HTML_PANDOC_OPTS) --resource-path "$(@D)" --metadata pagetitle="$<" "$<"
+	cd "$(@D)" && pandoc $(SRC_MD_PANDOC_OPTS) -o "$(OUT_HTML_DIR)/$@" $(HTML_PANDOC_OPTS) --extract-media "./media" --resource-path "." --metadata pagetitle="$<" "$(SRC_ROOT_DIR)/$<"
 
 $(OUTPUT_HTML_REL_DIR)/%.svg : %.puml | $$(@D)/.
 	plantuml -tsvg -o "$(MKF_CWD)/$(@D)/" "$<"

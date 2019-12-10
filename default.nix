@@ -45,8 +45,8 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = ''
-      A simple markdown wiki build tool based on pandoc tailored to needs of
-      development teams.
+      A simple markdown wiki build tool based on pandoc tailored to
+      the needs of development teams.
     '';
   };
 }
