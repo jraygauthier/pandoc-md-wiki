@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euf -o pipefail
 cd "$(dirname "$0")/../.." || exit 1
 
 test_src_file="./Features/PlantUMLSupport/ImportedFileWithSpaces.md"

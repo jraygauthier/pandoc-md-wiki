@@ -2,8 +2,8 @@
 set -euf -o pipefail
 cd "$(dirname "$0")/../.." || exit 1
 
-test_src_file="./Features/PlantUMLSupport/ImportedFileWithAttributes.md"
-test_out_file="../pandoc-md-wiki-html/Features/PlantUMLSupport/ImportedFileWithAttributes.html"
+test_src_file="./Features/PlantUMLSupport/ImportedFileMultipleSamePara.md"
+test_out_file="../pandoc-md-wiki-html/Features/PlantUMLSupport/ImportedFileMultipleSamePara.html"
 test_in_puml_file="./Features/PlantUMLSupport/Diagrams/SequenceExample.puml"
 test_out_svg_file="../pandoc-md-wiki-html/Features/PlantUMLSupport/Diagrams/SequenceExample.svg"
 

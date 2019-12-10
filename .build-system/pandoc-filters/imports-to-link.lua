@@ -58,6 +58,84 @@ local function get_quoted_str(el)
   return out
 end
 
+local function parse_import_attrs_raw_str(str)
+
+  local function matches(in_str)
+    return coroutine.wrap(function ()
+      for k, v in string.gmatch(in_str, '([a-zA-Z0-9-_]+)=([a-zA-Z0-9-_]+)') do
+        coroutine.yield(k, v)
+      end
+
+      for k, v in string.gmatch(in_str, '([a-zA-Z0-9-_]+)="([^"]+)"') do
+        coroutine.yield(k, v)
+      end
+
+      for v in string.gmatch(in_str, '%#([a-zA-Z0-9-_]+)') do
+        local k = "id"
+        coroutine.yield(k, v)
+      end
+
+      for v in string.gmatch(in_str, '%.([a-zA-Z0-9-_]+)') do
+        local k = "class"
+        coroutine.yield(k, v)
+      end
+    end)
+  end
+
+  id = nil
+  classes = {}
+  attrs = {}
+
+  for k, v in matches(str) do
+    if "id" == k then
+      assert( not id, "Attr id already specified and was %s!", id)
+    elseif "class" == k then
+      table.insert(classes, v)
+    else
+      assert( not attrs[k], string.format("Key: '%s' already specified and has value: '%s'!", k, attrs[k]))
+      attrs[k] = v
+    end
+
+    -- print(string.format("import_attrs: k: %s, v: %s", k, v))
+  end
+
+  -- if not id then
+  --   id = ""
+  -- end
+  return pandoc.Attr(id, classes, attrs)
+end
+
+local function mk_image(src_uri, import_attrs)
+  local path_to_svg = string.gsub(src_uri, "%.puml", ".svg")
+  -- print(string.format("path_to_svg: %s", path_to_svg))
+
+  -- Copy table and remove attributes that should not be
+  -- included as image attributes.
+  img_attr = pandoc.Attr(
+    import_attrs.identifier,
+    import_attrs.classes,
+    {table.unpack(import_attrs.attributes)})
+
+  img_attr.attributes.alt = nil
+  img_attr.attributes.title = nil
+
+  for k, v in pairs(img_attr.attributes) do
+    -- print(string.format("img_attr: k: %s, v: %s", k, v))
+  end
+
+
+  local img_alt = import_attrs.attributes.alt
+  if not img_alt then
+    -- Fallback to using the source uri as caption when no 'alt' text
+    -- is specified via import attributes.
+    img_alt = src_uri
+  end
+  local img_title = import_attrs.attributes.title
+
+  -- `pandoc.Image (caption, src[, title[, attr]])`
+  return pandoc.Image (img_alt, path_to_svg, img_title, img_attr)
+end
+
 function Para(el)
   if not contains_import_directive(el) then
     return nil
@@ -70,12 +148,6 @@ function Para(el)
   local S_PARSING_URI = 2
   local S_PARSING_ATTRS = 3
   local state = S_PARSING_IMPORT
-
-  local state_2_txt = {
-    "Parsing import directives",
-    "Parsing imported uri",
-    "Parsing import attributes",
-  }
 
   local function uri_parser(idx, el)
     if "Space" == el.t then
@@ -127,23 +199,12 @@ function Para(el)
 
   import_parser(el)
 
-  print(string.format("src_uri: %s", src_uri))
-  print(string.format("whole_import_str: %s", attrs_import_str))
+  -- print(string.format("src_uri: %s", src_uri))
+  -- print(string.format("whole_import_str: %s", attrs_import_str))
 
-  local path_to_svg = string.gsub(src_uri, "%.puml", ".svg")
-  print(string.format("path_to_svg: %s", path_to_svg))
+  import_attrs = parse_import_attrs_raw_str(attrs_import_str)
 
-  -- TODO: Use the basename of the src path with or without the puml
-  -- extension as caption. Caption is the alt text in html output.
-  -- `pandoc.Image (caption, src[, title[, attr]])`
-
-  -- attr = pandoc.Attr({ width = "300px"})
-  local el_img = pandoc.Image (src_uri, path_to_svg, "My Title")
-  -- TODO: Diagnose this. For some obscure reason, as soon as I add some attr,
-  --       the image is simply **not** part of the output.
-
-  -- el_img.attr = { width=300}
-  -- el_img.attr = { id="MyImg"}
+  local el_img = mk_image(src_uri, import_attrs)
   local el_out = pandoc.Para( el_img )
   return el_out
 end
