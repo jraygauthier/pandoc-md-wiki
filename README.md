@@ -13,7 +13,19 @@ markdown wiki with the target added as a suffix (in this case `-html`).
 
 This tool includes the following [pandoc-filters]:
 
- -  TODO: List and describe the provided filters.
+ -  `./.build-system/pandoc-filters/links-to-html.lua`
+
+    Really simple filter that changes link targeting `.md` files so that once
+    rendered to html these links points to the `.html` version.
+
+ -  `./.build-system/pandoc-filters/imports-to-link.lua`
+
+    Allow this tool to support `@import` statement like the one found
+    in [markdown-preview-enhanced].
+
+    Support it currently limited. See [TODO.md] for more details.
+
+ -  More to come. See [TODO.md] for some ideas.
 
 For the moment, we use only [pandoc-lua-filters] as these are supported natively
 and as such should incur less overhead then the haskell or python ones.
@@ -58,7 +70,109 @@ These markdown files are meant to showcase the capabilities of this tool.
 Bootstrapping your own pandoc markdown wiki
 -------------------------------------------
 
-TODO: Document this.
+Here's the simplest setup you need. At the root of your wiki repository (e.g.:
+/path/to/my-wiki) you should add the following files:
+
+`shell.nix`:
+
+```nix
+{}:
+
+let
+  pandocMdWikiSrc = builtins.fetchTarball {
+    url = "https://github.com/jraygauthier/pandoc-md-wiki/archive/0185bb3f0f42fe884a6f33baea07f05588a64813.tar.gz";
+    # Get this info from the output of: `nix-prefetch-url --unpack $url` where `url` is the above.
+    sha256 = "0n1srznampspcd5swpxifhis873iawvf51311pa7ycanif5fsry2";
+  };
+
+  pandocMdWikiShell = import (pandocMdWikiSrc + "/shell-external.nix") { };
+in
+
+pandocMdWikiShell
+```
+
+Here, `0185bb3f0f42fe884a6f33baea07f05588a64813` right of `url` should be
+replaced by the latest *git revision* of this repository.
+
+Here, the `0n1srznampspcd5swpxifhis873iawvf51311pa7ycanif5fsry2` value right of
+`sha256` should be replaced by the output of `nix-prefetch-url --unpack $url`.
+Alternatively, you can change a single of its digit and attempt entering the
+nix shell environment where your will be offered with the proper value for
+this field.
+
+
+`Makefile`:
+
+```Makefile
+MKF_DIR := $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+
+# Inputs for the included makefile.
+PANDOC_MD_WIKI_ROOT_DIR := $(MKF_DIR)
+
+# Exported via 'pandoc-md-wiki/shell.nix' 'shellHook'.
+ifndef PANDOC_MD_WIKI_RELEASE_MAKEFILE
+  $(error Missing 'PANDOC_MD_WIKI_RELEASE_MAKEFILE' env variable.)
+endif
+include $(PANDOC_MD_WIKI_RELEASE_MAKEFILE)
+```
+
+`Home.md`:
+
+```md
+My home page title
+==================
+
+Here is my home page content.
+```
+
+and optionally if you mean to use *direnv*:
+
+`envrc`:
+
+```bash
+use nix
+```
+
+You should then be able to enter the nix environment:
+
+```bash
+$ cd /path/to/my-wiki
+# If you are using direnv, you should instead call
+# 'direnv allow' instead of `nix-shell`.
+$ nix-shell
+# ..
+$ make html-and-preview
+xdg-open "../zilia-ocular-doc-html/Home.html"
+```
+
+This should open the rendered version of your *home page* in your default browser.
+
+
+Using the gnumake build system (aka Makefile)
+---------------------------------------------
+
+**TIP**: The provided make file supports tab completion (
+`make [Hit tab key here to get the list of top level tagets]`) and provides
+multiple top level targets, namely:
+
+ -  `html`: build the wiki to html without preview.
+ -  `clean-html`: clean the html output leaving any dot directories at the root
+    of the output (including `.git`) but also any regular files which are not a
+    target of the makefile (e.g.: `README.md`, `LICENSE`, `.gitignore`, etc).
+ -  `ls-html`: list the files in the html output.
+ -  `rls-html`: list recursively the files in the html output.
+ -  `preview-html`: preview currently built html home page if any.
+ -  `clean-html-only `: clean only the html files from the html output (i.e: not
+    the diagrams).
+ -  `clean-html-img`: clean only the html image files from the html output
+    (including the generated ones).
+ -  `clean-html-svg-from-puml-only`: clean only the svg generated from the puml
+    diagrams.
+ -  `clean`: clean all outputs.
+ -  `all`: build all outputs.
+ -  `force-clean-html-whole-dir`: clean the html output directory recursively.
+ -  `debug-vars`: debug the build system's internal variables.
+ -  etc.
 
 
 Limitations
@@ -73,6 +187,33 @@ Limitations
     You might even go the full fledged static site generator way with the such
     as [hakyll], [jekyll] or [hugo].
 
+
+License
+-------
+
+`pandoc-md-wiki` is licensed under the [Apache License].
+
+This license is very permissive, so feel free to fork this repository publicly
+(or even privately if absolutely required) to make it more suitable to your own
+use case.
+
+Pull request to improve this tool are an even greater way to go though.
+
+
+Contributing
+------------
+
+If you have nice changes that would improve this tool, we accept pull requests.
+
+Take not however that the tool is meant as a *generic* wiki build system, so your
+changes should meet this design criteria to be accepted (i.e: changes which are
+too specific to a particular use case won't be accepted).
+
+
+[TODO.md]: ./TODO.md
+
+[Apache License]: ./LICENSE
+[LICENSE]: ./LICENSE
 
 [pandoc]: https://pandoc.org/
 [pandoc-filters]: https://pandoc.org/filters.html

@@ -45,15 +45,23 @@ HTML_PANDOC_OPTS := --to html5 --standalone --lua-filter="$(PANDOC_FILTER_DIR)/l
 .PHONY: \
 	all \
 	clean \
-	clean-html-only \
-	debug-vars \
-	mk-output-dir-html \
-	clean-html \
-	html-svg-from-puml \
-	html-svg-from-src \
 	html \
+	ls-html \
+	rls-html \
+	clean-html \
 	html-and-preview \
-	preview-html
+	preview-html \
+	clean-html-only \
+	html-svg-from-puml \
+	clean-html-svg-from-puml \
+	html-img-from-src \
+	clean-html-img-from-src \
+	html-svg-from-src \
+	clean-html-svg-from-src \
+	html-png-from-src \
+	clean-html-png-from-src \
+	force-clean-html-whole-dir \
+	debug-vars
 
 .PRECIOUS: $(OUTPUT_HTML_REL_DIR)/. $(OUTPUT_HTML_REL_DIR)%/.
 
@@ -62,6 +70,51 @@ all: \
 
 clean: \
 	clean-html
+
+html: html-img-from-src html-svg-from-puml $(OUT_HTML_FROM_MD)
+
+html-and-preview: html preview-html
+
+preview-html:
+	xdg-open "$(OUTPUT_HTML_REL_DIR)/Home.html"
+
+ls-html:
+	ls -la "$(OUT_HTML_DIR)"
+
+rls-html:
+	ls -Rla "$(OUT_HTML_DIR)"
+
+clean-html: clean-html-only clean-html-img
+	find "$(OUT_HTML_DIR)" -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -exec rm -r "{}" +
+
+clean-html-only:
+	rm -f $(OUT_HTML_FROM_MD)
+
+force-clean-html-whole-dir:
+	rm -rf "$(OUT_HTML_DIR)"
+
+html-img: html-svg-from-puml html-img-from-src
+
+clean-html-img: clean-html-svg-from-puml clean-html-img-from-src
+
+html-svg-from-puml: $(OUT_HTML_SVG_FROM_PUML)
+
+clean-html-svg-from-puml:
+	rm -f $(OUT_HTML_SVG_FROM_PUML)
+
+html-img-from-src: html-svg-from-src html-png-from-src
+
+clean-html-img-from-src: clean-html-svg-from-src
+
+html-svg-from-src: $(OUT_HTML_SVG_FROM_SRC)
+
+clean-html-svg-from-src:
+	rm -f $(OUT_HTML_SVG_FROM_SRC)
+
+html-png-from-src: $(OUT_HTML_PNG_FROM_SRC)
+
+clean-html-png-from-src:
+	rm -f $(OUT_HTML_PNG_FROM_SRC)
 
 debug-vars:
 	@echo "PANDOC_MD_WIKI_ROOT_DIR='$(PANDOC_MD_WIKI_ROOT_DIR)'"
@@ -76,31 +129,6 @@ debug-vars:
 	@echo "OUT_HTML_FROM_MD='$(OUT_HTML_FROM_MD)'"
 	@echo "SRC_PUML='$(SRC_PUML)'"
 	@echo "OUT_HTML_SVG_FROM_PUML='$(OUT_HTML_SVG_FROM_PUML)'"
-
-
-clean-html:
-	rm -rf "$(OUT_HTML_DIR)"
-
-clean-html-only:
-	rm $(OUT_HTML_FROM_MD)
-
-clean-html-svg-from-puml-only:
-	rm $(OUT_HTML_SVG_FROM_PUML)
-
-html-svg-from-puml: $(OUT_HTML_SVG_FROM_PUML)
-
-html-svg-from-src: $(OUT_HTML_SVG_FROM_SRC)
-
-html-png-from-src: $(OUT_HTML_PNG_FROM_SRC)
-
-html-img-from-src: html-svg-from-src html-png-from-src
-
-html: html-img-from-src html-svg-from-puml $(OUT_HTML_FROM_MD)
-
-html-and-preview: html preview-html
-
-preview-html:
-	xdg-open "$(OUTPUT_HTML_REL_DIR)/Home.html"
 
 
 $(OUTPUT_HTML_REL_DIR)/.:
