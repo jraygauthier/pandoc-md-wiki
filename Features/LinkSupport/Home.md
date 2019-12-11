@@ -70,3 +70,24 @@ TODO: Fix me, the image link fails the build when uncommented:
 -->
 
 Note that this is not a lua filter issue.
+
+
+### Referring to particular section via anchors
+
+To explicitly named anchors:
+
+ -  [./SubDirectory/PageInSubDirectory.md\#my-second-section](./SubDirectory/PageInSubDirectory.md#my-second-section)
+
+ -  [SubDirectory/PageInSubDirectory.md\#my-second-section](SubDirectory/PageInSubDirectory.md#my-second-section)
+
+Without extension:
+
+ -  [./SubDirectory/PageInSubDirectory\#my-second-section](./SubDirectory/PageInSubDirectory#my-second-section)
+
+To automatically generated anchors:
+
+ -  [./SubDirectory/PageInSubDirectory.md\#my-third-section](./SubDirectory/PageInSubDirectory.md#my-third-section)
+
+Absolute local links:
+
+ -  [/SubDirectory/PageInSubDirectory\#my-second-section](/Features/LinkSupport/SubDirectory/PageInSubDirectory#my-second-section)

@@ -27,6 +27,17 @@ Build system
     Most likely through a well known yaml dot file in the sources of the wiki.
 
 
+### Pandoc html recipe
+
+ -  Error on nonexistent image links.
+
+    See [Features/LinkSupport/Home](Features/LinkSupport/Home.md)
+
+### Html clean
+
+ -  `clean-html` -> Remove directory when empty.
+
+
 Filters
 -------
 
@@ -37,6 +48,9 @@ Filters
  -  TikZ support.
  -  Vega support.
 
+### `local-links-to-target-ext.lua`
+
+ -  Links to section not handled.
 
 ### `puml-cb-to-img.lua`
 
