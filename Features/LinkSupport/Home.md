@@ -1,0 +1,70 @@
+Link support
+============
+
+External links
+--------------
+
+External links to `*.md` files should **not** have their extension changed to
+target extension (e.g.: `*.html`).
+
+ -  [pandoc-md-wiki/README.md](https://github.com/jraygauthier/pandoc-md-wiki/blob/master/README.md)
+ -  [pandoc-md-wiki/TODO.md]
+
+[pandoc-md-wiki/TODO.md]: https://github.com/jraygauthier/pandoc-md-wiki/blob/master/TODO.md
+
+
+Internal links
+--------------
+
+### Relative
+
+Internal relative links to `*.md` files **should** have their extension changed
+to target extension (e.g.: `*.html`):
+
+ -  [./SubDirectory/PageInSubDirectory.md](./SubDirectory/PageInSubDirectory.md)
+ -  [SubDirectory/PageInSubDirectory.md](SubDirectory/PageInSubDirectory.md)
+ -  [../../README.md](../../README.md)
+
+Internal relative links without extension **should** have their extension
+changed to target extension (e.g.: `*.html`):
+
+ -  [./SubDirectory/PageInSubDirectory](./SubDirectory/PageInSubDirectory)
+ -  [SubDirectory/PageInSubDirectory](SubDirectory/PageInSubDirectory)
+ -  [../../README](../../README)
+
+
+However, links to other files types should **not** have their extension changed:
+
+ -  [../PlantUMLSupport/Diagrams/SequenceExample.puml](../PlantUMLSupport/Diagrams/SequenceExample.puml)
+ -  [../ImageSupport/Images/ImageExample.svg](../ImageSupport/Images/ImageExample.svg)
+
+
+This also applies to image links:
+
+![../ImageSupport/Images/ImageExample.svg](../ImageSupport/Images/ImageExample.svg)
+
+
+### Absolute
+
+Internal absolute links should be converted to relative links so that they are functional
+even without a web server.
+
+Links to `*.md` **should** also have their extension changed to target extension
+(e.g.: `*.html`):
+
+ -  [/README.md](/README.md)
+ -  [/README](/README)
+
+However, links to other files types should **not** have their extension changed
+but should still have been converted to relative links:
+
+ -  [/Features/PlantUMLSupport/Diagrams/SequenceExample.puml](/Features/PlantUMLSupport/Diagrams/SequenceExample.puml)
+ -  [/Features/ImageSupport/Images/ImageExample.svg](/Features/ImageSupport/Images/ImageExample.svg)
+
+This also applies to image links:
+
+TODO: Fix me, the image link fails the build when uncommented:
+
+<!--
+![/Features/ImageSupport/Images/ImageExample.svg](/Features/ImageSupport/Images/ImageExample.svg)
+-->
