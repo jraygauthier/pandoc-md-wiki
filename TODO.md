@@ -20,19 +20,16 @@ Build system
  -  Support graphviz dot files.
  -  Support haskell diagrams.
 
- -  Build to linear pdf
+ -  Build to linear pdf / docx
 
     Requiring user provided listing of files.
 
- -  Build to linear docx
-
-    Requiring user provided listing of files.
+    Most likely through a well known yaml dot file in the sources of the wiki.
 
 
 Filters
 -------
 
- -  Inline plantuml support.
  -  Inline dot support.
  -  Inline haskell diagrams.
  -  Inline vega / vega-lite diagram.
@@ -40,10 +37,11 @@ Filters
  -  TikZ support.
  -  Vega support.
 
-### `links-to-html.lua`
 
- -  Only local wiki links should have their extension changed to `html`.
- -  Local wiki links when without extension should be given the `html` one by default.
+### `puml-cb-to-img.lua`
+
+ -  Capture image related attributes and forward others to the image element.
+ -  Support force render as code block (`code_block=true`).
 
 
 ### `imports-to-link.lua`

@@ -13,10 +13,15 @@ markdown wiki with the target added as a suffix (in this case `-html`).
 
 This tool includes the following [pandoc-filters]:
 
- -  `./.build-system/pandoc-filters/links-to-html.lua`
+ -  `./.build-system/pandoc-filters/local-links-abs-to-rel.lua`
 
-    Really simple filter that changes link targeting `.md` files so that once
-    rendered to html these links points to the `.html` version.
+    Changes local links absolute with regard to the site's root directory
+    to links relative to the current `.md` file.
+
+ -  `./.build-system/pandoc-filters/local-links-to-target-ext.lua`
+
+    Changes local links targeting `.md` files so that once rendered to html these
+    links points to the `.html` version (or any other target format extension).
 
  -  `./.build-system/pandoc-filters/imports-to-link.lua`
 

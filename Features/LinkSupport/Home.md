@@ -68,3 +68,5 @@ TODO: Fix me, the image link fails the build when uncommented:
 <!--
 ![/Features/ImageSupport/Images/ImageExample.svg](/Features/ImageSupport/Images/ImageExample.svg)
 -->
+
+Note that this is not a lua filter issue.
