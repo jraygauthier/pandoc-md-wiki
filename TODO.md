@@ -26,14 +26,45 @@ Build system
 
     Most likely through a well known yaml dot file in the sources of the wiki.
 
+    Alternatively, it might be better to simply make those from `*.md` files
+    making use of the @import directive to compose the final documents. Nice
+    things with this approach:
 
-### Pandoc html recipe
+     -  In editor html preview of the resulting document.
+     -  Granular control over how the document is transcluded.
+     -  Can surround the transclusions with actual content.
+
+    We could also decide to reuse the pandoc template format. Not sure tough
+    if that can be of any use for the docx like binary formats.
+
+### Html
 
  -  Error on nonexistent image links.
 
     See [Features/LinkSupport/Home](Features/LinkSupport/Home.md)
 
-### Html clean
+ -  Add tarball / zip targets of the html content.
+
+ -  Add opt-out option of in output generated files:
+
+    Encoded as a set of potentially overridable template files (using mustaches?)
+    under `.html/generated`.
+
+     -  Convenience `Makefile` which would have the all, clean, tarball, zip and
+        individual file targets simply deferring to the original makefile.
+
+     -  `shell.nix` / `.envrc` allowing users to use the make file.
+
+        When companion source repo is found beside this one, its `shell.nix` would be
+        used.
+
+        Otherwise, When generated, the current git sha1 of the source repo would
+        be taken allowing `shell.nix` to function without the companion source
+        repo but also for reproducibility.
+
+     -  `Readme.md` describing how to build this output, referencing to source
+        repository, describing exactly how it was generated (source revision /
+        clean or unclean) and could be generated again.
 
  -  `clean-html` -> Remove directory when empty.
 
@@ -48,9 +79,9 @@ Filters
  -  TikZ support.
  -  Vega support.
 
+
 ### `local-links-to-target-ext.lua`
 
- -  Links to section not handled.
 
 ### `puml-cb-to-img.lua`
 
