@@ -4,6 +4,34 @@ Todo
 Build system
 ------------
 
+ -  A system of tag in yaml front matter allowing to build only part of the
+    files.
+
+    This would be useful in particular for building only part of the wiki meant
+    for a particular audience (public, work, such or such group, etc).
+
+    In directory dot yaml file would allow to add or remove tags to all document
+    beneat this directory as if had been provided directly in the file's front
+    matter (thus allowing a concept of private / public by default).
+
+    A `+@tag` `-@tag` and `@tag` could be used (how about `#` tag instead of `@`
+    ones?).
+
+    Going even further, it would even be possible to tag sections of the files
+    (i.e: a tag in the title would mean the whole section and its sub).
+
+    Going again even further, pandoc native divs could be used to to tag arbitrary
+    parts of the document.
+
+    A filter would be responsible for processing the tags, maybe generating a
+    custom make file.
+
+    Some remaining questions:
+
+     -  Name of the dot file.
+     -  Kind of tag used.
+     -  How to tag non md files individually (via dot file?).
+
  -  Alternative build system
 
     Possibly: shake, scons, etc.
