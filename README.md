@@ -200,6 +200,44 @@ Limitations
     See [TODO.md] for potential improvements aimed at fixing this.
 
 
+Related tools / systems
+-----------------------
+
+ -  [pandoc-scholar]
+
+     -  [Formatting Open Science: agilely creating multiple document formats for
+        academic manuscripts with Pandoc Scholar](
+        https://pandoc-scholar.github.io/)
+
+ -  [pandocomatic]
+
+     -  [Chapter 6. Converting a directory tree of
+        documents](https://heerdebeer.org/Software/markdown/pandocomatic/#converting-a-directory-tree-of-documents)
+
+ -  [simple-template/pandoc]
+
+     -  [Wiki](https://github.com/simple-template/pandoc/wiki)
+
+ -  [hakyll]
+
+ -  [jekyll]
+
+ -  [hugo]
+
+ -  [pdsite]
+
+ -  [bookdown]
+
+ -  [pp]
+
+    A alternative approach by implementing a very powerful preprocessor.
+
+ -  [Pandoc Extras]
+
+     -  [Tools for Websites](https://github.com/jgm/pandoc/wiki/Pandoc-Extras#tools-for-websites)
+     -  [Workflow](https://github.com/jgm/pandoc/wiki/Pandoc-Extras#workflow)
+
+
 License
 -------
 
@@ -242,6 +280,15 @@ too specific to a particular use case won't be accepted).
 
 [shake]: http://hackage.haskell.org/package/shake
 [scons]: https://www.scons.org/
+
+[pandoc-scholar]: https://github.com/pandoc-scholar/pandoc-scholar
+[pandocomatic]: https://heerdebeer.org/Software/markdown/pandocomatic/
+[simple-template/pandoc]: https://github.com/simple-template/pandoc
 [hakyll]: https://jaspervdj.be/hakyll/
 [jekyll]: https://jekyllrb.com/
 [hugo]: https://gohugo.io/
+[pdsite]: http://pdsite.org/
+[bookdown]: https://bookdown.org/yihui/bookdown/
+[pp]: https://github.com/CDSoft/pp
+[Pandoc Extras]: https://github.com/jgm/pandoc/wiki/Pandoc-Extras
+

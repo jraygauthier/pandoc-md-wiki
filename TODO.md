@@ -4,7 +4,7 @@ Todo
 Build system
 ------------
 
- -  A system of tag in yaml front matter allowing to build only part of the
+ -  A system of tag in yaml metadata  allowing to build only part of the
     files.
 
     This would be useful in particular for building only part of the wiki meant
@@ -32,6 +32,15 @@ Build system
      -  Kind of tag used.
      -  How to tag non md files individually (via dot file?).
 
+    A first draft for the file, would be to specify all the files
+    using the `--metadata-file=FILE` starting from the root to
+    the page (multiple can be specified).
+
+    Here are some ref to use of a similar tag system:
+
+     -  [Listing tags using pandoc and YAML header - Stack Overflow](https://stackoverflow.com/questions/25559469/listing-tags-using-pandoc-and-yaml-header)
+
+
  -  Alternative build system
 
     Possibly: shake, scons, etc.
@@ -42,6 +51,18 @@ Build system
     when outputting to a linear document (e.g.: pdf, docx, epub)
     via a lua filter that would create a tree of link.
 
+ -  Opt-in for [pancritic] / [CriticMarkup]
+
+
+ -  A build target that uses [pandiff] to output a [CriticMarkup] annotated
+    document (docx) or set of documents (html / md).
+
+    This would be usefull to express deltas in between two revisions, and share
+    those with others.
+
+[CriticMarkup]: http://criticmarkup.com/
+[pancritic]: https://pypi.org/project/pancritic/
+[pandiff]: https://github.com/davidar/pandiff
 
 ### Gnumake
 
@@ -64,6 +85,10 @@ Build system
 
     We could also decide to reuse the pandoc template format. Not sure tough
     if that can be of any use for the docx like binary formats.
+
+ -  A target that prints the html output root directory.
+ -  A target that prints the wiki root directory.
+
 
 ### Html
 
