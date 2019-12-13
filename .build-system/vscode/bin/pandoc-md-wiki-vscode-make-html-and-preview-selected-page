@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -euf -o pipefail
+
+echo "Vscode pandoc-md-wiki current page preview script"
+echo "================================================="
+
+wikiRoot="${1?}"
+wikiHtmlOutRoot="${2?}"
+wikiRelFilename="${3?}"
+
+echo "wikiRoot='$wikiRoot'"
+echo "wikiHtmlOutRoot='$wikiHtmlOutRoot'"
+echo "wikiRelFilename='$wikiRelFilename'"
+
+if ! [[ -e "$wikiRoot" ]]; then
+  1>&2 echo "ERROR: missing wiki root directory: '$wikiRoot'."
+  exit 1
+fi
+
+cd "$wikiRoot" && make html
+
+IN_PAGE_EXT="md"
+OUT_PAGE_EXT="html"
+
+outFileRel="$(echo "$wikiRelFilename" \
+  | sed -r -e 's#^(.+)\.'${IN_PAGE_EXT}'$#\1.'${OUT_PAGE_EXT}'#g')"
+
+echo "outFileRel='$outFileRel'"
+outFileAbsFallbackSequence=( "$wikiHtmlOutRoot/$outFileRel" )
+
+outParentDir="$outFileRel"
+
+add_parent_dir_fallbacks() {
+  outParentDir="$(dirname "$outParentDir" | sed -E -e 's/^\.$//g')"
+  echo "outParentDir='$outParentDir'"
+
+  local outParentHomePage="${outParentDir}${outParentDir:+/}Home.${OUT_PAGE_EXT}"
+  echo "outParentHomePage='$outParentHomePage'"
+  if ! [[ "$outParentHomePage" == "$outFileRel" ]]; then
+    outFileAbsFallbackSequence=( \
+      "${outFileAbsFallbackSequence[@]}" \
+      "$wikiHtmlOutRoot/$outParentHomePage" \
+    )
+  fi
+
+  local outParentIndexPage="${outParentDir}${outParentDir:+/}Index.${OUT_PAGE_EXT}"
+  if ! [[ "$outParentIndexPage" == "$outFileRel" ]]; then
+    outFileAbsFallbackSequence=( \
+      "${outFileAbsFallbackSequence[@]}" \
+      "$wikiHtmlOutRoot/$outParentIndexPage" \
+    )
+  fi
+}
+
+while ! [[ "" = "$outParentDir" ]]; do
+  add_parent_dir_fallbacks
+done
+
+# Add the output directory as final fallback.
+outFileAbsFallbackSequence=( \
+  "${outFileAbsFallbackSequence[@]}" \
+  "$wikiHtmlOutRoot/" \
+)
+
+printf "outFileAbsFallbackSequence=''\n"
+printf "%s\n" "${outFileAbsFallbackSequence[@]}"
+printf "''\n"
+
+outFileAbs=""
+for v in "${outFileAbsFallbackSequence[@]}"; do
+  echo "test -e '$v'"
+  if [[ -e "$v" ]]; then
+    echo "Ok, file exists."
+    outFileAbs="$v"
+    echo "outFileAbs='$outFileAbs'"
+    break
+  else
+    1>&2 echo "WARNING: Fallback page '$v' does not exists."
+  fi
+done
+
+if [[ "" == "$outFileAbs" ]]; then
+  1>&2 echo "ERROR: None of the fallback pages were found."
+  exit 1
+fi
+
+# TODO: Investigate. For some odd reason, xdg-open does nothing when called by vscode's build
+# system.
+# xdg-open "$outFileAbs"
+# echo "xdg-open status='$?'"
+
+# HACK / WORKAROUND: Fetch the default browser ourselves instead.
+default_browser_desktop="$(xdg-settings get default-web-browser)"
+echo "default_browser_desktop='$default_browser_desktop'"
+
+default_browser="$(echo "$default_browser_desktop" | sed -E -e 's/^(.+)\.desktop$/\1/g')"
+
+"$default_browser" "$outFileAbs"

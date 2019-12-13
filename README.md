@@ -1,8 +1,8 @@
 Readme
 ======
 
-A simple markdown wiki build tool based on [pandoc] tailored to the needs of
-development teams.
+`pandoc-md-wiki`: a simple markdown wiki build tool based on [pandoc] tailored
+to the needs of development teams.
 
 This tool is very simple and includes a pretty generic *makefile* which is meant
 to be included by a makefile at the root of the markdown wiki.
@@ -95,7 +95,11 @@ let
     sha256 = "0n1srznampspcd5swpxifhis873iawvf51311pa7ycanif5fsry2";
   };
 
-  pandocMdWikiShell = import (pandocMdWikiSrc + "/shell-external.nix") { };
+  pandocMdWikiShell = import (pandocMdWikiSrc + "/shell-external.nix") {
+    # See <https://github.com/jraygauthier/pandoc-md-wiki/blob/master/.build-system/vscode/README.md>
+    # for more info about this option.
+    # withVscodeSupport = true;
+  };
 in
 
 pandocMdWikiShell
@@ -183,6 +187,12 @@ multiple top level targets, namely:
  -  `force-clean-html-whole-dir`: clean the html output directory recursively.
  -  `debug-vars`: debug the build system's internal variables.
  -  etc.
+
+
+Vscode support
+--------------
+
+See [pandoc-md-wiki - vscode support].
 
 
 Limitations
@@ -292,3 +302,4 @@ too specific to a particular use case won't be accepted).
 [pp]: https://github.com/CDSoft/pp
 [Pandoc Extras]: https://github.com/jgm/pandoc/wiki/Pandoc-Extras
 
+[pandoc-md-wiki - vscode support]: ./.build-system/vscode/README.md

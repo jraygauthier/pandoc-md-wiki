@@ -1,15 +1,12 @@
-{ nixpkgs ? import ./.nix/pinned-nixpkgs.nix {} }:
-
-with nixpkgs;
+{ nixpkgs ? import ./.nix/pinned-nixpkgs.nix {}
+, withVscodeSupport ? false
+}:
 
 let
-  release = import ./release.nix { inherit nixpkgs; };
+  internalShell = import ./shell.nix {
+    _isExternalShell = true;
+    inherit nixpkgs withVscodeSupport;
+  };
 in
 
-nixpkgs.mkShell {
-  inputsFrom = [ release ];
-
-  shellHook= ''
-    export PANDOC_MD_WIKI_RELEASE_MAKEFILE="${release}/share/${release.pname}/Makefile"
-  '';
-}
+internalShell
