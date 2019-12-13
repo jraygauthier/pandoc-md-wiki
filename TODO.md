@@ -60,6 +60,34 @@ Build system
     This would be usefull to express deltas in between two revisions, and share
     those with others.
 
+ -  A dot pmw configuration to control automatic attributes assignment to
+    code blocks or code inlines.
+
+    This can be specified wiki whole, per directory (see above system), per file
+    and even eventually via native div elements (for everything under the div).
+
+    Some use cases:
+
+     -  Specifying the default language for code blocks and inlines.
+
+ -  Sphinx doc indexed symbols integration.
+
+    When inline code symbol is found in the index, make the inline code a link
+    to the symbol's documentation page. A filter should be reponsible for this
+    integration.
+
+    We could make this configurable based on the inline's attributes (link to one
+    or the other sphinx doc based on langage, or explicitly).
+
+    A dot pmw configuration can be used to configure the location of sphinx doc
+    and how inlines are treated by default, what condition make it use one db or
+    the other, or none.
+
+ -  Doxygen doc indexed symbols integration.
+
+    Same design as above.
+
+
 [CriticMarkup]: http://criticmarkup.com/
 [pancritic]: https://pypi.org/project/pancritic/
 [pandiff]: https://github.com/davidar/pandiff
