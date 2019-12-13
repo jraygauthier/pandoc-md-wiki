@@ -29,7 +29,25 @@ Build system
     Some remaining questions:
 
      -  Name of the dot file.
+
+        `.pmw.yaml` for directories.
+
+        Format is:
+
+        ````yaml
+        ---
+        pmw:
+          tags: [ +@private, -@work ]
+        ...
+        ````
+
+        This format leave the global scope free so that we can use
+        this file to inherit from tags as well.
+
      -  Kind of tag used.
+
+        Same system as [gr](http://mixu.net/gr/) and as described above.
+
      -  How to tag non md files individually (via dot file?).
 
     A first draft for the file, would be to specify all the files
@@ -40,6 +58,20 @@ Build system
 
      -  [Listing tags using pandoc and YAML header - Stack Overflow](https://stackoverflow.com/questions/25559469/listing-tags-using-pandoc-and-yaml-header)
 
+        How about `.MyFile.myext.pmw.yaml`
+
+        It would be usable for the `.MyFile.md.pmw.yaml` file as well as
+        any other input page format that do not support yaml metadata.
+
+     -  Where to output all of these files?
+
+        As `.pmw.json`.
+
+        Can be :
+
+         -  as anoter companion directory.
+         -  directly in the html output.
+         -  under a subfolder of this repository.
 
  -  Alternative build system
 

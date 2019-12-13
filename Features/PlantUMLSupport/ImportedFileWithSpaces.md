@@ -1,3 +1,8 @@
+---
+pmw:
+  tags: [ +@work, "@wife" ]
+...
+
 PlantUML external file via `@import` support
 ============================================
 

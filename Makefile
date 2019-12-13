@@ -22,15 +22,23 @@ endif
 # A directory alongside this one with the "-html suffix ".
 SRC_ROOT_DIR := $(PANDOC_MD_WIKI_ROOT_DIR)
 OUT_HTML_DIR := $(PANDOC_MD_WIKI_OUT_HTML_DIR)
+# TODO: Output elsewhere.
+OUT_PMW_DIR := $(PANDOC_MD_WIKI_OUT_HTML_DIR)
 OUTPUT_HTML_REL_DIR := $(shell realpath --relative-to "$(MKF_CWD)" "$(OUT_HTML_DIR)")
+OUTPUT_PMW_REL_DIR := $(shell realpath --relative-to "$(MKF_CWD)" "$(OUT_PMW_DIR)")
 
 FN_SRC_REL_TO_ROOT = $(shell realpath --relative-to "$(shell dirname "$(SRC_ROOT_DIR)/$(1)")" "$(SRC_ROOT_DIR)")
 
 EXCLUDED_DIR_FIND_ARGS := -not -path '*/.diagrams_cache/*' -not -path '*/.assets-puml/*'
+SRC_MD_FIND_CMD := find . -mindepth 1 -type f -name '*.md' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n'
 
-SRC_MD := $(shell find . -mindepth 1 -type f -name '*.md' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
+SRC_MD := $(shell $(SRC_MD_FIND_CMD))
+SRC_PMW_YAML_FROM_MD := $(shell $(SRC_MD_FIND_CMD) | sed -E -e 's/([^\/]+)$$/\.pmw\/\1.yaml/g')
+SRC_PMW_YAML_FROM_DIRS := $(shell $(SRC_MD_FIND_CMD) | xargs dirname | sort | uniq | sed -E -e 's/^\.$$//g' -e 's/(.+)$$/\1\//g' -e 's/$$/.pmw.yaml/g')
 OUT_HTML_FROM_MD := $(patsubst %.md,$(OUTPUT_HTML_REL_DIR)/%.html,$(SRC_MD))
-
+OUT_PMW_JSON_FROM_MD := $(patsubst %.md.yaml,$(OUTPUT_PMW_REL_DIR)/%.md.json,$(SRC_PMW_YAML_FROM_MD))
+OUT_PMW_JSON_FROM_DIRS := $(patsubst %.pmw.yaml,$(OUTPUT_PMW_REL_DIR)/%.pmw.json,$(SRC_PMW_YAML_FROM_DIRS))
+OUT_PMW_JSON_FROM_DIRS_NON_ROOT := $(filter-out $(OUTPUT_PMW_REL_DIR)/.pmw.json,$(OUT_PMW_JSON_FROM_DIRS))
 SRC_PUML := $(shell find . -mindepth 1 -type f -name '*.puml' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
 OUT_HTML_SVG_FROM_PUML := $(patsubst %.puml,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_PUML))
 
@@ -67,7 +75,7 @@ HTML_PANDOC_OPTS := --to html5 --standalone
 	force-clean-html-whole-dir \
 	debug-vars
 
-.PRECIOUS: $(OUTPUT_HTML_REL_DIR)/. $(OUTPUT_HTML_REL_DIR)%/.
+.PRECIOUS: $(OUTPUT_HTML_REL_DIR)/. $(OUTPUT_HTML_REL_DIR)%/. $(OUT_PMW_JSON_FROM_DIRS) $(OUT_PMW_JSON_FROM_MD)
 
 all: \
 	html
@@ -131,7 +139,12 @@ debug-vars:
 	@echo "OUT_HTML_DIR='$(OUT_HTML_DIR)'"
 	@echo "OUTPUT_HTML_REL_DIR='$(OUTPUT_HTML_REL_DIR)'"
 	@echo "SRC_MD='$(SRC_MD)'"
+	@echo "SRC_PMW_YAML_FROM_MD='$(SRC_PMW_YAML_FROM_MD)'"
+	@echo "SRC_PMW_YAML_FROM_DIRS='$(SRC_PMW_YAML_FROM_DIRS)'"
 	@echo "OUT_HTML_FROM_MD='$(OUT_HTML_FROM_MD)'"
+	@echo "OUT_PMW_JSON_FROM_MD='$(OUT_PMW_JSON_FROM_MD)'"
+	@echo "OUT_PMW_JSON_FROM_DIRS='$(OUT_PMW_JSON_FROM_DIRS)'"
+	@echo "OUT_PMW_JSON_FROM_DIRS_NON_ROOT='$(OUT_PMW_JSON_FROM_DIRS_NON_ROOT)'"
 	@echo "SRC_PUML='$(SRC_PUML)'"
 	@echo "OUT_HTML_SVG_FROM_PUML='$(OUT_HTML_SVG_FROM_PUML)'"
 
@@ -139,13 +152,32 @@ debug-vars:
 $(OUTPUT_HTML_REL_DIR)/.:
 	mkdir -p "$@"
 
+
 $(OUTPUT_HTML_REL_DIR)%/.:
 	mkdir -p "$@"
 
+
+
 .SECONDEXPANSION:
 
-$(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
-	@#echo "PANDOC_MD_WIKI_REL_PATH_FROM_PAGE_TO_ROOT_DIR='$(call FN_SRC_REL_TO_ROOT,$<)'"
+$(OUTPUT_PMW_REL_DIR)/.pmw.json : $$(dir $$(@D)).pmw.json | $$(@D)/.
+	touch "$@"
+
+$(OUT_PMW_JSON_FROM_DIRS_NON_ROOT) : $$(dir $$(@D)).pmw.json | $$(@D)/.
+	touch "$@"
+
+# $(OUTPUT_HTML_REL_DIR)/%.md.pmw.json : $$(@D)/.pmw.json | $$(@D)/.
+$(OUTPUT_PMW_REL_DIR)/%.md.pmw.json : %.md $$(@D)/.pmw.json | $$(@D)/.
+# $(OUTPUT_HTML_REL_DIR)/%.md.pmw.json : $$(@D)/$$(shell basename "$$@" ".md.pmw.json" | sed -E -e 's/\.([^/]+)$$$$/\1/g').md $$(@D)/.pmw.json | $$(@D)/.
+# $(OUT_PMW_JSON_FROM_MD) : $$(@D)/$$(shell basename "$$@" ".md.pmw.json" | sed -E -e 's/\.([^/]+)$$$$/\1/g').md $$(@D)/.pmw.json | $$(@D)/.
+	@echo "SourceFileB='$(@D)/$(shell basename "$@" ".md.pmw.json" | sed -E -e 's/\.([^/]+)$$/\1/g').md'"
+	touch "$@"
+
+$(OUTPUT_HTML_REL_DIR)/%.html : %.md $(OUTPUT_PMW_REL_DIR)/%.md.pmw.json | $$(@D)/.
+# $(OUTPUT_HTML_REL_DIR)/%.html : %.md $$(@D)/$$(shell basename "$$@" ".html" | sed -E -e 's/([^/]+)$$$$/\.\1/g').md.pmw.json | $$(@D)/.
+
+	# @echo "SourceFileA='$(@D)/$(shell basename "$@" ".html" | sed -E -e 's/\.([^/]+)$$/\1/g').md'"
+	@echo "SourceFileA='$(@D)/$(shell basename "$@" ".html" | sed -E -e 's/([^/]+)$$/\.\1/g').md.pmw.json'"
 	cd "$(@D)" \
 	&& \
 	PANDOC_MD_WIKI_REL_PATH_FROM_PAGE_TO_ROOT_DIR="$(call FN_SRC_REL_TO_ROOT,$<)" \

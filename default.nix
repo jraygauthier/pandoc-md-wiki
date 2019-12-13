@@ -1,13 +1,15 @@
 { stdenv
 , makeWrapper
-, jdk
-, plantuml
-, graphviz
-, pandoc
-, lua5_3
 , diagrams-builder
 , gnumake
+, graphviz
+, jdk
+, jq
+, lua5_3
+, pandoc
+, plantuml
 , xdg_utils
+, yq
 }:
 
 stdenv.mkDerivation rec {
@@ -23,19 +25,21 @@ stdenv.mkDerivation rec {
 
   # TODO: Patch the makefile.
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [
+    makeWrapper
+  ];
 
   buildInputs = [
-    jdk
-    plantuml
-    graphviz
-    pandoc
-    # For experimenting with pandoc native lua filters.
-    lua5_3
-
     diagrams-builder
     gnumake
+    graphviz
+    jdk
+    jq
+    lua5_3 # For experimenting with pandoc native lua filters.
+    pandoc
+    plantuml
     xdg_utils
+    yq
   ];
 
   installPhase = ''
