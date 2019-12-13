@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
-echo "Vscode pandoc-md-wiki current page preview script"
-echo "================================================="
+printf -- "Vscode pandoc-md-wiki current page preview script\n"
+printf -- "=================================================\n\n"
 
 wikiRoot="${1?}"
 wikiHtmlOutRoot="${2?}"
@@ -32,10 +32,10 @@ outParentDir="$outFileRel"
 
 add_parent_dir_fallbacks() {
   outParentDir="$(dirname "$outParentDir" | sed -E -e 's/^\.$//g')"
-  echo "outParentDir='$outParentDir'"
+  # echo "outParentDir='$outParentDir'"
 
   local outParentHomePage="${outParentDir}${outParentDir:+/}Home.${OUT_PAGE_EXT}"
-  echo "outParentHomePage='$outParentHomePage'"
+  # echo "outParentHomePage='$outParentHomePage'"
   if ! [[ "$outParentHomePage" == "$outFileRel" ]]; then
     outFileAbsFallbackSequence=( \
       "${outFileAbsFallbackSequence[@]}" \
