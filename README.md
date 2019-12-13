@@ -257,7 +257,18 @@ This license is very permissive, so feel free to fork this repository publicly
 (or even privately if absolutely required) to make it more suitable to your own
 use case.
 
-Pull request to improve this tool are an even greater way to go though.
+This work is an improvement of the ideas from the following tools which I,
+[Raymond Gauthier], developed on my spare time years again (as far back as 2015)
+to support my own personal private wiki and made public at the following
+locations:
+
+ -  [jrg_wiki_pandoc_converter]
+ -  [jrg-gitit-plugins]
+
+As the sole author of these tools, I hereby grant the permission to use those
+ideas in their *current* (i.e: `pandoc-md-wiki`) form (lua filters instead of
+haskell ones, makefile instead of bash script, etc) under the more permissive
+[Apache License] hopefully for the benefit of all.
 
 
 Contributing
@@ -303,3 +314,9 @@ too specific to a particular use case won't be accepted).
 [Pandoc Extras]: https://github.com/jgm/pandoc/wiki/Pandoc-Extras
 
 [pandoc-md-wiki - vscode support]: ./.build-system/vscode/README.md
+
+[Raymond Gauthier]: https://github.com/jraygauthier/
+[jrg_wiki_pandoc_converter]: https://github.com/jraygauthier/jrg_wiki_pandoc_converter
+[jrg-gitit-plugins]: https://github.com/jraygauthier/jrg-gitit-plugins
+[jrg-gitit]: https://github.com/jraygauthier/jrg-gitit
+
