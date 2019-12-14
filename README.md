@@ -265,10 +265,30 @@ locations:
  -  [jrg_wiki_pandoc_converter]
  -  [jrg-gitit-plugins]
 
-As the sole author of these tools, I hereby grant the permission to use those
-ideas in their *current* (i.e: `pandoc-md-wiki`) form (lua filters instead of
+As the sole author (well almost, see exeption below) of these tools, I hereby
+grant the permission to use those ideas (derived from the work not in the list
+below) in their *current* (i.e: `pandoc-md-wiki`) form (lua filters instead of
 haskell ones, makefile instead of bash script, etc) under the more permissive
 [Apache License] hopefully for the benefit of all.
+
+ -  [jgm/gitit/plugins]
+
+    Were taken from the above example plugin list:
+
+     -  [jrg-gitit-plugins/src/Network/Gitit/Plugins/ImgTex.hs]
+     -  [jrg-gitit-plugins/src/Network/Gitit/Plugins/Dot.hs]
+     -  [jrg-gitit-plugins/src/Network/Gitit/Plugins/ShowUser.hs]
+
+Thanks to [John MacFarlane] the author of [pandoc], its maintainers and
+contributors which now allows us to make such incredible documentation
+automation tools.
+
+
+[John MacFarlane]: https://johnmacfarlane.net/
+[jgm/gitit/plugins]: https://github.com/jgm/gitit/tree/master/plugins
+[jrg-gitit-plugins/src/Network/Gitit/Plugins/ImgTex.hs]: https://github.com/jraygauthier/jrg-gitit-plugins/blob/master/src/Network/Gitit/Plugins/ImgTex.hs
+[jrg-gitit-plugins/src/Network/Gitit/Plugins/Dot.hs]: https://github.com/jraygauthier/jrg-gitit-plugins/blob/master/src/Network/Gitit/Plugins/Dot.hs
+[jrg-gitit-plugins/src/Network/Gitit/Plugins/ShowUser.hs]: https://github.com/jraygauthier/jrg-gitit-plugins/blob/master/src/Network/Gitit/Plugins/ShowUser.hs
 
 
 Contributing
