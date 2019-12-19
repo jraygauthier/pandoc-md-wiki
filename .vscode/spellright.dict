@@ -56,3 +56,11 @@ jrg_wiki_pandoc_converter
 jrg-gitit-plugins
 jrg-gitit
 Gauthier
+intra-rustdoc
+rfcs
+rust-lang
+rustdoc
+intra
+enums
+structs
+fns

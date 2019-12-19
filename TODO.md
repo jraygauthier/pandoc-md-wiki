@@ -70,6 +70,23 @@ Build system
 
      -  Specifying the default language for code blocks and inlines.
 
+ -  A convention for links to code symbol
+
+    See / follow the following discussions:
+
+     -  [Tracking issue for RFC 1946 - intra-rustdoc links - Issue \#43466](https://github.com/rust-lang/rust/issues/43466)
+     -  [rfcs/1946-intra-rustdoc-links.md at master -
+        rust-lang/rfcs](https://github.com/rust-lang/rfcs/blob/master/text/1946-intra-rustdoc-links.md)
+     -  [rust - How to link to other fns/structs/enums/traits in rustdoc? -
+        Stack
+        Overflow](https://stackoverflow.com/questions/31582064/how-to-link-to-other-fns-structs-enums-traits-in-rustdoc)
+
+    Interesting conventions:
+
+    ````md
+    [`My.Symbol`]
+    ````
+
  -  Sphinx doc indexed symbols integration.
 
     When inline code symbol is found in the index, make the inline code a link
@@ -153,6 +170,8 @@ Build system
 Filters
 -------
 
+ -  A filter that fails on broken link (input)
+ -  A filter that fails on broken link (output)
  -  Inline dot support.
  -  Inline haskell diagrams.
  -  Inline vega / vega-lite diagram.
@@ -163,6 +182,8 @@ Filters
 
 ### `local-links-to-target-ext.lua`
 
+ -  Bug: Link to local anchors broken: `[MyLink](#my-local-anchor)` is
+    wrongfully transformed into a `<./MyFolder/.html#save-to-local-db>` target..
 
 ### `puml-cb-to-img.lua`
 
