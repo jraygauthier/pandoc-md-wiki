@@ -10,7 +10,7 @@ let
     nixpkgs.callPackage ./.build-system/vscode {};
 in
 
-nixpkgs.mkShell {
+nixpkgs.mkShell rec {
   inputsFrom = [ release ];
 
   buildInputs = []
@@ -19,4 +19,7 @@ nixpkgs.mkShell {
   shellHook = lib.optionalString _isExternalShell ''
     export PANDOC_MD_WIKI_RELEASE_MAKEFILE="${release}/share/${release.pname}/Makefile"
   '';
+
+  # Allow shell compisition.
+  passthru.shellHook = shellHook;
 }
