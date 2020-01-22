@@ -9,8 +9,8 @@ local filetypes = {
   html5 = { "svg", "image/svg" },
   html = { "svg", "image/svg" },
 }
-local filetype = filetypes[FORMAT][FILE_TYPE_COL_IDX] or "png"
-local mimetype = filetypes[FORMAT][MIME_TYPE_COL_IDX] or "image/png"
+local filetype = filetypes[FORMAT][FILE_TYPE_COL_IDX] or "svg"
+local mimetype = filetypes[FORMAT][MIME_TYPE_COL_IDX] or "image/svg"
 
 local function puml_to_img(puml_code, out_filetype)
     local out_img = pandoc.pipe("plantuml", {"-t" .. filetype, "-p"}, puml_code)
