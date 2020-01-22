@@ -50,15 +50,35 @@ function CodeBlock(block)
       code_block_attr == nil or code_block_attr == "true",
       "Unsupported `code_block` value: `%s`!", output_type)
 
+    left_column_width = block.attributes["column-left-width"]
+
+    local column_split =
+      array_has_value(block.classes, "column-split")
+        or left_column_width ~= nil
+
+    -- print(string.format("column_split: %s", column_split))
+
+    if left_column_width == nil then
+      left_column_width = "50%"
+    end
+
+
 
     local cmd_mode = false
     local show_code_block = false
     local show_output = true
 
+    if column_split then
+      -- When column split is specified, we will have the
+      -- sensible default to show both the code and the
+      -- output as this is most certainly what is required.
+      show_code_block = true
+      show_output = true
+    end
+
     if output_type == "none" then
       show_output = false
     end
-
 
     if cmd_value == "true" then
       cmd_mode = true
@@ -76,18 +96,6 @@ function CodeBlock(block)
     end
 
     -- print(string.format("show_code_block: %s", show_code_block))
-
-    left_column_width = block.attributes["column-left-width"]
-
-    local column_split =
-      array_has_value(block.classes, "column-split")
-        or left_column_width ~= nil
-
-    -- print(string.format("column_split: %s", column_split))
-
-    if left_column_width == nil then
-      left_column_width = "50%"
-    end
 
     -- print(string.format("show_output: %s", show_output))
 

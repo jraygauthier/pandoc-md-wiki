@@ -46,6 +46,36 @@ ArrayList : size()
 @enduml
 ```
 
+## Column left / right split
+
+Should display both *code* left of the *output* with default split point (50%):
+
+```{.plantuml .column-split}
+@startuml
+Object <|-- ArrayList
+
+Object : equals()
+ArrayList : Object[] elementData
+ArrayList : size()
+
+@enduml
+```
+
+## Column left / right split custom split point
+
+Should display both *code* left of the *output* with custom split point (35%):
+
+```{.plantuml column-left-width=35%}
+@startuml
+Object <|-- ArrayList
+
+Object : equals()
+ArrayList : Object[] elementData
+ArrayList : size()
+
+@enduml
+```
+
 ## As code chunk
 
 Should display both the *code* and then the *output*:
