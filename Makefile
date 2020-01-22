@@ -41,6 +41,8 @@ SRC_PNG := $(shell find . -mindepth 1 -type f -name '*.png' $(EXCLUDED_DIR_FIND_
 OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG))
 
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
+PANDOC_SYNTAX_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-syntax
+# --syntax-definition="$(PANDOC_SYNTAX_DIR)/"
 
 SRC_MD_PANDOC_OPTS := --from markdown
 HTML_PANDOC_OPTS := --to html5 --standalone
@@ -153,9 +155,11 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 	$(SRC_MD_PANDOC_OPTS) \
 	-o "$(OUT_HTML_DIR)/$@" \
 	$(HTML_PANDOC_OPTS) \
+	--standalone \
 	--extract-media "./media" \
 	--resource-path "." \
 	--metadata pagetitle="$<" \
+	--highlight-style pygments \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-abs-to-rel.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-to-target-ext.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua" \
