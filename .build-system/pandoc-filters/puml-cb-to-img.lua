@@ -13,9 +13,76 @@ local filetypes = {
 local filetype = filetypes[FORMAT][FILE_TYPE_COL_IDX] or "png"
 local mimetype = filetypes[FORMAT][MIME_TYPE_COL_IDX] or "image/png"
 
+
+local function fetch_resource_workaround(rel_filename)
+  local resource_path = PANDOC_STATE.resource_path
+  -- print(string.format(
+  --   "resource_path: %s", table.concat(resource_path, ', ')))
+  for _, rdir in ipairs(resource_path) do
+    -- print(string.format("rdir: %s", rdir))
+    filename = rdir .. "/" .. rel_filename
+    -- print(string.format("filename: %s", filename))
+    file = io.open (filename)
+    if file ~= nil then
+      content = file:read("*all")
+      file:close()
+      assert( content ~= nil, "Unexpected nil ressource file content!" )
+      return content
+    end
+  end
+end
+
+
+local function fetch_resource(rel_filename)
+  -- Broken code. Should report an issue to pandoc repo.
+  -- There is no way to recover from lua, it fails on
+  -- the haskell side.
+  -- [pandoc/MediaBag.hs:fetch](https://github.com/jgm/pandoc/blob/8ed749702ff62bc41a88770c7f93a283a20a2a42/src/Text/Pandoc/Lua/Module/MediaBag.hs#L117)
+  -- Using `fetch_resource_workaround` in the meantime.
+  local fetch_status
+  local mt
+  local img
+  fetch_status, mt, content =
+   pcall(function ()
+     -- error("My Error")
+     return pandoc.mediabag.fetch(rel_filename, ".")
+   end)
+  -- print(string.format(
+  --   "fetch: fetch_status: %s, mt: %s",
+  --   fetch_status, mt))
+  if not fetch_status then
+    return nil
+  end
+
+  return content
+end
+
 local function puml_to_img(puml_code, out_filetype)
     local out_img = pandoc.pipe("plantuml", {"-t" .. out_filetype, "-p"}, puml_code)
     return out_img
+end
+
+local function puml_to_img_cached(puml_code, out_filetype)
+  local fname = pandoc.sha1(puml_code) .. "." .. out_filetype
+
+  local img
+  _, img = pandoc.mediabag.lookup(fname)
+  -- print(string.format("lookup: img: %s", not not img))
+  if img == nil then
+    img = fetch_resource_workaround(fname)
+    -- print(string.format("fetch_resource_workaround: img: %s", not not img))
+    if img ~= nil then
+      pandoc.mediabag.insert(fname, mimetype, img)
+    end
+  end
+
+  if img == nil then
+    img = puml_to_img(puml_code, out_filetype)
+    -- print(string.format("puml_to_img: img: %s", not not img))
+    pandoc.mediabag.insert(fname, mimetype, img)
+  end
+
+  return img, fname
 end
 
 local function array_has_value(array, value)
@@ -62,8 +129,6 @@ function CodeBlock(block)
       left_column_width = "50%"
     end
 
-
-
     local cmd_mode = false
     local show_code_block = false
     local show_output = true
@@ -95,22 +160,23 @@ function CodeBlock(block)
       show_code_block = false
     end
 
-    -- print(string.format("show_code_block: %s", show_code_block))
+    code_text = block.text
+    local img
+    local fname
+    img, fname = puml_to_img_cached(code_text, filetype)
+    -- print(string.format("puml_to_img_cached: img: %s", not not img))
 
+    code_block = block
+    output_image = pandoc.Image({pandoc.Str("puml")}, fname)
+    output_para = pandoc.Para{ output_image }
+
+    -- print(string.format("fname: %s", fname))
+    -- print(string.format("show_code_block: %s", show_code_block))
     -- print(string.format("show_output: %s", show_output))
 
     assert(
       show_code_block or show_output,
       "Cannot show nothing!" )
-
-    code_text = block.text
-    local fname = pandoc.sha1(code_text) .. "." .. filetype
-    local img = puml_to_img(code_text, filetype)
-    pandoc.mediabag.insert(fname, mimetype, img)
-
-    code_block = block
-    output_image = pandoc.Image({pandoc.Str("puml")}, fname)
-    output_para = pandoc.Para{ output_image }
 
     if show_code_block and show_output then
       top_div_attr = nil
@@ -140,6 +206,4 @@ function CodeBlock(block)
     if show_output then
       return pandoc.Para{ output_image }
     end
-
-
 end

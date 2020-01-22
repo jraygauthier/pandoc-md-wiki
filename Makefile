@@ -157,7 +157,7 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 	$(HTML_PANDOC_OPTS) \
 	--standalone \
 	--extract-media "./media" \
-	--resource-path "." \
+	--resource-path ".:./media" \
 	--metadata pagetitle="$<" \
 	--highlight-style pygments \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-abs-to-rel.lua" \

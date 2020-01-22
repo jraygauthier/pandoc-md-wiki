@@ -137,7 +137,6 @@ ArrayList : size()
 @enduml
 ```
 
-
 ## As code chunk, explicitly hiding the output
 
 Should display both the *code* and then the *output*:
