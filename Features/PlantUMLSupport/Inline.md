@@ -46,6 +46,8 @@ ArrayList : size()
 @enduml
 ```
 
+This version won't even run plantuml.
+
 ## Column left / right split
 
 Should display both *code* left of the *output* with default split point (50%):

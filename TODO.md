@@ -4,6 +4,10 @@ Todo
 Build system
 ------------
 
+ -  Support specifying plantuml common configuration file.
+
+ -  Support specifying plantuml include search path.
+
  -  A system of tag in yaml metadata  allowing to build only part of the
     files.
 
@@ -189,7 +193,8 @@ Filters
 
  -  Capture image related attributes and forward others to the image element.
  -  Support force render as code block (`code_block=true`).
-
+ -  Support build system specified plantuml common configuration file.
+ -  Support 
 
 ### `imports-to-link.lua`
 

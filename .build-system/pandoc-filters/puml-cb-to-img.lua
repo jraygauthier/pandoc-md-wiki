@@ -100,6 +100,16 @@ function CodeBlock(block)
       return nil -- Leave unchanged.
     end
 
+    code_block_attr = block.attributes["code_block"]
+    assert(
+      code_block_attr == nil or code_block_attr == "true",
+      "Unsupported `code_block` value: `%s`!", output_type)
+
+    if code_block_attr == "true" then
+      return nil -- Leave unchanged.
+    end
+
+
     cmd_value = block.attributes["cmd"]
     -- print(string.format("cmd_value: %s", cmd_value))
 
@@ -111,11 +121,6 @@ function CodeBlock(block)
     assert(
       output_type == nil or output_type == "html" or output_type == "none",
       "Unsupported `output` value: `%s`!", output_type)
-
-    code_block_attr = block.attributes["code_block"]
-    assert(
-      code_block_attr == nil or code_block_attr == "true",
-      "Unsupported `code_block` value: `%s`!", output_type)
 
     left_column_width = block.attributes["column-left-width"]
 
@@ -151,7 +156,7 @@ function CodeBlock(block)
     end
 
     if not cmd_mode and (
-        output_type == "none" or code_block_attr == "true") then
+        output_type == "none") then
       show_code_block = true
       show_output = false
     end
