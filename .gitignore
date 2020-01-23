@@ -1,3 +1,7 @@
 /.assets-mpe/
 /.assets-puml/
 .diagrams_cache/
+*.egg-info/
+**/__pycache__/
+**/.mypy_cache/
+**/.pytest_cache/
