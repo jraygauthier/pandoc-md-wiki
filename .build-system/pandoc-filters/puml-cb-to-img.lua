@@ -95,18 +95,74 @@ local function array_has_value(array, value)
     return false
 end
 
+local function array_concat(a, b)
+  o = {table.unpack(a)}
+  for _, v in pairs(b) do
+    table.insert(o, v)
+  end
+  return o
+end
+
+
+local function table_merge(a, b)
+  -- When a key has the same name in both tables
+  -- we will keep the b value.
+  o = {}
+  for k, v in pairs(a) do
+    o[k] = v
+  end
+  for k, v in pairs(b) do
+    o[k] = v
+  end
+  return o
+end
+
+local function attr_extend_classes(attr, xs)
+  attr.classes =
+    array_concat(attr.classes, xs)
+end
+
+local function attr_extend_attributes(attr, xs)
+  attr.attributes =
+    table_merge(attr.attributes, xs)
+end
+
+local function attr_set_width(attr, value)
+  attr.attributes.width = value
+end
+
+local function div_extend_content(div, xs)
+  div.content =
+    array_concat(div.content, xs)
+end
+
 function CodeBlock(block)
     if not (block.classes[1] == "puml" or block.classes[1] == "plantuml") then
       return nil -- Leave unchanged.
     end
+
+    local code_block = block
+
+    local content_div_attr = pandoc.Attr(
+      nil, {"pmw", "plantuml-content"})
+
+    local code_div_attr = pandoc.Attr(
+      nil, {"pmw", "plantuml-code"})
+
 
     code_block_attr = block.attributes["code_block"]
     assert(
       code_block_attr == nil or code_block_attr == "true",
       "Unsupported `code_block` value: `%s`!", output_type)
 
+    -- When only code block is requested we return early
+    -- so as to avoid calling planuml which might fail
+    -- as the code might be erroneous.
     if code_block_attr == "true" then
-      return nil -- Leave unchanged.
+      local content_div = pandoc.Div({}, content_div_attr)
+      local code_div = pandoc.Div(code_block, code_div_attr)
+      div_extend_content(content_div, {code_div})
+      return content_div
     end
 
 
@@ -129,10 +185,6 @@ function CodeBlock(block)
         or left_column_width ~= nil
 
     -- print(string.format("column_split: %s", column_split))
-
-    if left_column_width == nil then
-      left_column_width = "50%"
-    end
 
     local cmd_mode = false
     local show_code_block = false
@@ -171,9 +223,8 @@ function CodeBlock(block)
     img, fname = puml_to_img_cached(code_text, filetype)
     -- print(string.format("puml_to_img_cached: img: %s", not not img))
 
-    code_block = block
-    output_image = pandoc.Image({pandoc.Str("puml")}, fname)
-    output_para = pandoc.Para{ output_image }
+    local output_image = pandoc.Image({pandoc.Str("puml")}, fname)
+    local output_para = pandoc.Para{ output_image }
 
     -- print(string.format("fname: %s", fname))
     -- print(string.format("show_code_block: %s", show_code_block))
@@ -183,32 +234,36 @@ function CodeBlock(block)
       show_code_block or show_output,
       "Cannot show nothing!" )
 
-    if show_code_block and show_output then
-      top_div_attr = nil
-      left_div_attr = nil
-      right_div_attr = nil
-      if column_split then
-        top_div_attr = pandoc.Attr(
-          nil, {"columns"})
+    local output_div_attr = pandoc.Attr(
+      nil, {"pmw", "plantuml-output"})
 
-        left_div_attr = pandoc.Attr(
-          nil, {"column"}, {width = left_column_width})
+    if show_code_block and show_output and column_split then
+      attr_extend_classes(content_div_attr, {"columns"})
+      attr_extend_classes(code_div_attr, {"column"})
+      attr_extend_classes(output_div_attr, {"column"})
 
-        right_div_attr = pandoc.Attr(
-          nil, {"column"})
+      --print(string.format("left_column_width: %s", left_column_width))
+      if left_column_width ~= nil then
+        attr_set_width(code_div_attr, left_column_width)
       end
-      code_div = pandoc.Div(code_block, left_div_attr)
-      output_div = pandoc.Div(output_para, right_div_attr)
+    end
 
-      combined_block = pandoc.Div({code_div, output_div}, top_div_attr)
-      return combined_block
+    local content_div = pandoc.Div({}, content_div_attr)
+    local code_div = pandoc.Div(code_block, code_div_attr)
+    local output_div = pandoc.Div(output_para, output_div_attr)
+
+    if show_code_block and show_output then
+      div_extend_content(content_div, {code_div, output_div})
+      return content_div
     end
 
     if show_code_block then
-      return code_block
+      div_extend_content(content_div, {code_div})
+      return content_div
     end
 
     if show_output then
-      return pandoc.Para{ output_image }
+      div_extend_content(content_div, {output_div})
+      return content_div
     end
 end

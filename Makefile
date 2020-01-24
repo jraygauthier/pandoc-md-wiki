@@ -7,6 +7,10 @@ ifndef PANDOC_MD_WIKI_ROOT_DIR
   PANDOC_MD_WIKI_ROOT_DIR := $(PMW_MKF_DIR)
 endif
 
+ifndef PANDOC_MD_WIKI_CSS_DIR
+  PANDOC_MD_WIKI_CSS_DIR := $(PANDOC_MD_WIKI_ROOT_DIR)/.style/css
+endif
+
 ifndef PANDOC_MD_WIKI_OUT_PARENT_DIR
   PANDOC_MD_WIKI_OUT_PARENT_DIR := $(abspath $(dir $(PANDOC_MD_WIKI_ROOT_DIR)))
 endif
@@ -124,6 +128,7 @@ clean-html-png-from-src:
 
 debug-vars:
 	@echo "PANDOC_MD_WIKI_ROOT_DIR='$(PANDOC_MD_WIKI_ROOT_DIR)'"
+	@echo "PANDOC_MD_WIKI_CSS_DIR='$(PANDOC_MD_WIKI_CSS_DIR)'"
 	@echo "PANDOC_MD_WIKI_OUT_PARENT_DIR='$(PANDOC_MD_WIKI_OUT_PARENT_DIR)'"
 	@echo "PANDOC_MD_WIKI_OUT_BASENAME_PREFIX='$(PANDOC_MD_WIKI_OUT_BASENAME_PREFIX)'"
 	@echo "PANDOC_MD_WIKI_OUT_HTML_DIR='$(PANDOC_MD_WIKI_OUT_HTML_DIR)'"
@@ -160,6 +165,7 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 	--resource-path ".:./media" \
 	--metadata pagetitle="$<" \
 	--highlight-style pygments \
+	--css "$(PANDOC_MD_WIKI_CSS_DIR)/html.css" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-abs-to-rel.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-to-target-ext.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua" \
