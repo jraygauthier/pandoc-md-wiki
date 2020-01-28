@@ -1,693 +1,943 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd"
 [
-	<!ENTITY digitPart "[0-9](?:_?[0-9])*">
-	<!ENTITY beforeDigit "(?&lt;![\.\w[:^ascii:]])">
-	<!ENTITY beforePointFloat "(?&lt;![\w[:^ascii:]])">
+  <!ENTITY digitPart "[0-9](?:_?[0-9])*">
+  <!ENTITY beforeDigit "(?&lt;![\.\w[:^ascii:]])">
+  <!ENTITY beforePointFloat "(?&lt;![\w[:^ascii:]])">
 ]>
-<!-- Python syntax highlightning v0.9 by Per Wigren -->
-<!-- Python syntax highlighting v1.9 by Michael Bueker (improved keyword differentiation) -->
-<!-- Python syntax highlighting v1.97 by Paul Giannaros -->
-<!-- Python syntax highlighting v1.99 by Primoz Anzur -->
-<!-- Python syntax highlighting v2.01 by Paul Giannaros:
-	* full format character support
-	* unicode string modifier supported -->
-<!-- v2.02 remove RegExpr for nums and make indent consistent -->
-<!-- v2.03 highlight decorators, remove operator regex, don't highlight parens as operators -->
-<!-- v2.04 make alerts visible even if they are directly after ''' or # without a space -->
-<!-- v2.06 decorator names can (and often do) contain periods -->
-<!-- v2.07 add support for %prog and co, see bug 142832 -->
-<!-- v2.08 add missing overloaders, new Python 3 statements, builtins, and keywords -->
-<!-- v2.29 recognize escape sequenzes correctly -->
-<language name="plantuml" version="10" style="python" indenter="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript" mimetype="application/x-python;text/x-python;text/x-python3" casesensitive="1" author="Michael Bueker" license="">
-	<highlighting>
-		<list name="import">
-			<item>import</item>
-			<item>from</item>
-			<item>as</item>
-		</list>
-		<list name="defs">
-			<item>class</item>
-			<item>def</item>
-			<item>del</item>
-			<item>global</item>
-			<item>lambda</item>
-			<item>nonlocal</item>
-		</list>
-		<list name="operators">
-			<item>and</item>
-			<item>in</item>
-			<item>is</item>
-			<item>not</item>
-			<item>or</item>
-		</list>
-		<list name="flow">
-			<item>assert</item>
-			<item>break</item>
-			<item>continue</item>
-			<item>elif</item>
-			<item>else</item>
-			<item>except</item>
-			<item>finally</item>
-			<item>for</item>
-			<item>if</item>
-			<item>pass</item>
-			<item>raise</item>
-			<item>return</item>
-			<item>try</item>
-			<item>while</item>
-			<item>with</item>
-			<item>yield</item>
-			<item>async</item>
-			<item>await</item>
-		</list>
-		<list name="builtinfuncs">
-			<item>__import__</item>
-			<item>abs</item>
-			<item>all</item>
-			<item>any</item>
-			<item>apply</item>
-			<item>ascii</item>
-			<item>basestring</item>
-			<item>bin</item>
-			<item>breakpoint</item>
-			<item>bool</item>
-			<item>buffer</item>
-			<item>bytearray</item>
-			<item>bytes</item>
-			<item>callable</item>
-			<item>chr</item>
-			<item>classmethod</item>
-			<item>cmp</item>
-			<item>coerce</item>
-			<item>compile</item>
-			<item>complex</item>
-			<item>delattr</item>
-			<item>dict</item>
-			<item>dir</item>
-			<item>divmod</item>
-			<item>enumerate</item>
-			<item>eval</item>
-			<item>exec</item>
-			<item>execfile</item>
-			<item>file</item>
-			<item>filter</item>
-			<item>float</item>
-			<item>format</item>
-			<item>frozenset</item>
-			<item>getattr</item>
-			<item>globals</item>
-			<item>hasattr</item>
-			<item>hash</item>
-			<item>help</item>
-			<item>hex</item>
-			<item>id</item>
-			<item>input</item>
-			<item>int</item>
-			<item>intern</item>
-			<item>isinstance</item>
-			<item>issubclass</item>
-			<item>iter</item>
-			<item>len</item>
-			<item>list</item>
-			<item>locals</item>
-			<item>long</item>
-			<item>map</item>
-			<item>max</item>
-			<item>memoryview</item>
-			<item>min</item>
-			<item>next</item>
-			<item>object</item>
-			<item>oct</item>
-			<item>open</item>
-			<item>ord</item>
-			<item>pow</item>
-			<item>print</item>
-			<item>property</item>
-			<item>range</item>
-			<item>raw_input</item>
-			<item>reduce</item>
-			<item>reload</item>
-			<item>repr</item>
-			<item>reversed</item>
-			<item>round</item>
-			<item>set</item>
-			<item>setattr</item>
-			<item>slice</item>
-			<item>sorted</item>
-			<item>staticmethod</item>
-			<item>str</item>
-			<item>sum</item>
-			<item>super</item>
-			<item>tuple</item>
-			<item>type</item>
-			<item>unichr</item>
-			<item>unicode</item>
-			<item>vars</item>
-			<item>xrange</item>
-			<item>zip</item>
-		</list>
-		<list name="specialvars">
-			<item>None</item>
-			<item>self</item>
-			<item>True</item>
-			<item>False</item>
-			<item>NotImplemented</item>
-			<item>Ellipsis</item>
-			<item>__debug__</item>
-			<item>__file__</item>
-			<item>__name__</item>
-		</list>
-		<list name="bindings">
-			<item>SIGNAL</item>
-			<item>SLOT</item>
-			<item>connect</item>
-		</list>
-		<list name="overloaders">
-			<item>__new__</item>
-			<item>__init__</item>
-			<item>__del__</item>
-			<item>__repr__</item>
-			<item>__str__</item>
-			<item>__lt__</item>
-			<item>__le__</item>
-			<item>__eq__</item>
-			<item>__ne__</item>
-			<item>__gt__</item>
-			<item>__ge__</item>
-			<item>__cmp__</item>
-			<item>__rcmp__</item>
-			<item>__hash__</item>
-			<item>__nonzero__</item>
-			<item>__unicode__</item>
-			<item>__getattr__</item>
-			<item>__setattr__</item>
-			<item>__delattr__</item>
-			<item>__getattribute__</item>
-			<item>__get__</item>
-			<item>__set__</item>
-			<item>__delete__</item>
-			<item>__call__</item>
-			<item>__len__</item>
-			<item>__getitem__</item>
-			<item>__setitem__</item>
-			<item>__delitem__</item>
-			<item>__iter__</item>
-			<item>__reversed__</item>
-			<item>__contains__</item>
-			<item>__getslice__</item>
-			<item>__setslice__</item>
-			<item>__delslice__</item>
-			<item>__add__</item>
-			<item>__sub__</item>
-			<item>__mul__</item>
-			<item>__floordiv__</item>
-			<item>__mod__</item>
-			<item>__divmod__</item>
-			<item>__pow__</item>
-			<item>__lshift__</item>
-			<item>__rshift__</item>
-			<item>__and__</item>
-			<item>__xor__</item>
-			<item>__or__</item>
-			<item>__div__</item>
-			<item>__truediv__</item>
-			<item>__radd__</item>
-			<item>__rsub__</item>
-			<item>__rmul__</item>
-			<item>__rdiv__</item>
-			<item>__rtruediv__</item>
-			<item>__rfloordiv__</item>
-			<item>__rmod__</item>
-			<item>__rdivmod__</item>
-			<item>__rpow__</item>
-			<item>__rlshift__</item>
-			<item>__rrshift__</item>
-			<item>__rand__</item>
-			<item>__rxor__</item>
-			<item>__ror__</item>
-			<item>__iadd__</item>
-			<item>__isub__</item>
-			<item>__imul__</item>
-			<item>__idiv__</item>
-			<item>__itruediv__</item>
-			<item>__ifloordiv__</item>
-			<item>__imod__</item>
-			<item>__ipow__</item>
-			<item>__ilshift__</item>
-			<item>__irshift__</item>
-			<item>__iand__</item>
-			<item>__ixor__</item>
-			<item>__ior__</item>
-			<item>__neg__</item>
-			<item>__pos__</item>
-			<item>__abs__</item>
-			<item>__invert__</item>
-			<item>__complex__</item>
-			<item>__int__</item>
-			<item>__long__</item>
-			<item>__float__</item>
-			<item>__oct__</item>
-			<item>__hex__</item>
-			<item>__index__</item>
-			<item>__coerce__</item>
-			<item>__enter__</item>
-			<item>__exit__</item>
-			<item>__bytes__</item>
-			<item>__format__</item>
-			<item>__next__</item>
-			<item>__dir__</item>
-			<item>__await__</item>
-			<item>__aiter__</item>
-			<item>__anext__</item>
-			<item>__aenter__</item>
-			<item>__aexit__</item>
-		</list>
-		<list name="exceptions">
-			<!--
-				Exceptions list resources used:
-				- http://docs.python.org/2.7/library/exceptions.html#exception-hierarchy
-				- http://docs.python.org/3.4/library/exceptions.html#exception-hierarchy
-			-->
-			<item>ArithmeticError</item>
-			<item>AssertionError</item>
-			<item>AttributeError</item>
-			<item>BaseException</item>
-			<item>BlockingIOError</item>
-			<item>BrokenPipeError</item>
-			<item>BufferError</item>
-			<item>BytesWarning</item>
-			<item>ChildProcessError</item>
-			<item>ConnectionAbortedError</item>
-			<item>ConnectionError</item>
-			<item>ConnectionRefusedError</item>
-			<item>ConnectionResetError</item>
-			<item>DeprecationWarning</item>
-			<item>EnvironmentError</item>
-			<item>EOFError</item>
-			<item>Exception</item>
-			<item>FileExistsError</item>
-			<item>FileNotFoundError</item>
-			<item>FloatingPointError</item>
-			<item>FutureWarning</item>
-			<item>GeneratorExit</item>
-			<item>ImportError</item>
-			<item>ImportWarning</item>
-			<item>IndentationError</item>
-			<item>IndexError</item>
-			<item>InterruptedError</item>
-			<item>IOError</item>
-			<item>IsADirectoryError</item>
-			<item>KeyboardInterrupt</item>
-			<item>KeyError</item>
-			<item>LookupError</item>
-			<item>MemoryError</item>
-			<item>NameError</item>
-			<item>NotADirectoryError</item>
-			<item>NotImplementedError</item>
-			<item>OSError</item>
-			<item>OverflowError</item>
-			<item>PendingDeprecationWarning</item>
-			<item>PermissionError</item>
-			<item>ProcessLookupError</item>
-			<item>ReferenceError</item>
-			<item>ResourceWarning</item>
-			<item>RuntimeError</item>
-			<item>RuntimeWarning</item>
-			<item>StandardError</item>
-			<item>StopIteration</item>
-			<item>SyntaxError</item>
-			<item>SyntaxWarning</item>
-			<item>SystemError</item>
-			<item>SystemExit</item>
-			<item>TabError</item>
-			<item>TimeoutError</item>
-			<item>TypeError</item>
-			<item>UnboundLocalError</item>
-			<item>UnicodeDecodeError</item>
-			<item>UnicodeEncodeError</item>
-			<item>UnicodeError</item>
-			<item>UnicodeTranslateError</item>
-			<item>UnicodeWarning</item>
-			<item>UserWarning</item>
-			<item>ValueError</item>
-			<item>Warning</item>
-			<item>WindowsError</item>
-			<item>ZeroDivisionError</item>
-		</list>
-		<contexts>
-			<context name="Normal" attribute="Normal Text" lineEndContext="#stay">
-				<keyword attribute="Import" String="import" context="#stay"/>
-				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
-				<keyword attribute="Operator Keyword" String="operators" context="#stay"/>
-				<keyword attribute="Flow Control Keyword" String="flow" context="#stay"/>
-				<keyword attribute="Builtin Function" String="builtinfuncs" context="#stay"/>
-				<keyword attribute="Special Variable" String="specialvars" context="#stay"/>
-				<keyword attribute="Extensions" String="bindings" context="#stay"/>
-				<keyword attribute="Exceptions" String="exceptions" context="#stay"/>
-				<keyword attribute="Overloaders" String="overloaders" context="#stay"/>
-				<RegExpr attribute="Normal Text" String="[a-zA-Z_][a-zA-Z_0-9]{2,}" context="#stay"/>
+<language name="plantuml" version="10" kateversion="5.0" section="Scripts" extensions="*.puml;*.iuml;*.plantuml" casesensitive="1" author="Raymond Gauthier" license="MIT">
+  <highlighting>
+    <list name="type">
+      <item>abstract</item>
+      <item>actor</item>
+      <item>agent</item>
+      <item>archimate</item>
+      <item>artifact</item>
+      <item>boundary</item>
+      <item>card</item>
+      <item>class</item>
+      <item>cloud</item>
+      <item>component</item>
+      <item>control</item>
+      <item>database</item>
+      <item>diamond</item>
+      <item>entity</item>
+      <item>enum</item>
+      <item>file</item>
+      <item>folder</item>
+      <item>frame</item>
+      <item>interface</item>
+      <item>node</item>
+      <item>object</item>
+      <item>package</item>
+      <item>participant</item>
+      <item>queue</item>
+      <item>rectangle</item>
+      <item>stack</item>
+      <item>state</item>
+      <item>storage</item>
+      <item>usecase</item>
+    </list>
+    <list name="type2">
+      <item>concise</item>
+    </list>
+    <list name="keyword">
+      <item>@enddot</item>
+      <item>@endsalt</item>
+      <item>@enduml</item>
+      <item>@startdot</item>
+      <item>@startsalt</item>
+      <item>@startuml</item>
+      <item>accross</item>
+      <item>activate</item>
+      <item>allow_mixing</item>
+      <item>allowmixing</item>
+      <item>also</item>
+      <item>as</item>
+      <item>autonumber</item>
+      <item>bottom</item>
+      <item>box</item>
+      <item>caption</item>
+      <item>center</item>
+      <item>create</item>
+      <item>deactivate</item>
+      <item>destroy</item>
+      <item>down</item>
+      <item>footbox</item>
+      <item>footer</item>
+      <item>header</item>
+      <item>hide</item>
+      <item>hnote</item>
+      <item>is</item>
+      <item>kill</item>
+      <item>left</item>
+      <item>legend</item>
+      <item>link</item>
+      <item>mainframe</item>
+      <item>namespace</item>
+      <item>newpage</item>
+      <item>note</item>
+      <item>of</item>
+      <item>on</item>
+      <item>order</item>
+      <item>over</item>
+      <item>package</item>
+      <item>page</item>
+      <item>partition</item>
+      <item>ref</item>
+      <item>right</item>
+      <item>rnote</item>
+      <item>rotate</item>
+      <item>show</item>
+      <item>skin</item>
+      <item>skinparam</item>
+      <item>title</item>
+      <item>top</item>
+      <item>top to bottom direction</item>
+      <item>up</item>
+    </list>
+    <list name="keyword2">
+      <item>annotation</item>
+      <item>scale</item>
+    </list>
+    <list name="flow">
+      <item>again</item>
+      <item>alt</item>
+      <item>break</item>
+      <item>critical</item>
+      <item>else</item>
+      <item>elseif</item>
+      <item>end</item>
+      <item>endif</item>
+      <item>endwhile</item>
+      <item>fork</item>
+      <item>group</item>
+      <item>if</item>
+      <item>loop</item>
+      <item>opt</item>
+      <item>par</item>
+      <item>repeat</item>
+      <item>return</item>
+      <item>start</item>
+      <item>stop</item>
+      <item>while</item>
+    </list>
+    <list name="flow2">
+      <item>detach</item>
+      <item>split</item>
+      <item>then</item>
+    </list>
+    <list name="preprocessor">
+      <item>!define</item>
+      <item>!definelong</item>
+      <item>!else</item>
+      <item>!enddefinelong</item>
+      <item>!endif</item>
+      <item>!exit</item>
+      <item>!if</item>
+      <item>!ifdef</item>
+      <item>!ifndef</item>
+      <item>!include</item>
+      <item>!pragma</item>
+      <item>!undef</item>
+    </list>
+    <list name="skinparameter">
+      <item>ActivityBackgroundColor</item>
+      <item>ActivityBarColor</item>
+      <item>ActivityBorderColor</item>
+      <item>ActivityBorderThickness</item>
+      <item>ActivityDiamondBackgroundColor</item>
+      <item>ActivityDiamondBorderColor</item>
+      <item>ActivityDiamondFontColor</item>
+      <item>ActivityDiamondFontName</item>
+      <item>ActivityDiamondFontSize</item>
+      <item>ActivityDiamondFontStyle</item>
+      <item>ActivityEndColor</item>
+      <item>ActivityFontColor</item>
+      <item>ActivityFontName</item>
+      <item>ActivityFontSize</item>
+      <item>ActivityFontStyle</item>
+      <item>ActivityStartColor</item>
+      <item>ActorBackgroundColor</item>
+      <item>ActorBorderColor</item>
+      <item>ActorFontColor</item>
+      <item>ActorFontName</item>
+      <item>ActorFontSize</item>
+      <item>ActorFontStyle</item>
+      <item>ActorStereotypeFontColor</item>
+      <item>ActorStereotypeFontName</item>
+      <item>ActorStereotypeFontSize</item>
+      <item>ActorStereotypeFontStyle</item>
+      <item>AgentBackgroundColor</item>
+      <item>AgentBorderColor</item>
+      <item>AgentBorderThickness</item>
+      <item>AgentFontColor</item>
+      <item>AgentFontName</item>
+      <item>AgentFontSize</item>
+      <item>AgentFontStyle</item>
+      <item>AgentStereotypeFontColor</item>
+      <item>AgentStereotypeFontName</item>
+      <item>AgentStereotypeFontSize</item>
+      <item>AgentStereotypeFontStyle</item>
+      <item>ArchimateBackgroundColor</item>
+      <item>ArchimateBorderColor</item>
+      <item>ArchimateBorderThickness</item>
+      <item>ArchimateFontColor</item>
+      <item>ArchimateFontName</item>
+      <item>ArchimateFontSize</item>
+      <item>ArchimateFontStyle</item>
+      <item>ArchimateStereotypeFontColor</item>
+      <item>ArchimateStereotypeFontName</item>
+      <item>ArchimateStereotypeFontSize</item>
+      <item>ArchimateStereotypeFontStyle</item>
+      <item>ArrowColor</item>
+      <item>ArrowFontColor</item>
+      <item>ArrowFontName</item>
+      <item>ArrowFontSize</item>
+      <item>ArrowFontStyle</item>
+      <item>ArrowLollipopColor</item>
+      <item>ArrowMessageAlignment</item>
+      <item>ArrowThickness</item>
+      <item>ArtifactBackgroundColor</item>
+      <item>ArtifactBorderColor</item>
+      <item>ArtifactFontColor</item>
+      <item>ArtifactFontName</item>
+      <item>ArtifactFontSize</item>
+      <item>ArtifactFontStyle</item>
+      <item>ArtifactStereotypeFontColor</item>
+      <item>ArtifactStereotypeFontName</item>
+      <item>ArtifactStereotypeFontSize</item>
+      <item>ArtifactStereotypeFontStyle</item>
+      <item>BackgroundColor</item>
+      <item>BiddableBackgroundColor</item>
+      <item>BiddableBorderColor</item>
+      <item>BoundaryBackgroundColor</item>
+      <item>BoundaryBorderColor</item>
+      <item>BoundaryFontColor</item>
+      <item>BoundaryFontName</item>
+      <item>BoundaryFontSize</item>
+      <item>BoundaryFontStyle</item>
+      <item>BoundaryStereotypeFontColor</item>
+      <item>BoundaryStereotypeFontName</item>
+      <item>BoundaryStereotypeFontSize</item>
+      <item>BoundaryStereotypeFontStyle</item>
+      <item>BoxPadding</item>
+      <item>CaptionFontColor</item>
+      <item>CaptionFontName</item>
+      <item>CaptionFontSize</item>
+      <item>CaptionFontStyle</item>
+      <item>CardBackgroundColor</item>
+      <item>CardBorderColor</item>
+      <item>CardBorderThickness</item>
+      <item>CardFontColor</item>
+      <item>CardFontName</item>
+      <item>CardFontSize</item>
+      <item>CardFontStyle</item>
+      <item>CardStereotypeFontColor</item>
+      <item>CardStereotypeFontName</item>
+      <item>CardStereotypeFontSize</item>
+      <item>CardStereotypeFontStyle</item>
+      <item>CircledCharacterFontColor</item>
+      <item>CircledCharacterFontName</item>
+      <item>CircledCharacterFontSize</item>
+      <item>CircledCharacterFontStyle</item>
+      <item>CircledCharacterRadius</item>
+      <item>ClassAttributeFontColor</item>
+      <item>ClassAttributeFontName</item>
+      <item>ClassAttributeFontSize</item>
+      <item>ClassAttributeFontStyle</item>
+      <item>ClassAttributeIconSize</item>
+      <item>ClassBackgroundColor</item>
+      <item>ClassBorderColor</item>
+      <item>ClassBorderThickness</item>
+      <item>ClassFontColor</item>
+      <item>ClassFontName</item>
+      <item>ClassFontSize</item>
+      <item>ClassFontStyle</item>
+      <item>ClassHeaderBackgroundColor</item>
+      <item>ClassStereotypeFontColor</item>
+      <item>ClassStereotypeFontName</item>
+      <item>ClassStereotypeFontSize</item>
+      <item>ClassStereotypeFontStyle</item>
+      <item>CloudBackgroundColor</item>
+      <item>CloudBorderColor</item>
+      <item>CloudFontColor</item>
+      <item>CloudFontName</item>
+      <item>CloudFontSize</item>
+      <item>CloudFontStyle</item>
+      <item>CloudStereotypeFontColor</item>
+      <item>CloudStereotypeFontName</item>
+      <item>CloudStereotypeFontSize</item>
+      <item>CloudStereotypeFontStyle</item>
+      <item>CollectionsBackgroundColor</item>
+      <item>CollectionsBorderColor</item>
+      <item>ColorArrowSeparationSpace</item>
+      <item>ComponentBackgroundColor</item>
+      <item>ComponentBorderColor</item>
+      <item>ComponentBorderThickness</item>
+      <item>ComponentFontColor</item>
+      <item>ComponentFontName</item>
+      <item>ComponentFontSize</item>
+      <item>ComponentFontStyle</item>
+      <item>ComponentStereotypeFontColor</item>
+      <item>ComponentStereotypeFontName</item>
+      <item>ComponentStereotypeFontSize</item>
+      <item>ComponentStereotypeFontStyle</item>
+      <item>ComponentStyle</item>
+      <item>ConditionEndStyle</item>
+      <item>ConditionStyle</item>
+      <item>ControlBackgroundColor</item>
+      <item>ControlBorderColor</item>
+      <item>ControlFontColor</item>
+      <item>ControlFontName</item>
+      <item>ControlFontSize</item>
+      <item>ControlFontStyle</item>
+      <item>ControlStereotypeFontColor</item>
+      <item>ControlStereotypeFontName</item>
+      <item>ControlStereotypeFontSize</item>
+      <item>ControlStereotypeFontStyle</item>
+      <item>DatabaseBackgroundColor</item>
+      <item>DatabaseBorderColor</item>
+      <item>DatabaseFontColor</item>
+      <item>DatabaseFontName</item>
+      <item>DatabaseFontSize</item>
+      <item>DatabaseFontStyle</item>
+      <item>DatabaseStereotypeFontColor</item>
+      <item>DatabaseStereotypeFontName</item>
+      <item>DatabaseStereotypeFontSize</item>
+      <item>DatabaseStereotypeFontStyle</item>
+      <item>DefaultFontColor</item>
+      <item>DefaultFontName</item>
+      <item>DefaultFontSize</item>
+      <item>DefaultFontStyle</item>
+      <item>DefaultMonospacedFontName</item>
+      <item>DefaultTextAlignment</item>
+      <item>DesignedBackgroundColor</item>
+      <item>DesignedBorderColor</item>
+      <item>DesignedDomainBorderThickness</item>
+      <item>DesignedDomainFontColor</item>
+      <item>DesignedDomainFontName</item>
+      <item>DesignedDomainFontSize</item>
+      <item>DesignedDomainFontStyle</item>
+      <item>DesignedDomainStereotypeFontColor</item>
+      <item>DesignedDomainStereotypeFontName</item>
+      <item>DesignedDomainStereotypeFontSize</item>
+      <item>DesignedDomainStereotypeFontStyle</item>
+      <item>DiagramBorderColor</item>
+      <item>DiagramBorderThickness</item>
+      <item>DomainBackgroundColor</item>
+      <item>DomainBorderColor</item>
+      <item>DomainBorderThickness</item>
+      <item>DomainFontColor</item>
+      <item>DomainFontName</item>
+      <item>DomainFontSize</item>
+      <item>DomainFontStyle</item>
+      <item>DomainStereotypeFontColor</item>
+      <item>DomainStereotypeFontName</item>
+      <item>DomainStereotypeFontSize</item>
+      <item>DomainStereotypeFontStyle</item>
+      <item>Dpi</item>
+      <item>EntityBackgroundColor</item>
+      <item>EntityBorderColor</item>
+      <item>EntityFontColor</item>
+      <item>EntityFontName</item>
+      <item>EntityFontSize</item>
+      <item>EntityFontStyle</item>
+      <item>EntityStereotypeFontColor</item>
+      <item>EntityStereotypeFontName</item>
+      <item>EntityStereotypeFontSize</item>
+      <item>EntityStereotypeFontStyle</item>
+      <item>EnumBackgroundColor</item>
+      <item>FileBackgroundColor</item>
+      <item>FileBorderColor</item>
+      <item>FileFontColor</item>
+      <item>FileFontName</item>
+      <item>FileFontSize</item>
+      <item>FileFontStyle</item>
+      <item>FileStereotypeFontColor</item>
+      <item>FileStereotypeFontName</item>
+      <item>FileStereotypeFontSize</item>
+      <item>FileStereotypeFontStyle</item>
+      <item>FixCircleLabelOverlapping</item>
+      <item>FolderBackgroundColor</item>
+      <item>FolderBorderColor</item>
+      <item>FolderFontColor</item>
+      <item>FolderFontName</item>
+      <item>FolderFontSize</item>
+      <item>FolderFontStyle</item>
+      <item>FolderStereotypeFontColor</item>
+      <item>FolderStereotypeFontName</item>
+      <item>FolderStereotypeFontSize</item>
+      <item>FolderStereotypeFontStyle</item>
+      <item>FooterFontColor</item>
+      <item>FooterFontName</item>
+      <item>FooterFontSize</item>
+      <item>FooterFontStyle</item>
+      <item>FrameBackgroundColor</item>
+      <item>FrameBorderColor</item>
+      <item>FrameFontColor</item>
+      <item>FrameFontName</item>
+      <item>FrameFontSize</item>
+      <item>FrameFontStyle</item>
+      <item>FrameStereotypeFontColor</item>
+      <item>FrameStereotypeFontName</item>
+      <item>FrameStereotypeFontSize</item>
+      <item>FrameStereotypeFontStyle</item>
+      <item>GenericDisplay</item>
+      <item>Guillemet</item>
+      <item>Handwritten</item>
+      <item>HeaderFontColor</item>
+      <item>HeaderFontName</item>
+      <item>HeaderFontSize</item>
+      <item>HeaderFontStyle</item>
+      <item>HyperlinkColor</item>
+      <item>HyperlinkUnderline</item>
+      <item>IconIEMandatoryColor</item>
+      <item>IconPackageBackgroundColor</item>
+      <item>IconPackageColor</item>
+      <item>IconPrivateBackgroundColor</item>
+      <item>IconPrivateColor</item>
+      <item>IconProtectedBackgroundColor</item>
+      <item>IconProtectedColor</item>
+      <item>IconPublicBackgroundColor</item>
+      <item>IconPublicColor</item>
+      <item>InterfaceBackgroundColor</item>
+      <item>InterfaceBorderColor</item>
+      <item>InterfaceFontColor</item>
+      <item>InterfaceFontName</item>
+      <item>InterfaceFontSize</item>
+      <item>InterfaceFontStyle</item>
+      <item>InterfaceStereotypeFontColor</item>
+      <item>InterfaceStereotypeFontName</item>
+      <item>InterfaceStereotypeFontSize</item>
+      <item>InterfaceStereotypeFontStyle</item>
+      <item>LegendBackgroundColor</item>
+      <item>LegendBorderColor</item>
+      <item>LegendBorderThickness</item>
+      <item>LegendFontColor</item>
+      <item>LegendFontName</item>
+      <item>LegendFontSize</item>
+      <item>LegendFontStyle</item>
+      <item>LexicalBackgroundColor</item>
+      <item>LexicalBorderColor</item>
+      <item>LifelineStrategy</item>
+      <item>Linetype</item>
+      <item>MachineBackgroundColor</item>
+      <item>MachineBorderColor</item>
+      <item>MachineBorderThickness</item>
+      <item>MachineFontColor</item>
+      <item>MachineFontName</item>
+      <item>MachineFontSize</item>
+      <item>MachineFontStyle</item>
+      <item>MachineStereotypeFontColor</item>
+      <item>MachineStereotypeFontName</item>
+      <item>MachineStereotypeFontSize</item>
+      <item>MachineStereotypeFontStyle</item>
+      <item>MaxAsciiMessageLength</item>
+      <item>MaxMessageSize</item>
+      <item>MinClassWidth</item>
+      <item>Monochrome</item>
+      <item>NodeBackgroundColor</item>
+      <item>NodeBorderColor</item>
+      <item>NodeFontColor</item>
+      <item>NodeFontName</item>
+      <item>NodeFontSize</item>
+      <item>NodeFontStyle</item>
+      <item>NodeStereotypeFontColor</item>
+      <item>NodeStereotypeFontName</item>
+      <item>NodeStereotypeFontSize</item>
+      <item>NodeStereotypeFontStyle</item>
+      <item>Nodesep</item>
+      <item>NoteBackgroundColor</item>
+      <item>NoteBorderColor</item>
+      <item>NoteBorderThickness</item>
+      <item>NoteFontColor</item>
+      <item>NoteFontName</item>
+      <item>NoteFontSize</item>
+      <item>NoteFontStyle</item>
+      <item>NoteShadowing</item>
+      <item>NoteTextAlignment</item>
+      <item>ObjectAttributeFontColor</item>
+      <item>ObjectAttributeFontName</item>
+      <item>ObjectAttributeFontSize</item>
+      <item>ObjectAttributeFontStyle</item>
+      <item>ObjectBackgroundColor</item>
+      <item>ObjectBorderColor</item>
+      <item>ObjectBorderThickness</item>
+      <item>ObjectFontColor</item>
+      <item>ObjectFontName</item>
+      <item>ObjectFontSize</item>
+      <item>ObjectFontStyle</item>
+      <item>ObjectStereotypeFontColor</item>
+      <item>ObjectStereotypeFontName</item>
+      <item>ObjectStereotypeFontSize</item>
+      <item>ObjectStereotypeFontStyle</item>
+      <item>PackageBackgroundColor</item>
+      <item>PackageBorderColor</item>
+      <item>PackageBorderThickness</item>
+      <item>PackageFontColor</item>
+      <item>PackageFontName</item>
+      <item>PackageFontSize</item>
+      <item>PackageFontStyle</item>
+      <item>PackageStereotypeFontColor</item>
+      <item>PackageStereotypeFontName</item>
+      <item>PackageStereotypeFontSize</item>
+      <item>PackageStereotypeFontStyle</item>
+      <item>PackageStyle</item>
+      <item>PackageTitleAlignment</item>
+      <item>Padding</item>
+      <item>PageBorderColor</item>
+      <item>PageExternalColor</item>
+      <item>PageMargin</item>
+      <item>ParticipantBackgroundColor</item>
+      <item>ParticipantBorderColor</item>
+      <item>ParticipantFontColor</item>
+      <item>ParticipantFontName</item>
+      <item>ParticipantFontSize</item>
+      <item>ParticipantFontStyle</item>
+      <item>ParticipantPadding</item>
+      <item>ParticipantStereotypeFontColor</item>
+      <item>ParticipantStereotypeFontName</item>
+      <item>ParticipantStereotypeFontSize</item>
+      <item>ParticipantStereotypeFontStyle</item>
+      <item>PartitionBackgroundColor</item>
+      <item>PartitionBorderColor</item>
+      <item>PartitionBorderThickness</item>
+      <item>PartitionFontColor</item>
+      <item>PartitionFontName</item>
+      <item>PartitionFontSize</item>
+      <item>PartitionFontStyle</item>
+      <item>PathHoverColor</item>
+      <item>QueueBackgroundColor</item>
+      <item>QueueBorderColor</item>
+      <item>QueueFontColor</item>
+      <item>QueueFontName</item>
+      <item>QueueFontSize</item>
+      <item>QueueFontStyle</item>
+      <item>QueueStereotypeFontColor</item>
+      <item>QueueStereotypeFontName</item>
+      <item>QueueStereotypeFontSize</item>
+      <item>QueueStereotypeFontStyle</item>
+      <item>Ranksep</item>
+      <item>RectangleBackgroundColor</item>
+      <item>RectangleBorderColor</item>
+      <item>RectangleBorderThickness</item>
+      <item>RectangleFontColor</item>
+      <item>RectangleFontName</item>
+      <item>RectangleFontSize</item>
+      <item>RectangleFontStyle</item>
+      <item>RectangleStereotypeFontColor</item>
+      <item>RectangleStereotypeFontName</item>
+      <item>RectangleStereotypeFontSize</item>
+      <item>RectangleStereotypeFontStyle</item>
+      <item>RequirementBackgroundColor</item>
+      <item>RequirementBorderColor</item>
+      <item>RequirementBorderThickness</item>
+      <item>RequirementFontColor</item>
+      <item>RequirementFontName</item>
+      <item>RequirementFontSize</item>
+      <item>RequirementFontStyle</item>
+      <item>RequirementStereotypeFontColor</item>
+      <item>RequirementStereotypeFontName</item>
+      <item>RequirementStereotypeFontSize</item>
+      <item>RequirementStereotypeFontStyle</item>
+      <item>ResponseMessageBelowArrow</item>
+      <item>RoundCorner</item>
+      <item>SameClassWidth</item>
+      <item>SequenceActorBorderThickness</item>
+      <item>SequenceArrowThickness</item>
+      <item>SequenceBoxBackgroundColor</item>
+      <item>SequenceBoxBorderColor</item>
+      <item>SequenceBoxFontColor</item>
+      <item>SequenceBoxFontName</item>
+      <item>SequenceBoxFontSize</item>
+      <item>SequenceBoxFontStyle</item>
+      <item>SequenceDelayFontColor</item>
+      <item>SequenceDelayFontName</item>
+      <item>SequenceDelayFontSize</item>
+      <item>SequenceDelayFontStyle</item>
+      <item>SequenceDividerBackgroundColor</item>
+      <item>SequenceDividerBorderColor</item>
+      <item>SequenceDividerBorderThickness</item>
+      <item>SequenceDividerFontColor</item>
+      <item>SequenceDividerFontName</item>
+      <item>SequenceDividerFontSize</item>
+      <item>SequenceDividerFontStyle</item>
+      <item>SequenceGroupBackgroundColor</item>
+      <item>SequenceGroupBodyBackgroundColor</item>
+      <item>SequenceGroupBorderColor</item>
+      <item>SequenceGroupBorderThickness</item>
+      <item>SequenceGroupFontColor</item>
+      <item>SequenceGroupFontName</item>
+      <item>SequenceGroupFontSize</item>
+      <item>SequenceGroupFontStyle</item>
+      <item>SequenceGroupHeaderFontColor</item>
+      <item>SequenceGroupHeaderFontName</item>
+      <item>SequenceGroupHeaderFontSize</item>
+      <item>SequenceGroupHeaderFontStyle</item>
+      <item>SequenceLifeLineBackgroundColor</item>
+      <item>SequenceLifeLineBorderColor</item>
+      <item>SequenceLifeLineBorderThickness</item>
+      <item>SequenceMessageAlignment</item>
+      <item>SequenceMessageTextAlignment</item>
+      <item>SequenceNewpageSeparatorColor</item>
+      <item>SequenceParticipant</item>
+      <item>SequenceParticipantBorderThickness</item>
+      <item>SequenceReferenceAlignment</item>
+      <item>SequenceReferenceBackgroundColor</item>
+      <item>SequenceReferenceBorderColor</item>
+      <item>SequenceReferenceBorderThickness</item>
+      <item>SequenceReferenceFontColor</item>
+      <item>SequenceReferenceFontName</item>
+      <item>SequenceReferenceFontSize</item>
+      <item>SequenceReferenceFontStyle</item>
+      <item>SequenceReferenceHeaderBackgroundColor</item>
+      <item>SequenceStereotypeFontColor</item>
+      <item>SequenceStereotypeFontName</item>
+      <item>SequenceStereotypeFontSize</item>
+      <item>SequenceStereotypeFontStyle</item>
+      <item>SequenceTitleFontColor</item>
+      <item>SequenceTitleFontName</item>
+      <item>SequenceTitleFontSize</item>
+      <item>SequenceTitleFontStyle</item>
+      <item>Shadowing</item>
+      <item>StackBackgroundColor</item>
+      <item>StackBorderColor</item>
+      <item>StackFontColor</item>
+      <item>StackFontName</item>
+      <item>StackFontSize</item>
+      <item>StackFontStyle</item>
+      <item>StackStereotypeFontColor</item>
+      <item>StackStereotypeFontName</item>
+      <item>StackStereotypeFontSize</item>
+      <item>StackStereotypeFontStyle</item>
+      <item>StateAttributeFontColor</item>
+      <item>StateAttributeFontName</item>
+      <item>StateAttributeFontSize</item>
+      <item>StateAttributeFontStyle</item>
+      <item>StateBackgroundColor</item>
+      <item>StateBorderColor</item>
+      <item>StateEndColor</item>
+      <item>StateFontColor</item>
+      <item>StateFontName</item>
+      <item>StateFontSize</item>
+      <item>StateFontStyle</item>
+      <item>StateMessageAlignment</item>
+      <item>StateStartColor</item>
+      <item>StereotypeABackgroundColor</item>
+      <item>StereotypeABorderColor</item>
+      <item>StereotypeCBackgroundColor</item>
+      <item>StereotypeCBorderColor</item>
+      <item>StereotypeEBackgroundColor</item>
+      <item>StereotypeEBorderColor</item>
+      <item>StereotypeIBackgroundColor</item>
+      <item>StereotypeIBorderColor</item>
+      <item>StereotypeNBackgroundColor</item>
+      <item>StereotypeNBorderColor</item>
+      <item>StereotypePosition</item>
+      <item>StorageBackgroundColor</item>
+      <item>StorageBorderColor</item>
+      <item>StorageFontColor</item>
+      <item>StorageFontName</item>
+      <item>StorageFontSize</item>
+      <item>StorageFontStyle</item>
+      <item>StorageStereotypeFontColor</item>
+      <item>StorageStereotypeFontName</item>
+      <item>StorageStereotypeFontSize</item>
+      <item>StorageStereotypeFontStyle</item>
+      <item>Style</item>
+      <item>SvglinkTarget</item>
+      <item>SwimlaneBorderColor</item>
+      <item>SwimlaneBorderThickness</item>
+      <item>SwimlaneTitleBackgroundColor</item>
+      <item>SwimlaneTitleFontColor</item>
+      <item>SwimlaneTitleFontName</item>
+      <item>SwimlaneTitleFontSize</item>
+      <item>SwimlaneTitleFontStyle</item>
+      <item>SwimlaneWidth</item>
+      <item>SwimlaneWrapTitleWidth</item>
+      <item>TabSize</item>
+      <item>TimingFontColor</item>
+      <item>TimingFontName</item>
+      <item>TimingFontSize</item>
+      <item>TimingFontStyle</item>
+      <item>TitleBackgroundColor</item>
+      <item>TitleBorderColor</item>
+      <item>TitleBorderRoundCorner</item>
+      <item>TitleBorderThickness</item>
+      <item>TitleFontColor</item>
+      <item>TitleFontName</item>
+      <item>TitleFontSize</item>
+      <item>TitleFontStyle</item>
+      <item>UsecaseBackgroundColor</item>
+      <item>UsecaseBorderColor</item>
+      <item>UsecaseBorderThickness</item>
+      <item>UsecaseFontColor</item>
+      <item>UsecaseFontName</item>
+      <item>UsecaseFontSize</item>
+      <item>UsecaseFontStyle</item>
+      <item>UsecaseStereotypeFontColor</item>
+      <item>UsecaseStereotypeFontName</item>
+      <item>UsecaseStereotypeFontSize</item>
+      <item>UsecaseStereotypeFontStyle</item>
+      <item>WrapWidth</item>
+    </list>
+    <list name="color">
+      <item>APPLICATION</item>
+      <item>AliceBlue</item>
+      <item>AntiqueWhite</item>
+      <item>Aqua</item>
+      <item>Aquamarine</item>
+      <item>Azure</item>
+      <item>BUSINESS</item>
+      <item>Beige</item>
+      <item>Bisque</item>
+      <item>Black</item>
+      <item>BlanchedAlmond</item>
+      <item>Blue</item>
+      <item>BlueViolet</item>
+      <item>Brown</item>
+      <item>BurlyWood</item>
+      <item>CadetBlue</item>
+      <item>Chartreuse</item>
+      <item>Chocolate</item>
+      <item>Coral</item>
+      <item>CornflowerBlue</item>
+      <item>Cornsilk</item>
+      <item>Crimson</item>
+      <item>Cyan</item>
+      <item>DarkBlue</item>
+      <item>DarkCyan</item>
+      <item>DarkGoldenRod</item>
+      <item>DarkGray</item>
+      <item>DarkGreen</item>
+      <item>DarkGrey</item>
+      <item>DarkKhaki</item>
+      <item>DarkMagenta</item>
+      <item>DarkOliveGreen</item>
+      <item>DarkOrchid</item>
+      <item>DarkRed</item>
+      <item>DarkSalmon</item>
+      <item>DarkSeaGreen</item>
+      <item>DarkSlateBlue</item>
+      <item>DarkSlateGray</item>
+      <item>DarkSlateGrey</item>
+      <item>DarkTurquoise</item>
+      <item>DarkViolet</item>
+      <item>Darkorange</item>
+      <item>DeepPink</item>
+      <item>DeepSkyBlue</item>
+      <item>DimGray</item>
+      <item>DimGrey</item>
+      <item>DodgerBlue</item>
+      <item>FireBrick</item>
+      <item>FloralWhite</item>
+      <item>ForestGreen</item>
+      <item>Fuchsia</item>
+      <item>Gainsboro</item>
+      <item>GhostWhite</item>
+      <item>Gold</item>
+      <item>GoldenRod</item>
+      <item>Gray</item>
+      <item>Green</item>
+      <item>GreenYellow</item>
+      <item>Grey</item>
+      <item>HoneyDew</item>
+      <item>HotPink</item>
+      <item>IMPLEMENTATION</item>
+      <item>IndianRed</item>
+      <item>Indigo</item>
+      <item>Ivory</item>
+      <item>Khaki</item>
+      <item>Lavender</item>
+      <item>LavenderBlush</item>
+      <item>LawnGreen</item>
+      <item>LemonChiffon</item>
+      <item>LightBlue</item>
+      <item>LightCoral</item>
+      <item>LightCyan</item>
+      <item>LightGoldenRodYellow</item>
+      <item>LightGray</item>
+      <item>LightGreen</item>
+      <item>LightGrey</item>
+      <item>LightPink</item>
+      <item>LightSalmon</item>
+      <item>LightSeaGreen</item>
+      <item>LightSkyBlue</item>
+      <item>LightSlateGray</item>
+      <item>LightSlateGrey</item>
+      <item>LightSteelBlue</item>
+      <item>LightYellow</item>
+      <item>Lime</item>
+      <item>LimeGreen</item>
+      <item>Linen</item>
+      <item>MOTIVATION</item>
+      <item>Magenta</item>
+      <item>Maroon</item>
+      <item>MediumAquaMarine</item>
+      <item>MediumBlue</item>
+      <item>MediumOrchid</item>
+      <item>MediumPurple</item>
+      <item>MediumSeaGreen</item>
+      <item>MediumSlateBlue</item>
+      <item>MediumSpringGreen</item>
+      <item>MediumTurquoise</item>
+      <item>MediumVioletRed</item>
+      <item>MidnightBlue</item>
+      <item>MintCream</item>
+      <item>MistyRose</item>
+      <item>Moccasin</item>
+      <item>NavajoWhite</item>
+      <item>Navy</item>
+      <item>OldLace</item>
+      <item>Olive</item>
+      <item>OliveDrab</item>
+      <item>Orange</item>
+      <item>OrangeRed</item>
+      <item>Orchid</item>
+      <item>PHYSICAL</item>
+      <item>PaleGoldenRod</item>
+      <item>PaleGreen</item>
+      <item>PaleTurquoise</item>
+      <item>PaleVioletRed</item>
+      <item>PapayaWhip</item>
+      <item>PeachPuff</item>
+      <item>Peru</item>
+      <item>Pink</item>
+      <item>Plum</item>
+      <item>PowderBlue</item>
+      <item>Purple</item>
+      <item>Red</item>
+      <item>RosyBrown</item>
+      <item>RoyalBlue</item>
+      <item>STRATEGY</item>
+      <item>SaddleBrown</item>
+      <item>Salmon</item>
+      <item>SandyBrown</item>
+      <item>SeaGreen</item>
+      <item>SeaShell</item>
+      <item>Sienna</item>
+      <item>Silver</item>
+      <item>SkyBlue</item>
+      <item>SlateBlue</item>
+      <item>SlateGray</item>
+      <item>SlateGrey</item>
+      <item>Snow</item>
+      <item>SpringGreen</item>
+      <item>SteelBlue</item>
+      <item>TECHNOLOGY</item>
+      <item>Tan</item>
+      <item>Teal</item>
+      <item>Thistle</item>
+      <item>Tomato</item>
+      <item>Turquoise</item>
+      <item>Violet</item>
+      <item>Wheat</item>
+      <item>White</item>
+      <item>WhiteSmoke</item>
+      <item>Yellow</item>
+      <item>YellowGreen</item>
+    </list>
+    <list name="arrowdir">
+      <item>left</item>
+      <item>lef</item>
+      <item>le</item>
+      <item>l</item>
+      <item>right</item>
+      <item>righ</item>
+      <item>rig</item>
+      <item>ri</item>
+      <item>r</item>
+      <item>up</item>
+      <item>u</item>
+      <item>down</item>
+      <item>dow</item>
+      <item>do</item>
+      <item>d</item>
+    </list>
+    <contexts>
+      <context name="Normal" attribute="NormalText" lineEndContext="#stay">
+        <DetectChar attribute="Comment" char="'" firstNonSpace="true" context="SingleQuoteComment"/>
+        <DetectChar attribute="ActivityLabel" char=":" firstNonSpace="true" context="ActivityLabel"/>
+        <keyword attribute="Type" String="type" firstNonSpace="true" context="TypeDeclaration"/>
+        <keyword attribute="Type" String="type2" firstNonSpace="true" context="TypeDeclaration"/>
+        <keyword attribute="Keyword" String="keyword" context="#stay"/>
+        <keyword attribute="Keyword" String="keyword2" context="#stay"/>
+        <keyword attribute="Flow" String="flow" context="#stay"/>
+        <keyword attribute="Flow" String="flow2" context="#stay"/>
+        <keyword attribute="Preprocessor" String="preprocessor" context="#stay"/>
+        <keyword attribute="Skinparameter" String="skinparameter" context="#stay"/>
+        <keyword attribute="Color" String="color" context="#stay"/>
+        <RegExpr attribute="Link" String="(?:&lt;\||\(\)|[&lt;o\*x\#\+\^\}])([\-\.])" context="FindLinkTailOrOtherHead" dynamic="true"/>
+        <RegExpr attribute="Link" String="([\-\.])" context="FindLinkHead" dynamic="true"/>
+        <!-- <RegExpr attribute="Relation" String="^[A-Za-z0-9]+[ \t]*[]" context="#stay"/> -->
+        <RangeDetect attribute="String" char="&quot;" char1="&quot;" context="#stay"/>
 
-				<!-- Complex: 1j ; 1.1j ; 1.j ; .1j ; 1e3j ; 1.1e3j ; 1.e3j ; .1e3j -->
-				<RegExpr attribute="Complex" String="(?:&beforeDigit;&digitPart;(?:\.(?:&digitPart;)?)?|&beforePointFloat;\.&digitPart;)(?:[eE][\+\-]?&digitPart;)?[jJ]\b" context="#stay"/>
-				<!-- Hexadecimal: 0xA1, Binary: 0b01, Octal: 0o71 -->
-				<RegExpr attribute="Hex" String="&beforeDigit;0[xX](?:_?[\da-fA-F])+\b" context="#stay"/>
-				<RegExpr attribute="Binary" String="&beforeDigit;0[bB](?:_?[01])+\b" context="#stay"/>
-				<RegExpr attribute="Octal" String="&beforeDigit;0[oO](?:_?[0-7])+\b" context="#stay"/>
-				<!-- Float: 1.1 ; 1. ; .1 ; 1e3 ; 1.1e3 ; 1.e3 ; .1e3 -->
-				<RegExpr attribute="Float" String="(?:&beforeDigit;&digitPart;(?:\.(?:&digitPart;)?)?|&beforePointFloat;\.&digitPart;)[eE][\+\-]?&digitPart;\b" context="#stay"/>
-				<RegExpr attribute="Float" String="(?:&beforeDigit;&digitPart;\.(?:&digitPart;\b)?|&beforePointFloat;\.&digitPart;\b)" context="#stay"/>
-				<!-- Decimal: 123 ; 000 -->
-				<RegExpr attribute="Int" String="&beforeDigit;(?:[1-9](?:_?\d)*|0(?:_?0)*)[lL]?\b" context="#stay"/>
-
-				<DetectChar attribute="Normal Text" char="{" context="Dictionary" beginRegion="Dictionary"/>
-				<DetectChar attribute="Normal Text" char="[" context="List" beginRegion="List"/>
-				<DetectChar attribute="Normal Text" char="(" context="Tuple" beginRegion="Tuple"/>
-
-				<IncludeRules context="CommentVariants" />
-
-				<DetectChar attribute="Comment" char="#" context="Hash comment"/>
-
-				<IncludeRules context="StringVariants" />
-
-				<RegExpr attribute="Decorator" String="@[_a-zA-Z[:^ascii:]][\._a-zA-Z0-9[:^ascii:]]*" firstNonSpace="true"/>
-				<AnyChar attribute="Operator" String="+*/%\|=;\!&lt;&gt;!^&amp;~-@" context="#stay"/>
+      </context>
+			<context name="SingleQuoteComment" attribute="Comment" lineEndContext="#pop">
 			</context>
 
-			<context name="#CheckForString" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-				<DetectSpaces/>
-				<LineContinue attribute="Normal Text" context="CheckForStringNext"/>
+			<context name="ActivityLabel" attribute="ActivityLabel" lineEndContext="#stay">
+        <DetectChar attribute="ActivityLabel" char=";" context="#pop"/>
 			</context>
 
-			<context name="CheckForStringNext" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-				<DetectSpaces/>
-				<LineContinue attribute="Normal Text" context="CheckForStringNext"/>
-				<IncludeRules context="StringVariants"/>
+			<context name="TypeDeclaration" attribute="NormalText" lineEndContext="#pop">
+        <keyword attribute="Type" String="type" context="#stay"/>
+        <keyword attribute="Type" String="type2" context="#stay"/>
+        <RangeDetect attribute="TypeLabelString" char="&quot;" char1="&quot;" context="#stay"/>
+        <StringDetect attribute="Keyword" String="as" context="#stay"/>
+        <DetectIdentifier attribute="TypeLabel" context="#stay"/>
+        <DetectChar attribute="NormalText" char="{" context="#pop" lookAhead="true"/>
 			</context>
 
-			<context name="StringVariants" attribute="Normal Text" lineEndContext="#stay">
-				<DetectSpaces/>
-
-				<RegExpr attribute="String" String="u?'''"                insensitive="true" context="Triple A-string" beginRegion="Triple A-region"/>
-				<RegExpr attribute="String" String="u?&quot;&quot;&quot;" insensitive="true" context="Triple Q-string" beginRegion="Triple Q-region"/>
-				<RegExpr attribute="String" String="u?'"                  insensitive="true" context="Single A-string"/>
-				<RegExpr attribute="String" String="u?&quot;"             insensitive="true" context="Single Q-string"/>
-
-				<RegExpr attribute="Raw String" String="(u?r|ru)'''"                insensitive="true" context="Raw Triple A-string" beginRegion="Triple A-region"/>
-				<RegExpr attribute="Raw String" String="(u?r|ru)&quot;&quot;&quot;" insensitive="true" context="Raw Triple Q-string" beginRegion="Triple Q-region"/>
-				<RegExpr attribute="Raw String" String="(u?r|ru)'"                  insensitive="true" context="Raw A-string"/>
-				<RegExpr attribute="Raw String" String="(u?r|ru)&quot;"             insensitive="true" context="Raw Q-string"/>
-
-				<StringDetect attribute="F-String" String="f'''"                insensitive="true" context="Triple A-F-String" beginRegion="Triple A-region"/>
-				<StringDetect attribute="F-String" String="f&quot;&quot;&quot;" insensitive="true" context="Triple Q-F-String" beginRegion="Triple Q-region"/>
-				<StringDetect attribute="F-String" String="f'"                  insensitive="true" context="Single A-F-String"/>
-				<StringDetect attribute="F-String" String="f&quot;"             insensitive="true" context="Single Q-F-String"/>
-
-				<RegExpr attribute="Raw F-String" String="(fr|rf)'''"                insensitive="true" context="Raw Triple A-F-String" beginRegion="Triple A-region"/>
-				<RegExpr attribute="Raw F-String" String="(fr|rf)&quot;&quot;&quot;" insensitive="true" context="Raw Triple Q-F-String" beginRegion="Triple Q-region"/>
-				<RegExpr attribute="Raw F-String" String="(fr|rf)'"                  insensitive="true" context="Raw A-F-String"/>
-				<RegExpr attribute="Raw F-String" String="(fr|rf)&quot;"             insensitive="true" context="Raw Q-F-String"/>
+			<context name="FindLinkHead" attribute="Link" lineEndContext="#pop">
+        <keyword attribute="Link" String="arrowdir" context="#stay"/>
+        <RegExpr attribute="Link" String="%1*(?:&gt;\||\(\)|[&gt;o\*x\#\+\^\{])" context="#pop"/>
+        <RegExpr attribute="Normal" String="[^&gt;o\*x\#\+\^\{]" context="#pop" lookAhead="true"/>
 			</context>
-
-			<context name="CommentVariants" attribute="Normal Text" lineEndContext="#stay">
-				<DetectSpaces/>
-
-				<RegExpr attribute="Comment" String="u?'''"                insensitive="true" firstNonSpace="true" context="Triple A-comment" beginRegion="Triple A-region"/>
-				<RegExpr attribute="Comment" String="u?&quot;&quot;&quot;" insensitive="true" firstNonSpace="true" context="Triple Q-comment" beginRegion="Triple Q-region"/>
-				<RegExpr attribute="Comment" String="u?'"                  insensitive="true" firstNonSpace="true" context="Single A-comment"/>
-				<RegExpr attribute="Comment" String="u?&quot;"             insensitive="true" firstNonSpace="true" context="Single Q-comment"/>
-
-				<RegExpr attribute="Comment" String="(u?r|ru)'''"                insensitive="true" firstNonSpace="true" context="Triple A-comment" beginRegion="Triple A-region"/>
-				<RegExpr attribute="Comment" String="(u?r|ru)&quot;&quot;&quot;" insensitive="true" firstNonSpace="true" context="Triple Q-comment" beginRegion="Triple Q-region"/>
-				<RegExpr attribute="Comment" String="(u?r|ru)'"                  insensitive="true" firstNonSpace="true" context="Single A-comment"/>
-				<RegExpr attribute="Comment" String="(u?r|ru)&quot;"             insensitive="true" firstNonSpace="true" context="Single Q-comment"/>
+			<context name="FindLinkTailOrOtherHead" attribute="Link" lineEndContext="#pop">
+        <keyword attribute="Link" String="arrowdir" context="#stay"/>
+        <RegExpr attribute="Link" String="%1*[&gt;o\*x\#\+\^\{]?" context="#stay"/>
+        <RegExpr attribute="Normal" String="[^%1&gt;o\*x\#\+\^\{]*" context="#pop" lookAhead="true"/>
 			</context>
-
-			<context name="Dictionary" attribute="Normal Text" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<DetectSpaces/>
-				<DetectChar attribute="Normal Text" char="}" context="#pop" endRegion="Dictionary"/>
-				<IncludeRules context="StringVariants" />
-				<IncludeRules context="Normal" />
-			</context>
-
-			<context name="List" attribute="Normal Text" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<DetectSpaces/>
-				<DetectChar attribute="Normal Text" char="]" context="#pop" endRegion="List"/>
-				<IncludeRules context="StringVariants" />
-				<IncludeRules context="Normal" />
-			</context>
-
-			<context name="Tuple" attribute="Normal Text" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<DetectSpaces/>
-				<DetectChar attribute="Normal Text" char=")" context="#pop" endRegion="Tuple"/>
-				<IncludeRules context="StringVariants" />
-				<IncludeRules context="Normal" />
-			</context>
-
-			<!-- Comments -->
-
-			<context name="Hash comment" attribute="Comment" lineEndContext="#pop">
-				<IncludeRules context="##Alerts" />
-				<IncludeRules context="##Modelines" />
-			</context>
-
-			<context name="Triple A-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<StringDetect attribute="Comment" String="'''" context="#pop" endRegion="Triple A-region"/>
-				<IncludeRules context="##Alerts" />
-			</context>
-
-			<context name="Triple Q-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<StringDetect attribute="Comment" String="&quot;&quot;&quot;" context="#pop" endRegion="Triple Q-region"/>
-				<IncludeRules context="##Alerts" />
-			</context>
-
-			<context name="Single A-comment" attribute="Comment" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<DetectChar attribute="Comment" char="'" context="#pop"/>
-				<IncludeRules context="##Alerts" />
-			</context>
-
-			<context name="Single Q-comment" attribute="Comment" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<DetectChar attribute="Comment" char="&quot;" context="#pop"/>
-				<IncludeRules context="##Alerts" />
-			</context>
-
-			<!-- Strings -->
-
-			<!-- format characters -->
-			<context name="stringformat" attribute="String Substitution" lineEndContext="#stay">
-				<!-- Python 2 style. Syntax:
-				     1. start character '%'
-				     2. [optional] Mapping key, e.g. '(foo)'
-				     3. [optional] Conversion flags, one of '#0- +'
-				     4. [optional] Minimum width, integer or '*'
-				     5. [optional] Precision, '.' followed by integer or '*'
-				     6. [optional] Length modifier, one of 'hlL'
-				     7. conversion type, one of 'crsdiouxXeEfFgG%'
-				     [Special cases: %prog and %default - see http://docs.python.org/library/optparse.html]
-				-->
-				<RegExpr attribute="String Substitution" String="%((\([a-zA-Z0-9_]+\))?[#0\- +]?([1-9][0-9]*|\*)?(\.([1-9][0-9]*|\*))?[hlL]?[crsdiouxXeEfFgG%]|prog|default)" context="#stay"/>
-				<!-- http://docs.python.org/2/library/string.html#format-string-syntax:
-				     replacement_field ::=  "{" [field_name] ["!" conversion] [":" format_spec] "}"
-				     field_name        ::=  arg_name ("." attribute_name | "[" element_index "]")*
-				     arg_name          ::=  [identifier | integer]
-				     attribute_name    ::=  identifier
-				     element_index     ::=  integer | index_string
-				     index_string      ::=  <any source character except "]"> +
-				     conversion        ::=  "r" | "s"
-				     format_spec       ::=  [[fill]align][sign][#][0][width][,][.precision][type]
-				     fill              ::=  <any character>
-				     align             ::=  "<" | ">" | "=" | "^"
-				     sign              ::=  "+" | "-" | " "
-				     width             ::=  integer
-				     precision         ::=  integer
-				     type              ::=  "b" | "c" | "d" | "e" | "E" | "f" | "F" | "g" | "G" | "n" | "o" | "s" | "x" | "X" | "%"
-				-->
-				<RegExpr attribute="String Substitution" String="\{(([a-zA-Z0-9_]+|[0-9]+)(\.[a-zA-Z0-9_]+|\[[^ \]]+\])*)?(![rs])?(:([^}]?[&lt;&gt;=^])?[ +-]?#?0?[0-9]*(\.[0-9]+)?[bcdeEfFgGnosxX%]?)?\}" context="#stay"/>
-				<Detect2Chars attribute="String Substitution" char="{" char1="{" context="#stay" />
-				<Detect2Chars attribute="String Substitution" char="}" char1="}" context="#stay" />
-			</context>
-
-			<!-- escape characters -->
-			<context name="stringescape" attribute="String Char" lineEndContext="#stay">
-				<!-- As this highlighting style is for both, Python 2 and 3,
-				we do not know if a normal string is “unicode” or not. So we
-				-->
-				<RegExpr attribute="String Char" String="\\[\\'&quot;abfnrtv]" context="#stay"/>
-				<RegExpr attribute="String Char" String="\\[0-7]{1,3}" context="#stay"/>
-				<RegExpr attribute="String Char" String="\\x[0-9A-Fa-f]{2}" context="#stay"/>
-				<RegExpr attribute="String Char" String="\\u[0-9A-Fa-f]{4}" context="#stay"/>
-				<RegExpr attribute="String Char" String="\\U[0-9A-Fa-f]{8}" context="#stay"/>
-				<RegExpr attribute="String Char" String="\\N\{[a-zA-Z0-9\- ]+\}" context="#stay"/>
-			</context>
-
-			<!-- f-literals -->
-			<context name="stringinterpolation" attribute="F-String" lineEndContext="#stay">
-				<Detect2Chars attribute="String Char" char="{" char1="{" context="#stay"/>
-				<DetectChar attribute="String Substitution" char="{" context="String Interpolation"/>
-			</context>
-			<context name="String Interpolation" attribute="String Substitution" lineEndContext="#stay">
-				<DetectChar attribute="Error" char="\" context="#pop"/>
-				<RegExpr attribute="String Substitution" String="(![rs])?(:([^}]?[&lt;&gt;=^])?[ +-]?#?0?[0-9]*(\.[0-9]+)?[bcdeEfFgGnosxX%]?)?\}" context="#pop"/>
-				<IncludeRules context="Normal"/> <!-- TODO: create expression context instead -->
-			</context>
+    </contexts>
+    <itemDatas>
+      <itemData name="NormalText" defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Type" defStyleNum="dsKeyword" spellChecking="false"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
+      <itemData name="Flow" defStyleNum="dsControlFlow" spellChecking="false"/>
+      <itemData name="Skinparameter" defStyleNum="dsVariable" spellChecking="false"/>
+      <itemData name="Color" defStyleNum="dsVariable" spellChecking="false"/>
+      <itemData name="Comment" defStyleNum="dsComment"/>
+      <!--
+      <itemData name="Link" defStyleNum="dsOperator"/>
+      <itemData name="Link" defStyleNum="dsBuiltIn"/>
+      <itemData name="Link" defStyleNum="dsKeyword"/>
+      <itemData name="Link" defStyleNum="dsControlFlow"/>
+      -->
+      <itemData name="Link" defStyleNum="dsBuiltIn"/>
+      <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="ActivityLabel" defStyleNum="dsVariable"/>
+      <itemData name="TypeLabelString" defStyleNum="dsVariable"/>
+      <itemData name="TypeLabel" defStyleNum="dsVariable"/>
 
 
-			<!--
-			It follows a Binary tree of string kinds (not even touching byte literals).
-			The levels are:
-			1. triple- vs. single-quoted
-			2. apostrophe vs. quotation mark
-			3. static vs. interpolated (f-literal)
-			4. escaped vs. raw
-			Adding byte literals wouldn’t make the current 2⁴ into 2⁵ contexts, as there are no byte f-literals
-			-->
-
-
-			<!-- Triple-quoted A-strings -->
-			<context name="Triple A-string" attribute="String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringformat"/>
-				<StringDetect attribute="String" String="'''" context="#pop#CheckForString" endRegion="Triple A-region"/>
-			</context>
-
-			<context name="Raw Triple A-string" attribute="Raw String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<HlCStringChar attribute="Raw String" context="#stay"/>
-				<IncludeRules context="stringformat"/>
-				<StringDetect attribute="Raw String" String="'''" context="#pop#CheckForString" endRegion="Triple A-region"/>
-			</context>
-
-			<context name="Triple A-F-String" attribute="F-String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringinterpolation"/>
-				<StringDetect attribute="F-String" String="'''" context="#pop#CheckForString" endRegion="Triple A-region"/>
-			</context>
-
-			<context name="Raw Triple A-F-String" attribute="Raw F-String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<HlCStringChar attribute="Raw F-String" context="#stay"/>
-				<IncludeRules context="stringinterpolation"/>
-				<StringDetect attribute="Raw F-String" String="'''" context="#pop#CheckForString" endRegion="Triple A-region"/>
-			</context>
-
-			<!-- Triple-quoted Q-strings -->
-			<context name="Triple Q-string" attribute="String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringformat"/>
-				<StringDetect attribute="String" String="&quot;&quot;&quot;" context="#pop#CheckForString" endRegion="Triple Q-region"/>
-			</context>
-
-			<context name="Raw Triple Q-string" attribute="Raw String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<HlCStringChar attribute="Raw String" context="#stay"/>
-				<IncludeRules context="stringformat"/>
-				<StringDetect attribute="Raw String" String="&quot;&quot;&quot;" context="#pop#CheckForString" endRegion="Triple Q-region"/>
-			</context>
-
-			<context name="Triple Q-F-String" attribute="F-String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringinterpolation"/>
-				<StringDetect attribute="F-String" String="&quot;&quot;&quot;" context="#pop#CheckForString" endRegion="Triple Q-region"/>
-			</context>
-
-			<context name="Raw Triple Q-F-String" attribute="Raw F-String" lineEndContext="#stay" noIndentationBasedFolding="true">
-				<HlCStringChar attribute="Raw F-String" context="#stay"/>
-				<IncludeRules context="stringinterpolation"/>
-				<StringDetect attribute="Raw F-String" String="&quot;&quot;&quot;" context="#pop#CheckForString" endRegion="Triple Q-region"/>
-			</context>
-
-
-			<!-- Single-quoted A-strings -->
-			<context name="Single A-string" attribute="String" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringformat"/>
-				<DetectChar attribute="String" char="'" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Raw A-string" attribute="Raw String" lineEndContext="#stay">
-				<HlCStringChar attribute="Raw String" context="#stay"/>
-				<IncludeRules context="stringformat"/>
-				<DetectChar attribute="Raw String" char="'" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Single A-F-String" attribute="F-String" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringinterpolation"/>
-				<DetectChar attribute="F-String" char="'" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Raw A-F-String" attribute="Raw F-String" lineEndContext="#stay">
-				<HlCStringChar attribute="Raw F-String" context="#stay"/>
-				<IncludeRules context="stringinterpolation"/>
-				<DetectChar attribute="Raw F-String" char="'" context="#pop#CheckForString"/>
-			</context>
-
-			<!-- Single-quoted Q-strings -->
-			<context name="Single Q-string" attribute="String" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringformat"/>
-				<DetectChar attribute="String" char="&quot;" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Raw Q-string" attribute="Raw String" lineEndContext="#stay">
-				<HlCStringChar attribute="Raw String" context="#stay"/>
-				<IncludeRules context="stringformat"/>
-				<DetectChar attribute="Raw String" char="&quot;" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Single Q-F-String" attribute="F-String" lineEndContext="#stay">
-				<IncludeRules context="stringescape"/>
-				<IncludeRules context="stringinterpolation"/>
-				<DetectChar attribute="F-String" char="&quot;" context="#pop#CheckForString"/>
-			</context>
-
-			<context name="Raw Q-F-String" attribute="Raw F-String" lineEndContext="#stay">
-				<HlCStringChar attribute="Raw F-String" context="#stay"/>
-				<IncludeRules context="stringinterpolation"/>
-				<DetectChar attribute="Raw F-String" char="&quot;" context="#pop#CheckForString"/>
-			</context>
-		</contexts>
-
-		<itemDatas>
-			<itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false"/>
-			<itemData name="Definition Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
-			<itemData name="Operator" defStyleNum="dsOperator" spellChecking="false"/>
-			<itemData name="Operator Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
-			<itemData name="Flow Control Keyword" defStyleNum="dsControlFlow" spellChecking="false"/>
-			<itemData name="Builtin Function" defStyleNum="dsBuiltIn" spellChecking="false"/>
-			<itemData name="Special Variable" defStyleNum="dsVariable" spellChecking="false"/>
-			<itemData name="Extensions" defStyleNum="dsExtension" spellChecking="false"/>
-			<itemData name="Exceptions" defStyleNum="dsPreprocessor" spellChecking="false"/>
-			<itemData name="Overloaders" defStyleNum="dsFunction" spellChecking="false"/>
-			<itemData name="Import" defStyleNum="dsImport" spellChecking="false"/>
-			<itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>
-			<itemData name="Int" defStyleNum="dsDecVal" spellChecking="false"/>
-			<itemData name="Hex" defStyleNum="dsBaseN" spellChecking="false"/>
-			<itemData name="Octal" defStyleNum="dsBaseN" spellChecking="false"/>
-			<itemData name="Binary" defStyleNum="dsBaseN" spellChecking="false"/>
-			<itemData name="Complex" defStyleNum="dsOthers" spellChecking="false"/>
-			<itemData name="Comment" defStyleNum="dsComment"/>
-			<itemData name="String" defStyleNum="dsString"/>
-			<itemData name="Raw String" defStyleNum="dsVerbatimString"/>
-			<itemData name="F-String" defStyleNum="dsSpecialString"/>
-			<itemData name="Raw F-String" defStyleNum="dsVerbatimString"/>
-			<itemData name="String Char" defStyleNum="dsChar" spellChecking="false"/>
-			<itemData name="String Substitution" defStyleNum="dsSpecialChar" spellChecking="false"/>
-			<itemData name="Decorator" defStyleNum="dsAttribute" spellChecking="false"/>
-			<itemData name="Error" defStyleNum="dsError"/>
-		</itemDatas>
-	</highlighting>
-	<general>
-		<folding indentationsensitive="1" />
-		<emptyLines>
-			<emptyLine regexpr="(?:\s+|\s*#.*)"/>
-		</emptyLines>
-		<comments>
-			<comment name="singleLine" start="#" position="afterwhitespace"/>
-		</comments>
-		<keywords casesensitive="1" additionalDeliminator="#'"/>
-	</general>
+      <!-- dsVariable -->
+      <!-- <itemData name="Link" defStyleNum="dsKeyword"/> -->
+      <!-- <itemData name="Link" defStyleNum="dsControlFlow"/> -->
+    </itemDatas>
+  </highlighting>
+  <general>
+    <comments>
+      <comment name="singleLine" start="#"/>
+    </comments>
+    <!--
+    <keywords weakDeliminator="|&lt;&gt;-.">
+    </keywords>
+    <keywords weakDeliminator="|&lt;&gt;-.">
+    </keywords>
+    -->
+  </general>
 </language>
 
-<!-- kate: space-indent off; indent-width 4; -->
+<!-- kate: space-indent on; indent-width 2; -->

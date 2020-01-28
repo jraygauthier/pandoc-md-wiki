@@ -98,6 +98,7 @@ ArrayList : size()
 
 Should display both *code* left of the *output* with default split point (50%):
 
+
 ```{.plantuml cmd=true .column-split}
 @startuml
 Object <|-- ArrayList

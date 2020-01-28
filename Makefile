@@ -46,7 +46,12 @@ OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG
 
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
 PANDOC_SYNTAX_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-syntax
-# --syntax-definition="$(PANDOC_SYNTAX_DIR)/"
+PANDOC_HIGHLIGHT_STYLE := kate
+# PANDOC_HIGHLIGHT_STYLE := pygments
+# PANDOC_HIGHLIGHT_STYLE := zenburn
+# PANDOC_HIGHLIGHT_STYLE := breezedark
+
+
 
 SRC_MD_PANDOC_OPTS := --from markdown
 HTML_PANDOC_OPTS := --to html5 --standalone
@@ -164,8 +169,10 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 	--extract-media "./media" \
 	--resource-path ".:./media" \
 	--metadata pagetitle="$<" \
-	--highlight-style pygments \
 	--css "$(PANDOC_MD_WIKI_CSS_DIR)/html.css" \
+	--highlight-style $(PANDOC_HIGHLIGHT_STYLE) \
+	--syntax-definition="$(PANDOC_SYNTAX_DIR)/plantuml.xml" \
+	--syntax-definition="$(PANDOC_SYNTAX_DIR)/python.xml" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-abs-to-rel.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/local-links-to-target-ext.lua" \
 	--lua-filter="$(PANDOC_FILTER_DIR)/imports-to-link.lua" \

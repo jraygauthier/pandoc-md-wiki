@@ -1,6 +1,8 @@
 @startuml
 
-abstract class AbstractList
+'This is a comment
+
+abstract class "My Abstract List" as AbstractList
 abstract AbstractCollection
 interface List
 interface Collection
@@ -11,6 +13,9 @@ Collection <|-- AbstractCollection
 Collection <|- List
 AbstractCollection <|- AbstractList
 AbstractList <|-- ArrayList
+
+Bob -lef-> Ok
+Bob <-do- Ok
 
 class ArrayList {
   Object[] elementData
