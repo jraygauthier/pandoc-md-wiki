@@ -162,7 +162,10 @@ function CodeBlock(block)
       local content_div = pandoc.Div({}, content_div_attr)
       local code_div = pandoc.Div(code_block, code_div_attr)
       div_extend_content(content_div, {code_div})
-      return content_div
+      --return content_div
+      -- TODO: Reconsider at some point. For the time
+      -- being, we will leave it untouched.
+      return nil
     end
 
 

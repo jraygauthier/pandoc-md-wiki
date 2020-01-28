@@ -38,11 +38,15 @@ OUT_HTML_FROM_MD := $(patsubst %.md,$(OUTPUT_HTML_REL_DIR)/%.html,$(SRC_MD))
 SRC_PUML := $(shell find . -mindepth 1 -type f -name '*.puml' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
 OUT_HTML_SVG_FROM_PUML := $(patsubst %.puml,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_PUML))
 
+# TODO: A lot of duplication. Generalize this.
 SRC_SVG := $(shell find . -mindepth 1 -type f -name '*.svg' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
 OUT_HTML_SVG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG))
 
 SRC_PNG := $(shell find . -mindepth 1 -type f -name '*.png' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
-OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG))
+OUT_HTML_PNG_FROM_SRC := $(patsubst %.png,$(OUTPUT_HTML_REL_DIR)/%.png,$(SRC_PNG))
+
+SRC_JPG := $(shell find . -mindepth 1 -type f -name '*.jpg' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
+OUT_HTML_JPG_FROM_SRC := $(patsubst %.jpg,$(OUTPUT_HTML_REL_DIR)/%.jpg,$(SRC_JPG))
 
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
 PANDOC_SYNTAX_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-syntax
@@ -117,9 +121,16 @@ html-svg-from-puml: $(OUT_HTML_SVG_FROM_PUML)
 clean-html-svg-from-puml:
 	rm -f $(OUT_HTML_SVG_FROM_PUML)
 
-html-img-from-src: html-svg-from-src html-png-from-src
+# TODO: A lot of duplication. Generalize this.
+html-img-from-src: \
+	html-svg-from-src \
+	html-png-from-src \
+	html-jpg-from-src
 
-clean-html-img-from-src: clean-html-svg-from-src
+clean-html-img-from-src: \
+	clean-html-svg-from-src \
+	clean-html-png-from-src \
+	clean-html-jpg-from-src
 
 html-svg-from-src: $(OUT_HTML_SVG_FROM_SRC)
 
@@ -130,6 +141,11 @@ html-png-from-src: $(OUT_HTML_PNG_FROM_SRC)
 
 clean-html-png-from-src:
 	rm -f $(OUT_HTML_PNG_FROM_SRC)
+
+html-jpg-from-src: $(OUT_HTML_JPG_FROM_SRC)
+
+clean-html-jpg-from-src:
+	rm -f $(OUT_HTML_JPG_FROM_SRC)
 
 debug-vars:
 	@echo "PANDOC_MD_WIKI_ROOT_DIR='$(PANDOC_MD_WIKI_ROOT_DIR)'"
@@ -182,8 +198,12 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 $(OUTPUT_HTML_REL_DIR)/%.svg : %.puml | $$(@D)/.
 	plantuml -tsvg -o "$(MKF_CWD)/$(@D)/" "$<"
 
+# TODO: A lot of duplication. Generalize this.
 $(OUTPUT_HTML_REL_DIR)/%.svg : %.svg | $$(@D)/.
 	cp "$<" "$@"
 
 $(OUTPUT_HTML_REL_DIR)/%.png : %.png | $$(@D)/.
+	cp "$<" "$@"
+
+$(OUTPUT_HTML_REL_DIR)/%.jpg : %.jpg | $$(@D)/.
 	cp "$<" "$@"
