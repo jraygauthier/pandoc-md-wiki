@@ -46,8 +46,8 @@ OUT_HTML_PNG_FROM_SRC := $(patsubst %.svg,$(OUTPUT_HTML_REL_DIR)/%.svg,$(SRC_SVG
 
 PANDOC_FILTER_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-filters
 PANDOC_SYNTAX_DIR := $(PMW_MKF_DIR)/.build-system/pandoc-syntax
-PANDOC_HIGHLIGHT_STYLE := kate
-# PANDOC_HIGHLIGHT_STYLE := pygments
+# PANDOC_HIGHLIGHT_STYLE := kate
+PANDOC_HIGHLIGHT_STYLE := pygments
 # PANDOC_HIGHLIGHT_STYLE := zenburn
 # PANDOC_HIGHLIGHT_STYLE := breezedark
 

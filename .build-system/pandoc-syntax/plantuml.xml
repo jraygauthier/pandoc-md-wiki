@@ -872,6 +872,7 @@
         <RegExpr attribute="Link" String="([\-\.])" context="FindLinkHead" dynamic="true"/>
         <!-- <RegExpr attribute="Relation" String="^[A-Za-z0-9]+[ \t]*[]" context="#stay"/> -->
         <RangeDetect attribute="String" char="&quot;" char1="&quot;" context="#stay"/>
+        <DetectChar attribute="NormalText" char=":" context="LinkLabel"/>
 
       </context>
 			<context name="SingleQuoteComment" attribute="Comment" lineEndContext="#pop">
@@ -879,6 +880,10 @@
 
 			<context name="ActivityLabel" attribute="ActivityLabel" lineEndContext="#stay">
         <DetectChar attribute="ActivityLabel" char=";" context="#pop"/>
+			</context>
+
+			<context name="LinkLabel" attribute="LinkLabel" lineEndContext="#pop">
+        <DetectSpaces attribute="NormalText" context="#stay"/>
 			</context>
 
 			<context name="TypeDeclaration" attribute="NormalText" lineEndContext="#pop">
@@ -915,9 +920,10 @@
       <itemData name="Link" defStyleNum="dsKeyword"/>
       <itemData name="Link" defStyleNum="dsControlFlow"/>
       -->
-      <itemData name="Link" defStyleNum="dsBuiltIn"/>
+      <itemData name="Link" defStyleNum="dsOperator"/>
       <itemData name="String" defStyleNum="dsString"/>
       <itemData name="ActivityLabel" defStyleNum="dsVariable"/>
+      <itemData name="LinkLabel" defStyleNum="dsDocumentation"/>
       <itemData name="TypeLabelString" defStyleNum="dsVariable"/>
       <itemData name="TypeLabel" defStyleNum="dsVariable"/>
 
