@@ -16,6 +16,36 @@ ArrayList : size()
 @enduml
 ```
 
+## Explicit svg output
+
+Should show the *output* as a svg:
+
+```{.plantuml output=html}
+@startuml
+Object <|-- ArrayList
+
+Object : equals()
+ArrayList : Object[] elementData
+ArrayList : size()
+
+@enduml
+```
+
+## Explicit png output
+
+Should show the *output* as a png:
+
+```{.plantuml output=png}
+@startuml
+Object <|-- ArrayList
+
+Object : equals()
+ArrayList : Object[] elementData
+ArrayList : size()
+
+@enduml
+```
+
 ## Only show the code using the output attribute
 
 Should display the plantuml code instead of its output:

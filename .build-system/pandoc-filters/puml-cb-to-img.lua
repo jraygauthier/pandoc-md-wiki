@@ -3,16 +3,38 @@
 ]]--
 
 local FILE_TYPE_COL_IDX = 1
-local MIME_TYPE_COL_IDX = 2
 
-local filetypes = {
-  html5 = { "svg", "image/svg" },
-  html = { "svg", "image/svg" },
-  revealjs = { "svg", "image/svg" },
+local doc_format_to_puml_out_filetype = {
+  html5 = "svg",
+  html = "svg",
+  revealjs = "svg",
 }
-local filetype = filetypes[FORMAT][FILE_TYPE_COL_IDX] or "png"
-local mimetype = filetypes[FORMAT][MIME_TYPE_COL_IDX] or "image/png"
 
+local user_output_type_to_puml_out_filetype = {
+  html = "svg",
+  png = "png",
+  none = "svg", -- Use svg by default.
+}
+
+local filetype2mimetype = {
+  svg = "image/svg",
+  png = "image/png",
+}
+
+local function get_puml_output_filetype(user_output_type)
+  local filetype = doc_format_to_puml_out_filetype[FORMAT] or "png"
+  if user_output_type ~= nil then
+    filetype = user_output_type_to_puml_out_filetype[user_output_type]
+    assert( filetype ~= nil, "Invalid user output type!")
+  end
+  return filetype
+end
+
+local function get_mimetype(filetype)
+  out_mimetype = filetype2mimetype[filetype]
+  assert( out_mimetype ~= nil, "Unsupported file type!")
+  return out_mimetype
+end
 
 local function fetch_resource_workaround(rel_filename)
   local resource_path = PANDOC_STATE.resource_path
@@ -65,6 +87,7 @@ end
 local function puml_to_img_cached(puml_code, out_filetype)
   local fname = pandoc.sha1(puml_code) .. "." .. out_filetype
 
+  local mimetype = get_mimetype(out_filetype)
   local img
   _, img = pandoc.mediabag.lookup(fname)
   -- print(string.format("lookup: img: %s", not not img))
@@ -178,7 +201,10 @@ function CodeBlock(block)
 
     output_type = block.attributes["output"]
     assert(
-      output_type == nil or output_type == "html" or output_type == "none",
+      output_type == nil
+        or output_type == "html"
+        or output_type == "png"
+        or output_type == "none",
       "Unsupported `output` value: `%s`!", output_type)
 
     left_column_width = block.attributes["column-left-width"]
@@ -220,10 +246,12 @@ function CodeBlock(block)
       show_code_block = false
     end
 
-    code_text = block.text
+    local code_text = block.text
+    local puml_output_type = get_puml_output_filetype(output_type)
+
     local img
     local fname
-    img, fname = puml_to_img_cached(code_text, filetype)
+    img, fname = puml_to_img_cached(code_text, puml_output_type)
     -- print(string.format("puml_to_img_cached: img: %s", not not img))
 
     local output_image = pandoc.Image({pandoc.Str("puml")}, fname)
