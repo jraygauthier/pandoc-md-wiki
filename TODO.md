@@ -184,17 +184,11 @@ Filters
  -  Vega support.
 
 
-### `local-links-to-target-ext.lua`
-
- -  Bug: Link to local anchors broken: `[MyLink](#my-local-anchor)` is
-    wrongfully transformed into a `<./MyFolder/.html#save-to-local-db>` target..
-
 ### `puml-cb-to-img.lua`
 
  -  Capture image related attributes and forward others to the image element.
  -  Support force render as code block (`code_block=true`).
  -  Support build system specified plantuml common configuration file.
- -  Support 
 
 ### `imports-to-link.lua`
 

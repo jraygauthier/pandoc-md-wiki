@@ -45,6 +45,15 @@ local function replace_uri_extension(uri, new_ext)
   local wo_anchor_wo_query = remove_uri_anchor_and_query(uri)
 
   local wo_ext = string.gsub(wo_anchor_wo_query, "%.[^/]+$", "")
+
+  _, _, stem = string.find(wo_ext, "([^/]*)$")
+  if "" == stem then
+    -- This is a current page anchor and/or query
+    -- (e.g.: "[Link to my anchor](#my-anchor)")
+    -- Do not touch the uri.
+    return uri
+  end
+
   local new_uri = wo_ext .. "." .. new_ext .. anchor_and_query_str
   return new_uri
 end

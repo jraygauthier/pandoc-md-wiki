@@ -13,7 +13,7 @@ target extension (e.g.: `*.html`).
 [pandoc-md-wiki/TODO.md]: https://github.com/jraygauthier/pandoc-md-wiki/blob/master/TODO.md
 
 
-Internal links
+Internal links {#internal-links}
 --------------
 
 ### Relative
@@ -44,6 +44,11 @@ This also applies to image links:
 ![../ImageSupport/Images/ImageExample.svg](../ImageSupport/Images/ImageExample.svg)
 
 
+To directory:
+
+-  [./SubDirectory/](./SubDirectory/)
+
+
 ### Absolute
 
 Internal absolute links should be converted to relative links so that they are functional
@@ -71,8 +76,16 @@ TODO: Fix me, the image link fails the build when uncommented:
 
 Note that this is not a lua filter issue.
 
+To directory:
+
+-  [/Features/LinkSupport/SubDirectory/](/Features/LinkSupport/SubDirectory/)
+
 
 ### Referring to particular section via anchors
+
+To local current page anchor:
+
+ -  [\#internal-links](#internal-links)
 
 To explicitly named anchors:
 
@@ -91,3 +104,4 @@ To automatically generated anchors:
 Absolute local links:
 
  -  [/SubDirectory/PageInSubDirectory\#my-second-section](/Features/LinkSupport/SubDirectory/PageInSubDirectory#my-second-section)
+
