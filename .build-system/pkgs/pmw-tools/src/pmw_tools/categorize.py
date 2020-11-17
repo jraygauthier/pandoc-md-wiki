@@ -66,8 +66,12 @@ class PmwFilterDefault(PmwFilter):
             [".jpg"],
         ]
 
+        self._excluded_dirnames = [
+            ".git"
+        ]
+
         self._excluded_dir_regexps = [
-            r"^./.git/.*$"
+            r"^.*/.git/.*$",
         ]
 
     @staticmethod
@@ -102,13 +106,23 @@ class PmwFilterDefault(PmwFilter):
 
         return False
 
-    def is_excluded_dir(self, path: Path) -> bool:
-        for regexp in self._excluded_dir_regexps:
-            if re.match(regexp, str(path)) is not None:
+    @staticmethod
+    def _has_any_of_names(
+            path: Path, expected_name_list: Iterable[str]
+    ) -> bool:
+        actual_ext = path.name
+
+        for expected_name in expected_name_list:
+            if actual_ext == expected_name:
                 return True
 
-        return self._match_any_of_regexps(
-            path, self._excluded_dir_regexps)
+        return False
+
+    def is_excluded_dir(self, path: Path) -> bool:
+        return (
+            self._has_any_of_names(path, self._excluded_dirnames) or
+            self._match_any_of_regexps(
+                path, self._excluded_dir_regexps))
 
     def is_included_file(self, path: Path) -> bool:
         return self._has_any_of_exts(path, self._included_exts)
