@@ -1,0 +1,4 @@
+type: fetchFromGitHub
+owner: jraygauthier
+repo: nsf-shc
+ref: master
