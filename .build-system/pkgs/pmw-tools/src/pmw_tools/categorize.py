@@ -190,7 +190,9 @@ def categorize_wiki_files(
 
     per_tag_files: PerTagFilesDict = dict()
     for k, v in _categorize_wiki_files(root_dir, pmw_filter).items():
-        per_tag_files.setdefault(k, sorted(v))
+        sorted_by_path = list(
+            map(lambda x: str(x), sorted(map(lambda x: Path(x), v))))
+        per_tag_files.setdefault(k, sorted_by_path)
     return per_tag_files
 
 
@@ -251,5 +253,7 @@ def categorize_wiki_dirs(
 
     per_tag_dirs: PerTagDirsDict = dict()
     for k, v in _categorize_wiki_dirs(root_dir, pmw_filter).items():
-        per_tag_dirs.setdefault(k, sorted(v))
+        sorted_by_path = list(
+            map(lambda x: str(x), sorted(map(lambda x: Path(x), v))))
+        per_tag_dirs.setdefault(k, sorted_by_path)
     return per_tag_dirs
