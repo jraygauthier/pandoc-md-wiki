@@ -147,6 +147,9 @@ html-jpg-from-src: $(OUT_HTML_JPG_FROM_SRC)
 clean-html-jpg-from-src:
 	rm -f $(OUT_HTML_JPG_FROM_SRC)
 
+categorize:
+	pmw-tools categorize files -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged-files.json"
+
 debug-vars:
 	@echo "PANDOC_MD_WIKI_ROOT_DIR='$(PANDOC_MD_WIKI_ROOT_DIR)'"
 	@echo "PANDOC_MD_WIKI_CSS_DIR='$(PANDOC_MD_WIKI_CSS_DIR)'"

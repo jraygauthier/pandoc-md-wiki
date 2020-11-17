@@ -10,6 +10,7 @@
 , plantuml
 , xdg_utils
 , yq
+, pmw-tools
 }:
 
 stdenv.mkDerivation rec {
@@ -40,6 +41,7 @@ stdenv.mkDerivation rec {
     plantuml
     xdg_utils
     yq
+    pmw-tools
   ];
 
   installPhase = ''
