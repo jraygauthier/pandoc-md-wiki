@@ -148,6 +148,7 @@ clean-html-jpg-from-src:
 	rm -f $(OUT_HTML_JPG_FROM_SRC)
 
 categorize:
+	pmw-tools categorize dirs -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged-dirs.json"
 	pmw-tools categorize files -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged-files.json"
 
 debug-vars:

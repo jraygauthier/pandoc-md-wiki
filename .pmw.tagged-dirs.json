@@ -1,0 +1,17 @@
+{
+  "private": [
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PrivateDirWTags"
+  ],
+  "public": [
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags",
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags"
+  ],
+  "work": [
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags"
+  ]
+}

@@ -1,8 +1,11 @@
-import click
 import json
 from pathlib import Path
-from typing import Optional, Any
-from pmw_tools.categorize import (categorize_wiki_files_json_ready)
+from typing import Any, Optional
+
+import click
+from pmw_tools.categorize import (PerTagPathsDict,
+                                  categorize_wiki_dirs,
+                                  categorize_wiki_files)
 
 
 @click.group()
@@ -47,6 +50,18 @@ def mk_output_file_option() -> Any:
     )
 
 
+def _save_as_json(data_d: PerTagPathsDict, output_file_str: str) -> None:
+    assert output_file_str is not None
+    with click.open_file(output_file_str, "w") as of:
+        json.dump(
+            data_d,
+            of,
+            sort_keys=True,
+            indent=2,
+            separators=(",", ": ")
+        )
+
+
 @categorize.command()
 @mk_cwd_option()
 @mk_output_file_option()
@@ -58,19 +73,24 @@ def files(
     else:
         cwd = Path(cwd_str)
 
-    categorized_d = categorize_wiki_files_json_ready(cwd)
+    categorized_d = categorize_wiki_files(cwd)
+    _save_as_json(categorized_d, output_file_str)
 
-    assert output_file_str is not None
-    with click.open_file(output_file_str, "w") as of:
-        json.dump(
-            categorized_d,
-            of,
-            sort_keys=True,
-            indent=2,
-            separators=(",", ": ")
-        )
+
+@categorize.command()
+@mk_cwd_option()
+@mk_output_file_option()
+def dirs(
+        cwd_str: Optional[str], output_file_str: str) -> None:
+
+    if cwd_str is None:
+        cwd = Path.cwd()
+    else:
+        cwd = Path(cwd_str)
+
+    categorized_d = categorize_wiki_dirs(cwd)
+    _save_as_json(categorized_d, output_file_str)
 
 
 def run_cli() -> None:
     return cli()
-

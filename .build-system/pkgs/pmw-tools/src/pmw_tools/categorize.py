@@ -6,6 +6,10 @@ import os
 import re
 from .yaml_frontmatter import load_page_yaml_frontmatter
 
+PerTagPathsDict = Dict[str, List[str]]
+PerTagFilesDict = PerTagPathsDict
+PerTagDirsDict = PerTagPathsDict
+
 
 def load_pmw_yaml_file(filename: Path) -> Dict[str, Any]:
     try:
@@ -113,7 +117,7 @@ class PmwFilterDefault(PmwFilter):
         return self._has_any_of_exts(path, self._page_exts)
 
 
-def categorize_wiki_files(
+def _categorize_wiki_files(
         root_dir: Optional[Path] = None,
         pmw_filter: Optional[PmwFilter] = None
 ) -> Dict[str, Set[str]]:
@@ -176,15 +180,76 @@ def categorize_wiki_files(
     return per_tag_files
 
 
-def categorize_wiki_files_json_ready(
+def categorize_wiki_files(
     root_dir: Optional[Path] = None,
     pmw_filter: Optional[PmwFilter] = None
-) -> Dict[str, List[str]]:
-    """Same as `categorize_wiki_files` but return a dict
+) -> PerTagFilesDict:
+    """Same as `_categorize_wiki_files` but return a dict
         of list instead of set.
     """
 
-    per_tag_files: Dict[str, List[str]] = dict()
-    for k, v in categorize_wiki_files(root_dir, pmw_filter).items():
+    per_tag_files: PerTagFilesDict = dict()
+    for k, v in _categorize_wiki_files(root_dir, pmw_filter).items():
         per_tag_files.setdefault(k, sorted(v))
     return per_tag_files
+
+
+def _categorize_wiki_dirs(
+        root_dir: Optional[Path] = None,
+        pmw_filter: Optional[PmwFilter] = None
+) -> Dict[str, Set[str]]:
+    if root_dir is None:
+        root_dir = Path.cwd()
+    elif not root_dir.is_absolute():
+        root_dir = Path.cwd().joinpath(root_dir)
+
+    if pmw_filter is None:
+        pmw_filter = PmwFilterDefault()
+
+    per_dir_tags: Dict[str, Set[str]] = dict()
+    all_tags: Set[str] = set()
+
+    for _root, dirs, files in os.walk(
+            root_dir, topdown=True):
+        root = Path(_root)
+
+        if pmw_filter.is_excluded_dir(root):
+            continue
+
+        parent_dir = root.parent
+        try:
+            parent_dir_tags = per_dir_tags[str(parent_dir)]
+        except KeyError:
+            parent_dir_tags = set()
+
+        pmw_filename = root.joinpath(".pmw.yaml")
+        pmw_dict = load_pmw_yaml_file(pmw_filename)
+
+        dir_tags = get_pmw_tags(pmw_dict, parent_dir_tags)
+
+        per_dir_tags[str(root)] = dir_tags
+        all_tags |= dir_tags
+
+    per_tag_dirs: Dict[str, Set[str]] = {}
+    for t in all_tags:
+        filenames = per_tag_dirs.setdefault(t, set())
+        for k, v in per_dir_tags.items():
+            if t in v:
+                relative_filename = Path(k).relative_to(root_dir)
+                filenames.add(str(relative_filename))
+
+    return per_tag_dirs
+
+
+def categorize_wiki_dirs(
+    root_dir: Optional[Path] = None,
+    pmw_filter: Optional[PmwFilter] = None
+) -> PerTagDirsDict:
+    """Same as `_categorize_wiki_dirs` but return a dict
+        of list instead of set.
+    """
+
+    per_tag_dirs: PerTagDirsDict = dict()
+    for k, v in _categorize_wiki_dirs(root_dir, pmw_filter).items():
+        per_tag_dirs.setdefault(k, sorted(v))
+    return per_tag_dirs
