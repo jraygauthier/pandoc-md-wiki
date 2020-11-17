@@ -1,5 +1,3 @@
-{ nixpkgs ? import ../../../.nix/pinned-nixpkgs.nix {} }:
+{ pkgs ? null } @ args:
 
-import ./release.nix {
-  fromNixShell = true;
-}
+(import ./release.nix args).shell.dev

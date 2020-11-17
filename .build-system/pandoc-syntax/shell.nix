@@ -1,9 +1,12 @@
-{ nixpkgs ? import ../../.nix/pinned-nixpkgs.nix {} }:
-
-with nixpkgs;
+{ pkgs ? null } @ args:
 
 let
-  lib = nixpkgs.lib;
+  pkgs = (import ../../.nix/release.nix {}).ensurePkgs args;
+in
+
+with pkgs;
+
+let
   skylighting-executable =
     with haskell.lib; with haskellPackages;
     addBuildDepends (enableCabalFlag skylighting "executable") [ pretty-show regex-pcre ];

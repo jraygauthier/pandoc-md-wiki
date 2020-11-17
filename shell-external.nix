@@ -1,12 +1,8 @@
-{ nixpkgs ? import ./.nix/pinned-nixpkgs.nix {}
+{ pkgs ? null
 , withVscodeSupport ? false
-}:
+} @ args:
 
-let
-  internalShell = import ./shell.nix {
-    _isExternalShell = true;
-    inherit nixpkgs withVscodeSupport;
-  };
-in
+(import ./release.nix args).shell.mkExternal {
+  inherit withVscodeSupport;
+}
 
-internalShell

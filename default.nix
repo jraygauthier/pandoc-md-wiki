@@ -1,6 +1,6 @@
 { stdenv
 , makeWrapper
-, diagrams-builder
+#, diagrams-builder
 , gnumake
 , graphviz
 , jdk
@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    diagrams-builder
+    # diagrams-builder
     gnumake
     graphviz
     jdk
