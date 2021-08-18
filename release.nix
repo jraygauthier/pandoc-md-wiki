@@ -2,7 +2,6 @@
 
 let
   pkgs = (import ./.nix/release.nix {}).ensurePkgs args;
-  # pkgs1903 = import ./.nix/pinned-nixpkgs-1903.nix {};
 in
 
 with pkgs;
@@ -11,8 +10,6 @@ let
   pmw-tools = (import ./.build-system/pkgs/pmw-tools/release.nix { inherit pkgs; }).default;
 
   default = callPackage ./. {
-    # Broken in 19.09. Fallback to 19.03.
-    # diagrams-builder = pkgs1903.diagrams-builder;
     inherit pmw-tools;
   };
   pandoc-md-wiki-vscode-tools =

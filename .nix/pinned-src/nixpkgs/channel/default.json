@@ -2,7 +2,7 @@
   "type": "fetchFromGitHub",
   "owner": "NixOS",
   "repo": "nixpkgs",
-  "ref": "release-20.03",
-  "rev": "a7c70f2e10bc7efc93b2a7cd73ddd4084d7c0099",
-  "sha256": "1fzprhcsxgwh5yh9kxyz99dsbshh0q9zfp6lz6cdwhzhzy8qvk4v"
+  "ref": "release-21.05",
+  "rev": "6de09630fbe4d60f388f85545845cf7ac9eeea45",
+  "sha256": "0phkr669y79k39na8aivg8q11bp0wdhs89z7svrf2p8awxw354h0"
 }
