@@ -21,8 +21,8 @@ let
     buildInputs = []
       ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
       # Minimal requirement to get the `pdflatex` command required by
-      # pandoc for pdf output.
-      ++ lib.optional withPdfSupport (texlive.combined.scheme-basic);
+      # pandoc for pdf output with a couple of package (`xcolor`, etc).
+      ++ lib.optional withPdfSupport (texlive.combined.scheme-medium);
 
     shellHook = lib.optionalString isExternalShell ''
       export PANDOC_MD_WIKI_RELEASE_MAKEFILE="${default}/share/${default.pname}/Makefile"
