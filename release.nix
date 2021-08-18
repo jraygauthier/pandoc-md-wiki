@@ -22,7 +22,10 @@ let
       ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
       # Minimal requirement to get the `pdflatex` command required by
       # pandoc for pdf output with a couple of package (`xcolor`, etc).
-      ++ lib.optional withPdfSupport (texlive.combined.scheme-medium);
+      # TODO: add: titling.sty
+      ++ lib.optional withPdfSupport (
+        (texlive.combine { inherit (texlive) scheme-medium titling; })
+      );
 
     shellHook = lib.optionalString isExternalShell ''
       export PANDOC_MD_WIKI_RELEASE_MAKEFILE="${default}/share/${default.pname}/Makefile"
