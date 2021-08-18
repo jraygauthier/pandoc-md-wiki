@@ -2,7 +2,6 @@
 
 let
   pkgs = (import ./.nix/release.nix {}).ensurePkgs args;
-  # pkgs1903 = import ./.nix/pinned-nixpkgs-1903.nix {};
 in
 
 with pkgs;
