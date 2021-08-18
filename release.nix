@@ -15,11 +15,14 @@ let
   pandoc-md-wiki-vscode-tools =
     callPackage ./.build-system/vscode {};
 
-  mkWikiShellFn = {isExternalShell}: {withVscodeSupport}: mkShell rec {
+  mkWikiShellFn = {isExternalShell}: {withVscodeSupport, withPdfSupport}: mkShell rec {
     inputsFrom = [ default ];
 
     buildInputs = []
-      ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools;
+      ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
+      # Minimal requirement to get the `pdflatex` command required by
+      # pandoc for pdf output.
+      ++ lib.optional withPdfSupport (texlive.combined.scheme-basic);
 
     shellHook = lib.optionalString isExternalShell ''
       export PANDOC_MD_WIKI_RELEASE_MAKEFILE="${default}/share/${default.pname}/Makefile"
