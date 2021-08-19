@@ -15,7 +15,11 @@ let
   pandoc-md-wiki-vscode-tools =
     callPackage ./.build-system/vscode {};
 
-  mkWikiShellFn = {isExternalShell}: {withVscodeSupport, withPdfSupport}: mkShell rec {
+  mkWikiShellFn =
+      { isExternalShell}:
+      { withVscodeSupport ? false,
+        withPdfSupport ? false
+      }: mkShell rec {
     inputsFrom = [ default ];
 
     buildInputs = []
