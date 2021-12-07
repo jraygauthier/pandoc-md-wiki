@@ -156,7 +156,7 @@ $ cd /path/to/my-wiki
 $ nix-shell
 # ..
 $ make html-and-preview
-xdg-open "../zilia-ocular-doc-html/Home.html"
+xdg-open "../my-wiki-html/Home.html"
 ```
 
 This should open the rendered version of your *home page* in your default browser.
