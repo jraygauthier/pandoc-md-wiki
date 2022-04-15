@@ -26,8 +26,8 @@ def load_page_yaml_frontmatter_line_gen(
 
 def load_page_yaml_frontmatter_str(filename: Path) -> str:
     ostream = io.StringIO()
-    for l in load_page_yaml_frontmatter_line_gen(filename):
-        ostream.write("{}\n".format(l))
+    for line in load_page_yaml_frontmatter_line_gen(filename):
+        ostream.write("{}\n".format(line))
 
     return ostream.getvalue()
 

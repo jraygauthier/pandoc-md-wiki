@@ -28,6 +28,12 @@ let
 
       source ${nsfPy.shell.shellHookLib}
       nsf_py_set_interpreter_env_from_path
+
+      # Fix the "ModuleNotFoundError: No module named 'yaml'" crash
+      # observed with recent version of nixpkgs. For some reason,
+      # our local 'src' directory is not longer added automatically
+      # to 'PYTHONPATH' as it was before.
+      nsf_py_add_local_pkg_src_if_present "${builtins.toString ./src}"
     '';
   });
 

@@ -6,9 +6,15 @@ import os
 import re
 from .yaml_frontmatter import load_page_yaml_frontmatter
 
-PerTagPathsDict = Dict[str, List[str]]
+EmptyDict = Dict[str, str]
+
+PerTagPathsDict = Dict[str, Dict[str, EmptyDict]]
 PerTagFilesDict = PerTagPathsDict
 PerTagDirsDict = PerTagPathsDict
+
+EMPTY_DICT: EmptyDict = {}
+
+ORPHAN_KEY = ""
 
 
 def load_pmw_yaml_file(filename: Path) -> Dict[str, Any]:
@@ -191,6 +197,13 @@ def _categorize_wiki_files(
                 relative_filename = Path(k).relative_to(root_dir)
                 filenames.add(str(relative_filename))
 
+    # Orphan (i.e: no tag) case.
+    filenames = per_tag_files.setdefault(ORPHAN_KEY, set())
+    for k, v in per_file_tags.items():
+        if not v:
+            relative_filename = Path(k).relative_to(root_dir)
+            filenames.add(str(relative_filename))
+
     return per_tag_files
 
 
@@ -204,8 +217,8 @@ def categorize_wiki_files(
 
     per_tag_files: PerTagFilesDict = dict()
     for k, v in _categorize_wiki_files(root_dir, pmw_filter).items():
-        sorted_by_path = list(
-            map(lambda x: str(x), sorted(map(lambda x: Path(x), v))))
+        sorted_by_path = {
+            str(x): EMPTY_DICT for x in sorted(map(lambda x: Path(x), v))}
         per_tag_files.setdefault(k, sorted_by_path)
     return per_tag_files
 
@@ -254,6 +267,13 @@ def _categorize_wiki_dirs(
                 relative_filename = Path(k).relative_to(root_dir)
                 filenames.add(str(relative_filename))
 
+    # Orphan (i.e: no tag) case.
+    filenames = per_tag_dirs.setdefault(ORPHAN_KEY, set())
+    for k, v in per_dir_tags.items():
+        if not v:
+            relative_filename = Path(k).relative_to(root_dir)
+            filenames.add(str(relative_filename))
+
     return per_tag_dirs
 
 
@@ -267,7 +287,7 @@ def categorize_wiki_dirs(
 
     per_tag_dirs: PerTagDirsDict = dict()
     for k, v in _categorize_wiki_dirs(root_dir, pmw_filter).items():
-        sorted_by_path = list(
-            map(lambda x: str(x), sorted(map(lambda x: Path(x), v))))
+        sorted_by_path = {
+            str(x): EMPTY_DICT for x in sorted(map(lambda x: Path(x), v))}
         per_tag_dirs.setdefault(k, sorted_by_path)
     return per_tag_dirs
