@@ -4,17 +4,11 @@ from typing import Any, Optional
 
 import click
 from pmw_tools.categorize import (PerTagPathsDict,
-                                  categorize_wiki_dirs,
                                   categorize_wiki_files)
 
 
 @click.group()
 def cli() -> None:
-    pass
-
-
-@cli.group()
-def categorize() -> None:
     pass
 
 
@@ -62,33 +56,17 @@ def _save_as_json(data_d: PerTagPathsDict, output_file_str: str) -> None:
         )
 
 
-@categorize.command()
+@cli.command()
 @mk_cwd_option()
 @mk_output_file_option()
-def files(
+def categorize(
         cwd_str: Optional[str], output_file_str: str) -> None:
-
     if cwd_str is None:
         cwd = Path.cwd()
     else:
         cwd = Path(cwd_str)
 
     categorized_d = categorize_wiki_files(cwd)
-    _save_as_json(categorized_d, output_file_str)
-
-
-@categorize.command()
-@mk_cwd_option()
-@mk_output_file_option()
-def dirs(
-        cwd_str: Optional[str], output_file_str: str) -> None:
-
-    if cwd_str is None:
-        cwd = Path.cwd()
-    else:
-        cwd = Path(cwd_str)
-
-    categorized_d = categorize_wiki_dirs(cwd)
     _save_as_json(categorized_d, output_file_str)
 
 

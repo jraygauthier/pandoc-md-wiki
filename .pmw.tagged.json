@@ -1,0 +1,358 @@
+{
+  "": {
+    ".": {
+      "dir": true
+    },
+    ".build-system": {
+      "dir": true
+    },
+    ".build-system/pandoc-filters": {
+      "dir": true
+    },
+    ".build-system/pandoc-syntax": {
+      "dir": true
+    },
+    ".build-system/pandoc-syntax/samples": {
+      "dir": true
+    },
+    ".build-system/pandoc-syntax/samples/plantuml": {
+      "dir": true
+    },
+    ".build-system/pandoc-syntax/samples/python": {
+      "dir": true
+    },
+    ".build-system/pkgs": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/_typeshed": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/click": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/collections": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/distutils": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/importlib": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/json": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/logging": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/os": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/pmw_tools": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/pmw_tools/cli": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/test_lib": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.mypy_cache/3.8/yaml": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.pytest_cache": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.pytest_cache/README.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/.pytest_cache/v": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.pytest_cache/v/cache": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/.vscode": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/README.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/__pycache__": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/UntaggedPageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/UntaggedPageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/YamlFrontMatterCases": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/YamlFrontMatterCases/Level2Headers.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/src": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/src/pmw_tools": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/src/pmw_tools.egg-info": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/src/pmw_tools/__pycache__": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/src/pmw_tools/cli": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/src/pmw_tools/cli/__pycache__": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/test_lib": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/test_lib/__pycache__": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/tests": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/tests/__pycache__": {
+      "dir": true
+    },
+    ".build-system/vscode": {
+      "dir": true
+    },
+    ".build-system/vscode/README.md": {
+      "dir": false
+    },
+    ".build-system/vscode/bin": {
+      "dir": true
+    },
+    ".nix": {
+      "dir": true
+    },
+    ".nix/pinned-src": {
+      "dir": true
+    },
+    ".nix/pinned-src/nixpkgs": {
+      "dir": true
+    },
+    ".nix/pinned-src/nixpkgs/channel": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-pin": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-pin/channel": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-py": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-py/channel": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-shc": {
+      "dir": true
+    },
+    ".nix/pinned-src/nsf-shc/channel": {
+      "dir": true
+    },
+    ".style": {
+      "dir": true
+    },
+    ".style/css": {
+      "dir": true
+    },
+    ".vscode": {
+      "dir": true
+    },
+    "Features": {
+      "dir": true
+    },
+    "Features/CodeBlockSyntaxHighlightingSupport": {
+      "dir": true
+    },
+    "Features/CodeBlockSyntaxHighlightingSupport/Home.md": {
+      "dir": false
+    },
+    "Features/Home.md": {
+      "dir": false
+    },
+    "Features/ImageSupport": {
+      "dir": true
+    },
+    "Features/ImageSupport/Home.md": {
+      "dir": false
+    },
+    "Features/ImageSupport/ImageLinkWithAttributes.md": {
+      "dir": false
+    },
+    "Features/ImageSupport/Images": {
+      "dir": true
+    },
+    "Features/ImageSupport/Images/ImageExample.svg": {
+      "dir": false
+    },
+    "Features/LinkSupport": {
+      "dir": true
+    },
+    "Features/LinkSupport/Home.md": {
+      "dir": false
+    },
+    "Features/LinkSupport/SubDirectory": {
+      "dir": true
+    },
+    "Features/LinkSupport/SubDirectory/PageInSubDirectory.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport": {
+      "dir": true
+    },
+    "Features/PlantUMLSupport/Diagrams": {
+      "dir": true
+    },
+    "Features/PlantUMLSupport/Home.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport/ImportedFile.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport/ImportedFileMultipleSamePara.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport/ImportedFileWithAttributes.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport/ImportedFileWithSpaces.md": {
+      "dir": false
+    },
+    "Features/PlantUMLSupport/Inline.md": {
+      "dir": false
+    },
+    "Home.md": {
+      "dir": false
+    },
+    "README.md": {
+      "dir": false
+    },
+    "TODO.md": {
+      "dir": false
+    }
+  },
+  "private": {
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PrivateImage.svg": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PrivatePageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PrivatePageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/PrivatePageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/PublicImage.svg": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/PublicPageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivatePageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags/PrivateAndWorkImage.svg": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags/PrivateAndWorkPageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicPageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PrivateDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PrivateDirWTags/PrivatePageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PrivateDirWTags/PublicPageWTags.md": {
+      "dir": false
+    }
+  },
+  "public": {
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/PublicImage.svg": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PrivateDirNoTags/PublicDirWTags/PublicPageNoTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags/PublicOnlyPageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicPageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PrivateDirWTags/PublicPageWTags.md": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/NoRootTagsCase/PublicPageWTags.md": {
+      "dir": false
+    }
+  },
+  "work": {
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags": {
+      "dir": true
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags/PrivateAndWorkImage.svg": {
+      "dir": false
+    },
+    ".build-system/pkgs/pmw-tools/data/WikiCases/ComplexPrivateByDefaultCase/PublicDirWTags/PrivateAndWorkDirWTags/PrivateAndWorkPageNoTags.md": {
+      "dir": false
+    }
+  }
+}

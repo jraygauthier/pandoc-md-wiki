@@ -7,8 +7,6 @@ A set of tools supporting `pandoc-md-wiki` document build system.
 
 ```bash
 $ cd "${WIKI_ROOT}"
-$ pmw-tools categorize dirs -C "$PWD" -o "$PWD/.pmw.tagged-dirs.json"
-# -> .pmw.tagged-dirs.json
-$ pmw-tools categorize files -C "$PWD" -o "$PWD/.pmw.tagged-files.json"
-# -> .pmw.tagged-files.json
+$ pmw-tools categorize -C "$PWD" -o "$PWD/.pmw.tagged.json"
+# -> .pmw.tagged.json
 ```

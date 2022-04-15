@@ -64,25 +64,31 @@ def test_categorize_wiki_files_all_cases(
     LOGGER.info("out:\n%s", pformat(out))
 
     actual_known_tags = set()
-    all_md_paths: Dict[Path, Set[str]] = dict()
+    all_files: Dict[Path, Set[str]] = dict()
     for tag, ps in out.items():
         actual_known_tags.add(tag)
-        for p, _ in ps.items():
-            tags = all_md_paths.setdefault(Path(p), set())
+        for path, props in ps.items():
+            is_dir = props["dir"]
+            full_path = root_dir.joinpath(path)
+            assert is_dir == full_path.is_dir()
+            if is_dir is True:
+                continue
+
+            tags = all_files.setdefault(Path(path), set())
             tags.add(tag)
 
     assert actual_known_tags == expected_known_tags
 
-    for md_p, md_p_tags in all_md_paths.items():
-        expected_tags = _parse_should_be_set(root_dir, md_p)
+    for file_p, file_p_tags in all_files.items():
+        expected_tags = _parse_should_be_set(root_dir, file_p)
         for t in actual_known_tags:
             if t in expected_tags:
-                assert str(md_p) in out[t], (
-                    f"Md page '{md_p}' not tagged as '{t}' as expected. "
-                    f"Currently tagged as: {md_p_tags}"
+                assert str(file_p) in out[t], (
+                    f"Md page '{file_p}' not tagged as '{t}' as expected. "
+                    f"Currently tagged as: {file_p_tags}"
                 )
             else:
-                assert str(md_p) not in out[t], (
-                    f"Md page '{md_p}' wronfully tagged as '{t}'. "
-                    f"Currently tagged as: {md_p_tags}"
+                assert str(file_p) not in out[t], (
+                    f"Md page '{file_p}' wronfully tagged as '{t}'. "
+                    f"Currently tagged as: {file_p_tags}"
                 )

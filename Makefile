@@ -32,6 +32,10 @@ FN_SRC_REL_TO_ROOT = $(shell realpath --relative-to "$(shell dirname "$(SRC_ROOT
 
 EXCLUDED_DIR_FIND_ARGS := -not -path '*/.diagrams_cache/*' -not -path '*/.assets-puml/*'
 
+
+# TODO: Use tags.
+# cat .pmw.tagged-files.json | jq '."work" + ."private"'
+
 SRC_MD := $(shell find . -mindepth 1 -type f -name '*.md' $(EXCLUDED_DIR_FIND_ARGS) -printf '%P\n')
 OUT_HTML_FROM_MD := $(patsubst %.md,$(OUTPUT_HTML_REL_DIR)/%.html,$(SRC_MD))
 
@@ -148,8 +152,7 @@ clean-html-jpg-from-src:
 	rm -f $(OUT_HTML_JPG_FROM_SRC)
 
 categorize:
-	pmw-tools categorize dirs -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged-dirs.json"
-	pmw-tools categorize files -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged-files.json"
+	pmw-tools categorize -C "$(SRC_ROOT_DIR)" -o "$(SRC_ROOT_DIR)/.pmw.tagged.json"
 
 debug-vars:
 	@echo "PANDOC_MD_WIKI_ROOT_DIR='$(PANDOC_MD_WIKI_ROOT_DIR)'"
