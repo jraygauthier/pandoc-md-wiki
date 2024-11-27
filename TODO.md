@@ -182,6 +182,7 @@ Filters
  -  Code chunk support filter
  -  TikZ support.
  -  Vega support.
+ -  Add support for [pandoc-plot](https://laurentrdc.github.io/pandoc-plot/)
 
 
 ### `puml-cb-to-img.lua`
