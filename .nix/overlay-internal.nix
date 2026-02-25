@@ -21,5 +21,6 @@ in
   nsf-pin-nix-lib = nsf-pin.nix-lib;
   nsf-py-nix-lib = nsf-py.nix-lib;
 
+  pandoc-ext-include-files = self.callPackage ./pkgs/pandoc-ext-include-files {};
   pandoc-ext-list-table = self.callPackage ./pkgs/pandoc-ext-list-table {};
 }
