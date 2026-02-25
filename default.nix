@@ -5,10 +5,10 @@
 , graphviz
 , jdk
 , jq
-, lua5_3
+, lua5_4
 , pandoc
 , plantuml
-, xdg_utils
+, xdg-utils
 , yq
 }:
 
@@ -35,10 +35,10 @@ stdenv.mkDerivation rec {
     graphviz
     jdk
     jq
-    lua5_3 # For experimenting with pandoc native lua filters.
+    lua5_4 # For experimenting with pandoc native lua filters.
     pandoc
     plantuml
-    xdg_utils
+    xdg-utils
     yq
   ];
 

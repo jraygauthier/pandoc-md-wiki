@@ -1,9 +1,8 @@
 { stdenv
 , makeWrapper
-, xdg_utils
+, xdg-utils
 , gnused
 , coreutils
-, gnumake
 }:
 
 stdenv.mkDerivation {
@@ -15,7 +14,7 @@ stdenv.mkDerivation {
   ];
 
   buildInputs = [
-    xdg_utils
+    xdg-utils
     gnused
     coreutils
   ];
