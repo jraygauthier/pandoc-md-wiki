@@ -10,6 +10,7 @@
 , nix-gitignore
 , pandoc
 , pandoc-ext-diagram
+, pandoc-ext-include-files
 , pandoc-ext-list-table
 , plantuml
 , xdg-utils
@@ -51,10 +52,9 @@ stdenv.mkDerivation rec {
         jdk
         plantuml
       ]}" \
+      --add-flags '--lua-filter=${pandoc-ext-include-files}/include-files.lua' \
       --add-flags '--lua-filter=${pandoc-ext-list-table}/list-table.lua' \
       --add-flags '--lua-filter=${pandoc-ext-diagram}/diagram.lua'
-
-
 
     export "PATH=$PWD/bin:$PATH"
   '';
