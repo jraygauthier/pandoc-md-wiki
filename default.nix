@@ -9,6 +9,7 @@
 , lua5_4
 , nix-gitignore
 , pandoc
+, pandoc-ext-diagram
 , plantuml
 , xdg-utils
 , yq
@@ -48,7 +49,8 @@ stdenv.mkDerivation rec {
         graphviz
         jdk
         plantuml
-      ]}"
+      ]}" \
+      --add-flags '--lua-filter=${pandoc-ext-diagram}/diagram.lua'
 
     export "PATH=$PWD/bin:$PATH"
   '';

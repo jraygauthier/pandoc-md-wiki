@@ -1,6 +1,29 @@
 PlantUML inline via code block support
 ======================================
 
+## Via `diagram.lua`
+
+See <https://github.com/pandoc-ext/diagram>.
+
+### Default behaviour
+
+Should show only the *output*:
+
+```{.plantuml}
+@startuml
+Object <|-- ArrayList
+
+Object : equals()
+ArrayList : Object[] elementData
+ArrayList : size()
+
+@enduml
+```
+
+This still does not provide the same behavior as `puml-cb-to-img.lua`.
+
+TODO: How best to cover what's missing?
+
 ## Via `puml-cb-to-img.lua`
 
 ### Default behaviour
