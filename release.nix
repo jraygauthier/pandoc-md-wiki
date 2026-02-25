@@ -21,7 +21,7 @@ let
       }: mkShell rec {
     inputsFrom = [ default ];
 
-    buildInputs = [
+    packages = [
       default
     ] ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
       # Minimal requirement to get the `pdflatex` command required by
