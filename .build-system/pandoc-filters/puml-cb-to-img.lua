@@ -160,8 +160,16 @@ local function div_extend_content(div, xs)
 end
 
 function CodeBlock(block)
-    if not (block.classes[1] == "puml" or block.classes[1] == "plantuml") then
+    if not (block.classes[1] == "puml-extra" or block.classes[1] == "plantuml-extra") then
       return nil -- Leave unchanged.
+    end
+
+    for i, class in ipairs(block.classes) do
+      if class == "plantuml-extra" then
+        block.classes[i] = "plantuml"
+      elseif class == "puml-extra" then
+        block.classes[i] = "puml"
+      end
     end
 
     local code_block = block
@@ -185,10 +193,7 @@ function CodeBlock(block)
       local content_div = pandoc.Div({}, content_div_attr)
       local code_div = pandoc.Div(code_block, code_div_attr)
       div_extend_content(content_div, {code_div})
-      --return content_div
-      -- TODO: Reconsider at some point. For the time
-      -- being, we will leave it untouched.
-      return nil
+      return content_div
     end
 
 

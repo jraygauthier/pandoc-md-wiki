@@ -1,11 +1,13 @@
 PlantUML inline via code block support
 ======================================
 
-## Default behaviour
+## Via `puml-cb-to-img.lua`
+
+### Default behaviour
 
 Should show only the *output*:
 
-```{.plantuml}
+```{.plantuml-extra}
 @startuml
 Object <|-- ArrayList
 
@@ -16,11 +18,11 @@ ArrayList : size()
 @enduml
 ```
 
-## Explicit svg output
+### Explicit svg output
 
 Should show the *output* as a svg:
 
-```{.plantuml output=html}
+```{.plantuml-extra output=html}
 @startuml
 Object <|-- ArrayList
 
@@ -31,11 +33,11 @@ ArrayList : size()
 @enduml
 ```
 
-## Explicit png output
+### Explicit png output
 
 Should show the *output* as a png:
 
-```{.plantuml output=png}
+```{.plantuml-extra output=png}
 @startuml
 Object <|-- ArrayList
 
@@ -46,11 +48,11 @@ ArrayList : size()
 @enduml
 ```
 
-## Only show the code using the output attribute
+### Only show the code using the output attribute
 
 Should display the plantuml code instead of its output:
 
-```{.plantuml output=none}
+```{.plantuml-extra output=none}
 @startuml
 Object <|-- ArrayList
 
@@ -61,11 +63,11 @@ ArrayList : size()
 @enduml
 ```
 
-## Only show the code using the code_block attribute
+### Only show the code using the code_block attribute
 
 Should display the plantuml code instead of its output:
 
-```{.plantuml code_block=true}
+```{.plantuml-extra code_block=true}
 @startuml
 Object <|-- ArrayList
 
@@ -78,11 +80,11 @@ ArrayList : size()
 
 This version won't even run plantuml.
 
-## Column left / right split
+### Column left / right split
 
 Should display both *code* left of the *output* with default split point (50%):
 
-```{.plantuml .column-split}
+```{.plantuml-extra .column-split}
 @startuml
 Object <|-- ArrayList
 
@@ -93,11 +95,11 @@ ArrayList : size()
 @enduml
 ```
 
-## Column left / right split custom split point
+### Column left / right split custom split point
 
 Should display both *code* left of the *output* with custom split point (35%):
 
-```{.plantuml column-left-width=35%}
+```{.plantuml-extra column-left-width=35%}
 @startuml
 Object <|-- ArrayList
 
@@ -108,11 +110,11 @@ ArrayList : size()
 @enduml
 ```
 
-## As code chunk
+### As code chunk
 
 Should display both the *code* and then the *output*:
 
-```{.plantuml cmd=true}
+```{.plantuml-extra cmd=true}
 @startuml
 Object <|-- ArrayList
 
@@ -124,12 +126,12 @@ ArrayList : size()
 ```
 
 
-## As code chunk column left / right split
+### As code chunk column left / right split
 
 Should display both *code* left of the *output* with default split point (50%):
 
 
-```{.plantuml cmd=true .column-split}
+```{.plantuml-extra cmd=true .column-split}
 @startuml
 Object <|-- ArrayList
 
@@ -140,11 +142,11 @@ ArrayList : size()
 @enduml
 ```
 
-## As code chunk column left / right split custom split point
+### As code chunk column left / right split custom split point
 
 Should display both *code* left of the *output* with custom split point (35%):
 
-```{.plantuml cmd=true column-left-width=35%}
+```{.plantuml-extra cmd=true column-left-width=35%}
 @startuml
 Object <|-- ArrayList
 
@@ -155,11 +157,11 @@ ArrayList : size()
 @enduml
 ```
 
-## As code chunk, explicitly hiding the code
+### As code chunk, explicitly hiding the code
 
 Should only display the the output (same as by default).
 
-```{.plantuml cmd=true hide=true}
+```{.plantuml-extra cmd=true hide=true}
 @startuml
 Object <|-- ArrayList
 
@@ -170,11 +172,11 @@ ArrayList : size()
 @enduml
 ```
 
-## As code chunk, explicitly hiding the output
+### As code chunk, explicitly hiding the output
 
 Should display both the *code* and then the *output*:
 
-```{.plantuml cmd=true output=none}
+```{.plantuml-extra cmd=true output=none}
 @startuml
 Object <|-- ArrayList
 
