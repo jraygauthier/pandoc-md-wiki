@@ -1,17 +1,18 @@
-{ stdenv
-, makeWrapper
+{ lib
+, stdenv
+, makeBinaryWrapper
 # , diagrams-builder
 , gnumake
 , graphviz
 , jdk
 , jq
 , lua5_4
+, nix-gitignore
 , pandoc
 , plantuml
 , xdg-utils
 , yq
 }:
-
 stdenv.mkDerivation rec {
   version = "0.0.0";
   pname = "pandoc-md-wiki";
@@ -21,28 +22,41 @@ stdenv.mkDerivation rec {
     inherit pname;
   };
 
-  src = ./.;
+  src = nix-gitignore.gitignoreSource [] ./.;
 
   # TODO: Patch the makefile.
 
   nativeBuildInputs = [
-    makeWrapper
+    makeBinaryWrapper
   ];
 
   buildInputs = [
     # diagrams-builder
     gnumake
-    graphviz
-    jdk
     jq
-    lua5_4 # For experimenting with pandoc native lua filters.
-    pandoc
-    plantuml
     xdg-utils
     yq
+    plantuml
+    graphviz
   ];
 
+  preBuild = ''
+    mkdir -p ./bin
+    makeWrapper "${pandoc}/bin/pandoc" ./bin/pandoc-md-wiki \
+      --prefix PATH : "${lib.makeBinPath [
+        lua5_4
+        graphviz
+        jdk
+        plantuml
+      ]}"
+
+    export "PATH=$PWD/bin:$PATH"
+  '';
+
   installPhase = ''
+    mkdir -p "$out/bin"
+    install ./bin/pandoc-md-wiki "$out/bin/pandoc-md-wiki"
+
     mkdir -p "$out/share/${pname}"
     find . -mindepth 1 -maxdepth 1 -exec mv -t "$out/share/${pname}" {} +
   '';

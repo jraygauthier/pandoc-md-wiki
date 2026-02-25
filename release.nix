@@ -21,8 +21,9 @@ let
       }: mkShell rec {
     inputsFrom = [ default ];
 
-    buildInputs = []
-      ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
+    buildInputs = [
+      default
+    ] ++ lib.optional withVscodeSupport pandoc-md-wiki-vscode-tools
       # Minimal requirement to get the `pdflatex` command required by
       # pandoc for pdf output with a couple of package (`xcolor`, etc).
       # TODO: add: titling.sty

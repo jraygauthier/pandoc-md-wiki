@@ -177,7 +177,7 @@ $(OUTPUT_HTML_REL_DIR)/%.html : %.md | $$(@D)/.
 	cd "$(@D)" \
 	&& \
 	PANDOC_MD_WIKI_REL_PATH_FROM_PAGE_TO_ROOT_DIR="$(call FN_SRC_REL_TO_ROOT,$<)" \
-	pandoc \
+	pandoc-md-wiki \
 	$(SRC_MD_PANDOC_OPTS) \
 	-o "$(OUT_HTML_DIR)/$@" \
 	$(HTML_PANDOC_OPTS) \
